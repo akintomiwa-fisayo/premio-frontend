@@ -62,7 +62,6 @@ class App extends React.Component {
             />
             <Route
               path="/"
-              exact
               render={(props) => (
                 <Home {...props} />
               )}
