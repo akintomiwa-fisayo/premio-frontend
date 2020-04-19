@@ -10,7 +10,7 @@ class Booter extends React.Component {
     return (
       <>
         <App />
-        <Auth />
+        {/* <Auth /> */}
       </>
     );
   }

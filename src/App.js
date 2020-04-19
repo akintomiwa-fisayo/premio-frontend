@@ -11,6 +11,12 @@ import Purchases from './pages/account/Purchases';
 import Messages from './pages/messaging/messaging';
 import Clients from './pages/clients/clients';
 import MyProducts from './pages/myProducts/myProducts';
+import ConfirmSignUp from './pages/auth/ConfirmSignUp';
+import SignUp from './pages/auth/SignUp';
+import ForgotPassword from './pages/auth/ForgotPassword';
+import ChangePassword from './pages/auth/ChangePassword';
+import ModeSelector from './pages/auth/ModeSelector';
+import SignIn from './pages/auth/SignIn';
 
 class App extends React.Component {
   render() {
@@ -65,6 +71,37 @@ class App extends React.Component {
               render={(props) => (
                 <Home {...props} />
               )}
+            />
+
+            {/* FOR AUTH PAGE */}
+            <Route
+              path="/confirm-sign-up"
+              render={(props) => <ConfirmSignUp {...props} />}
+            />
+            <Route
+              path="/sign-up"
+              render={(props) => <SignUp {...props} />}
+            />
+            <Route
+              path="/forgot-password"
+              render={(props) => <ForgotPassword {...props} />}
+            />
+            <Route
+              path="/change-password"
+              render={(props) => <ChangePassword {...props} />}
+            />
+            <Route
+              path="/mode-selector"
+              render={(props) => <ModeSelector {...props} />}
+            />
+            <Route
+              path="/premio-frontend"
+              render={(props) => <SignIn {...props} />}
+            />
+            <Route
+              path="/"
+              exact
+              render={(props) => <SignIn {...props} />}
             />
           </Switch>
         </main>
