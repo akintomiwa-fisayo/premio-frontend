@@ -6,6 +6,10 @@ import NextArrow from '../../../elements/carousel/NextArrow';
 import PrevArrow from '../../../elements/carousel/PrevArrow';
 import SlideShow from '../../../elements/SlideShow';
 
+import slide1 from '../../../../public/static/img/slider/home-1/slide-1.jpg';
+import slide2 from '../../../../public/static/img/slider/home-1/slide-2.jpg';
+import slide3 from '../../../../public/static/img/slider/home-1/slide-3.jpg';
+
 class HomeBanner extends Component {
   render() {
     const carouselSetting = {
@@ -23,21 +27,21 @@ class HomeBanner extends Component {
           {
             label: '1 the label of tthe item',
             content: <img
-              src="/static/img/slider/home-1/slide-1.jpg"
+              src={slide1}
               alt="martfury"
             />,
           },
           {
             label: '2 the label of tthe item',
             content: <img
-              src="/static/img/slider/home-1/slide-2.jpg"
+              src={slide2}
               alt="martfury"
             />,
           },
           {
             label: '3 the label of tthe item',
             content: <img
-              src="/static/img/slider/home-1/slide-3.jpg"
+              src={slide3}
               alt="martfury"
             />,
           },
