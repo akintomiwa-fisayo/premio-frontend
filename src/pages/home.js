@@ -1,14 +1,8 @@
 import React from 'react';
 import HomeBanner from '../components/partials/homepage/home-default/HomeBanner';
 import HomeProductsPreview from '../components/partials/homepage/home-default/HomeProductsPreview';
-import { resetHeader, resetNav } from '../store/setting/action';
 
 class Home extends React.Component {
-  componentDidMount() {
-    this.props.dispatch(resetHeader());
-    this.props.dispatch(resetNav());
-  }
-
   render() {
     return (
       <>

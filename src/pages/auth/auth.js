@@ -32,7 +32,12 @@ class Auth extends React.Component {
           render={(props) => <ModeSelector {...props} />}
         />
         <Route
+          path="/premio-frontend"
+          render={(props) => <SignIn {...props} />}
+        />
+        <Route
           path="/"
+          exact
           render={(props) => <SignIn {...props} />}
         />
       </Switch>
