@@ -33,7 +33,6 @@ class Auth extends React.Component {
         />
         <Route
           path="/"
-          exact
           render={(props) => <SignIn {...props} />}
         />
       </Switch>
