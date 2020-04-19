@@ -35,7 +35,7 @@ class ForgotPassword extends React.Component {
       noUser: true,
       label: 'forgot password',
       onGoBack: () => {
-        this.props.history.push('/sign-in');
+        this.props.history.push('/');
       },
     }));
     this.props.dispatch(changeNav({

@@ -9,8 +9,8 @@ class Booter extends React.Component {
     // return false ? <Auth /> : <App />;
     return (
       <>
-        <Auth />
         <App />
+        <Auth />
       </>
     );
   }

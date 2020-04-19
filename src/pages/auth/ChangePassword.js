@@ -21,7 +21,7 @@ class ChangePassword extends React.Component {
       noUser: true,
       label: 'change password',
       onGoBack: () => {
-        this.props.history.push('/sign-in');
+        this.props.history.push('/');
       },
     }));
     this.props.dispatch(changeNav({
@@ -35,7 +35,7 @@ class ChangePassword extends React.Component {
   }
 
   submit() {
-    this.props.history.push('/sign-in');
+    this.props.history.push('/');
   }
 
   render() {
