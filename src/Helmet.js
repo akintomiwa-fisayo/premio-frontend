@@ -16,6 +16,7 @@ class App extends React.Component {
   }
 
   render() {
+    const urlPrefix = '/premio-frontend';
     return (
       <Helmet>
         <title>Martfury - React eCommerce Template</title>
@@ -36,24 +37,25 @@ class App extends React.Component {
         />
         <link
           rel="stylesheet"
-          href="/static/fonts/Linearicons/Font/demo-files/demo.css"
+          // href="/static/fonts/Linearicons/Font/demo-files/demo.css"
+          href={`${urlPrefix}/static/fonts/Linearicons/Font/demo-files/demo.css`}
         />
 
         <link
           rel="stylesheet"
-          href="/static/fonts/font-awesome/css/font-awesome.css"
+          href={`${urlPrefix}/static/fonts/font-awesome/css/font-awesome.css`}
           // \static\fonts\font-awesome\css\font-awesome.css
         />
 
         <link
           rel="stylesheet"
           type="text/css"
-          href="/static/css/bootstrap.min.css"
+          href={`${urlPrefix}/static/css/bootstrap.min.css`}
         />
         <link
           rel="stylesheet"
           type="text/css"
-          href="/static/css/slick.min.css"
+          href={`${urlPrefix}/static/css/slick.min.css`}
         />
       </Helmet>
     );
