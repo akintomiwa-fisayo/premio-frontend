@@ -899,7 +899,6 @@ exports.products = [
     id: '33',
     thumbnail: recommend1,
     title: 'Anderson Composites – Custom Hood',
-    price: '990.50',
     ratingCount: '02',
     rating: true,
     sale: false,
@@ -1121,12 +1120,6 @@ exports.products = [
   {
     id: '41',
     thumbnail: electronic7,
-    variants: [
-      {
-        id: '1',
-        thumbnail: electronic7,
-      },
-    ],
     title: 'LG Electrolux 500L Inverte Washing Machine',
     vendor: 'Young Shop',
     sale: true,
@@ -1218,28 +1211,10 @@ exports.products = [
     ],
   },
 ];
-exports.customerBought = () => [
+exports.customerBought = [
   {
     id: '19',
     thumbnail: shop18,
-    variants: [
-      {
-        id: '1',
-        thumbnail: dummy1,
-      },
-      {
-        id: '2',
-        thumbnail: dummy2,
-      },
-      {
-        id: '3',
-        thumbnail: dummy3,
-      },
-      {
-        id: '4',
-        thumbnail: dummy4,
-      },
-    ],
     title: 'EPSION Plaster Printer',
     vendor: "Robert's Store",
     price: '233.28',
@@ -1249,24 +1224,6 @@ exports.customerBought = () => [
   {
     id: '20',
     thumbnail: shop19,
-    variants: [
-      {
-        id: '1',
-        thumbnail: dummy1,
-      },
-      {
-        id: '2',
-        thumbnail: dummy2,
-      },
-      {
-        id: '3',
-        thumbnail: dummy3,
-      },
-      {
-        id: '4',
-        thumbnail: dummy4,
-      },
-    ],
     title: 'EPSION Plaster Printer',
     vendor: "Robert's Store",
     price: '233.28',
@@ -1276,24 +1233,6 @@ exports.customerBought = () => [
   {
     id: '21',
     thumbnail: shop20,
-    variants: [
-      {
-        id: '1',
-        thumbnail: dummy1,
-      },
-      {
-        id: '2',
-        thumbnail: dummy2,
-      },
-      {
-        id: '3',
-        thumbnail: dummy3,
-      },
-      {
-        id: '4',
-        thumbnail: dummy4,
-      },
-    ],
     title: 'LG White Front Load Steam Washer',
     vendor: 'Young Shop',
     sale: true,
@@ -1311,24 +1250,6 @@ exports.customerBought = () => [
   {
     id: '22',
     thumbnail: shop21,
-    variants: [
-      {
-        id: '1',
-        thumbnail: dummy1,
-      },
-      {
-        id: '2',
-        thumbnail: dummy2,
-      },
-      {
-        id: '3',
-        thumbnail: dummy3,
-      },
-      {
-        id: '4',
-        thumbnail: dummy4,
-      },
-    ],
     title: 'Edifier Powered Bookshelf Speakers',
     vendor: 'Young Shop',
     sale: true,
@@ -1339,24 +1260,6 @@ exports.customerBought = () => [
   {
     id: '24',
     thumbnail: shop22,
-    variants: [
-      {
-        id: '1',
-        thumbnail: dummy1,
-      },
-      {
-        id: '2',
-        thumbnail: dummy2,
-      },
-      {
-        id: '3',
-        thumbnail: dummy3,
-      },
-      {
-        id: '4',
-        thumbnail: dummy4,
-      },
-    ],
     title: 'Amcrest Security Camera in White Color',
     vendor: 'Global Office',
     sale: true,
@@ -1374,24 +1277,6 @@ exports.customerBought = () => [
   {
     id: '25',
     thumbnail: shop23,
-    variants: [
-      {
-        id: '1',
-        thumbnail: dummy1,
-      },
-      {
-        id: '2',
-        thumbnail: dummy2,
-      },
-      {
-        id: '3',
-        thumbnail: dummy3,
-      },
-      {
-        id: '4',
-        thumbnail: dummy4,
-      },
-    ],
     title: 'DJI Phantom 4 Quadcopter Camera',
     vendor: 'Go Pro',
     sale: true,
@@ -1599,24 +1484,6 @@ exports.sameBrands = [
   {
     id: '10',
     thumbnail: shop9,
-    variants: [
-      {
-        id: '1',
-        thumbnail: dummy1,
-      },
-      {
-        id: '2',
-        thumbnail: dummy2,
-      },
-      {
-        id: '3',
-        thumbnail: dummy3,
-      },
-      {
-        id: '4',
-        thumbnail: dummy4,
-      },
-    ],
     title: 'Rayban Rounded Sunglass Brown Color',
     vendor: 'Young shop',
     price: '35.89',
@@ -1633,24 +1500,6 @@ exports.sameBrands = [
   {
     id: '11',
     thumbnail: shop10,
-    variants: [
-      {
-        id: '1',
-        thumbnail: dummy1,
-      },
-      {
-        id: '2',
-        thumbnail: dummy2,
-      },
-      {
-        id: '3',
-        thumbnail: dummy3,
-      },
-      {
-        id: '4',
-        thumbnail: dummy4,
-      },
-    ],
     title: 'Sleeve Linen Blend Caro Pane Shirt',
     vendor: 'Go Pro',
     price: '29.39 ',
@@ -1841,3 +1690,255 @@ exports.gropped = {
     },
   ],
 };
+exports.relatedProduct = [
+  {
+    id: '54',
+    thumbnail: shop7,
+    title: 'Stadler Form Otto African Sapele Wood',
+    vendor: 'Global Office',
+    sale: false,
+    price: '127.59',
+    rating: true,
+    ratingCount: '01',
+    categories: [
+      {
+        id: '6',
+        value: 'garden',
+        name: 'Garden & Kitchen',
+      },
+    ],
+    brand: [
+      {
+        id: '7',
+        value: 'flatfuniture',
+        text: 'Flat Funiture',
+      },
+    ],
+  },
+  {
+    id: '55',
+    thumbnail: shop1,
+    title: 'Aveeno Moisturizing Body Shower 450ml',
+    vendor: 'Young Shop',
+    sale: true,
+    price: '47.99',
+    salePrice: '59.00',
+    rating: true,
+    ratingCount: '01',
+    badge: [
+      {
+        type: 'sale',
+        value: '-16%',
+      },
+    ],
+    categories: [
+      {
+        id: '8',
+        value: 'beauty',
+        name: 'Health & Beauty',
+      },
+    ],
+    brand: [
+      {
+        id: '13',
+        value: 'unilever',
+        text: 'Unilever',
+      },
+    ],
+  },
+  {
+    id: '56',
+    thumbnail: shop3,
+    title: 'Baxter Care Hair Kit For Bearded Mens',
+    vendor: 'Young Shop',
+    sale: true,
+    price: '42.00',
+    salePrice: '60.00',
+    rating: true,
+    ratingCount: '02',
+    badge: [
+      {
+        type: 'sale',
+        value: '-25%',
+      },
+    ],
+    categories: [
+      {
+        id: '8',
+        value: 'beauty',
+        name: 'Health & Beauty',
+      },
+    ],
+    brand: [
+      {
+        id: '13',
+        value: 'unilever',
+        text: 'Unilever',
+      },
+    ],
+  },
+  {
+    id: '57',
+    thumbnail: shop4,
+    title: 'Anna Sui Putty Mask Perfection',
+    vendor: 'Global Office',
+    sale: false,
+    price: '25.00',
+    rating: true,
+    ratingCount: '01',
+    categories: [
+      {
+        id: '8',
+        value: 'beauty',
+        name: 'Health & Beauty',
+      },
+    ],
+    brand: [
+      {
+        id: '13',
+        value: 'unilever',
+        text: 'Unilever',
+      },
+    ],
+  },
+  {
+    id: '58',
+    thumbnail: shop5,
+    title: 'Set 30 Piece Korea StartSkin Natural Mask',
+    vendor: 'Global Office',
+    sale: false,
+    price: '85.00',
+    rating: true,
+    ratingCount: '01',
+    categories: [
+      {
+        id: '8',
+        value: 'beauty',
+        name: 'Health & Beauty',
+      },
+    ],
+    brand: [
+      {
+        id: '13',
+        value: 'unilever',
+        text: 'Unilever',
+      },
+    ],
+  },
+  {
+    id: '59',
+    thumbnail: shop6,
+    title: 'Ciate Palemore Lipstick Bold Red Color',
+    vendor: 'Global Store',
+    sale: false,
+    price: '92.00',
+    rating: true,
+    ratingCount: '01',
+    categories: [
+      {
+        id: '8',
+        value: 'beauty',
+        name: 'Health & Beauty',
+      },
+    ],
+    brand: [
+      {
+        id: '13',
+        value: 'unilever',
+        text: 'Unilever',
+      },
+    ],
+  },
+  {
+    id: '60',
+    thumbnail: shop7,
+    title: 'Apple iPhone X 256GB T-Mobile – Black',
+    sale: true,
+    price: '1389.99',
+    salePrice: '1893.00',
+    rating: true,
+    ratingCount: '01',
+    badge: [
+      {
+        type: 'sale',
+        value: '11%',
+      },
+    ],
+    categories: [
+      {
+        id: '4',
+        value: 'technologies',
+        name: 'Computers & Technologies',
+      },
+    ],
+    brand: [
+      {
+        id: '1',
+        value: 'apple',
+        text: 'Apple',
+      },
+    ],
+  },
+  {
+    id: '61',
+    thumbnail: shop7,
+    title: 'Apple iPhone 7 Plus 128 GB – Red Color',
+    vendor: 'Global Office',
+    sale: true,
+    price: '820.99',
+    salePrice: '893.00',
+    rating: true,
+    ratingCount: '01',
+    badge: [
+      {
+        type: 'sale',
+        value: '11%',
+      },
+    ],
+    categories: [
+      {
+        id: '4',
+        value: 'technologies',
+        name: 'Computers & Technologies',
+      },
+    ],
+    brand: [
+      {
+        id: '1',
+        value: 'apple',
+        text: 'Apple',
+      },
+    ],
+  },
+  {
+    id: '62',
+    thumbnail: shop8,
+    title: 'Apple MacBook Air Retina 13.3-Inch Laptop',
+    vendor: 'Global Office',
+    sale: true,
+    price: '1020.99',
+    salePrice: '1120.00',
+    rating: true,
+    ratingCount: '01',
+    badge: [
+      {
+        type: 'sale',
+        value: '21%',
+      },
+    ],
+    categories: [
+      {
+        id: '4',
+        value: 'technologies',
+        name: 'Computers & Technologies',
+      },
+    ],
+    brand: [
+      {
+        id: '1',
+        value: 'apple',
+        text: 'Apple',
+      },
+    ],
+  },
+];
