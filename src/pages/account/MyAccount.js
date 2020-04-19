@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { changeHeader, resetHeader } from '../../store/setting/action';
 import ChangePassword from '../../components/partials/account/ChangePassword';
 import BecomeVendor from '../../components/partials/account/BecomeVendor';
+import user3 from '../../public/static/img/users/3.jpg';
 
 class MyAccount extends Component {
   constructor(props) {
@@ -128,7 +129,7 @@ class MyAccount extends Component {
         }}
       >
         <div className="ps-widget__header">
-          <img src="/static/img/users/3.jpg" alt="" />
+          <img src={user3} alt="" />
           <figure>
             <figcaption>Hello!</figcaption>
             <p>Akintomiwa fisayo</p>

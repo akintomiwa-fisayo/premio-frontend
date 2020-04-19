@@ -5,6 +5,8 @@ import { changeHeader, resetHeader } from '../../store/setting/action';
 import ChangePassword from '../../components/partials/account/ChangePassword';
 import BecomeVendor from '../../components/partials/account/BecomeVendor';
 import SearchBar from '../../components/shared/SearchBar';
+import user3 from '../../public/static/img/users/3.jpg';
+
 
 class Messages extends Component {
   constructor(props) {
@@ -60,7 +62,7 @@ class Messages extends Component {
     const clientMessages = [
       {
         id: 12,
-        avi: '/static/img/users/3.jpg',
+        avi: user3,
         firstName: 'Akintomiwa',
         lastName: 'fisayo',
         lastMessage: {
@@ -72,7 +74,7 @@ class Messages extends Component {
       },
       {
         id: 11,
-        avi: '/static/img/users/3.jpg',
+        avi: user3,
         firstName: 'Mr',
         lastName: 'shola',
         lastMessage: {
@@ -84,7 +86,7 @@ class Messages extends Component {
       },
       {
         id: 12,
-        avi: '/static/img/users/3.jpg',
+        avi: user3,
         firstName: 'Fine-boy',
         lastName: 'samuel',
         lastMessage: {
@@ -96,7 +98,7 @@ class Messages extends Component {
       },
       {
         id: 12,
-        avi: '/static/img/users/3.jpg',
+        avi: user3,
         firstName: 'Akintomiwa',
         lastName: 'fisayo',
         lastMessage: {
@@ -108,7 +110,7 @@ class Messages extends Component {
       },
       {
         id: 12,
-        avi: '/static/img/users/3.jpg',
+        avi: user3,
         firstName: 'Mr',
         lastName: 'shola',
         lastMessage: {
@@ -120,7 +122,7 @@ class Messages extends Component {
       },
       {
         id: 12,
-        avi: '/static/img/users/3.jpg',
+        avi: user3,
         firstName: 'Fine-boy',
         lastName: 'samuel',
         lastMessage: {

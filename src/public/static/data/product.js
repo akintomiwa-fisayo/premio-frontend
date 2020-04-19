@@ -44,11 +44,6 @@ const recommend6 = require('../img/products/home-2/recommend/6.jpg');
 const technology2 = require('../img/products/technology/2.jpg');
 const technology3 = require('../img/products/technology/3.jpg');
 
-const dummy1 = require('../img/products/dummy/1.png');
-const dummy2 = require('../img/products/dummy/2.png');
-const dummy3 = require('../img/products/dummy/3.png');
-const dummy4 = require('../img/products/dummy/4.png');
-
 exports.products = [
   {
     id: '1',

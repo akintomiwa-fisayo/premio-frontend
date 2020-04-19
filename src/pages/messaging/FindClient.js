@@ -7,6 +7,8 @@ import BecomeVendor from '../../components/partials/account/BecomeVendor';
 import SearchBar from '../../components/shared/SearchBar';
 import { getRelativeTime } from '../../lib/js';
 import Composer from './Composer';
+import user3 from '../../public/static/img/users/3.jpg';
+
 
 class FindClient extends Component {
   constructor(props) {
@@ -71,7 +73,7 @@ class FindClient extends Component {
     const clients = [
       {
         id: 12,
-        avi: '/static/img/users/3.jpg',
+        avi: user3,
         firstName: 'Akintomiwa',
         lastName: 'fisayo',
         lastMessage: {
@@ -83,7 +85,7 @@ class FindClient extends Component {
       },
       {
         id: 11,
-        avi: '/static/img/users/3.jpg',
+        avi: user3,
         firstName: 'Mr',
         lastName: 'shola',
         lastMessage: {
@@ -95,7 +97,7 @@ class FindClient extends Component {
       },
       {
         id: 12,
-        avi: '/static/img/users/3.jpg',
+        avi: user3,
         firstName: 'Fine-boy',
         lastName: 'samuel',
         lastMessage: {
@@ -107,7 +109,7 @@ class FindClient extends Component {
       },
       {
         id: 12,
-        avi: '/static/img/users/3.jpg',
+        avi: user3,
         firstName: 'Akintomiwa',
         lastName: 'fisayo',
         lastMessage: {

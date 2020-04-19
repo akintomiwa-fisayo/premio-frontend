@@ -33,14 +33,14 @@ class ModeSelector extends React.Component {
     return (
       <div id="signinComp" style={{ display: 'flex', alignItems: 'center' }}>
         <Link
-          to="/"
+          to="/home"
           style={{ width: '100%' }}
           onClick={() => { this.selectMode('customer'); }}
         >
           <button type="button" className="btn btn-default">Customer mode</button>
         </Link>
         <Link
-          to="/"
+          to="/home"
           style={{ marginLeft: '1em', width: '100%' }}
           onClick={() => { this.selectMode('vendor'); }}
         >

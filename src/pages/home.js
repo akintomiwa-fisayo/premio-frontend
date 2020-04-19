@@ -11,7 +11,7 @@ class Home extends React.Component {
         <HomeProductsPreview title="Videos" />
         <HomeProductsPreview title="PDFs" />
         <div className="ps-container">
-          <button type="button" className="btn btn-secondary">View All Products</button>
+          <button type="button" className="btn btn-glass">View All Products</button>
         </div>
 
       </>

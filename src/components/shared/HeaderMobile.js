@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { changeHeader } from '../../store/setting/action';
 import SearchBar from './SearchBar';
+import user3 from '../../public/static/img/users/3.jpg';
 
 class HeaderMobile extends Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class HeaderMobile extends Component {
     let centerComp = <SearchBar />;
     const rightComp = noUser ? '' : (
       <Link to="/account">
-        <img src="/static/img/users/3.jpg" alt="" />
+        <img src={user3} alt="" />
       </Link>
     );
 

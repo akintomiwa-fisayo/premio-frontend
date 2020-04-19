@@ -32,7 +32,8 @@ class Auth extends React.Component {
           render={(props) => <ModeSelector {...props} />}
         />
         <Route
-          path="/sign-in"
+          path="/"
+          exact
           render={(props) => <SignIn {...props} />}
         />
       </Switch>
