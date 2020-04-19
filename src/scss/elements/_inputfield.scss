@@ -1,0 +1,31 @@
+$paddingLeft: 1em;
+
+.input-field{
+  display: inline-flex;
+  flex-direction: column;
+  width: 100%;  
+  padding: 0 $paddingLeft;  
+  font-size: 1em;
+  border-bottom: solid 1px #dadada;
+  margin-bottom: 1em;
+  
+  
+  .label{
+    font-size: .9em;
+    color: $color-1st;
+    font-weight: bold;
+  }
+  
+  input{
+    margin: .35em 0;
+    width: 100%;  
+    font-size: 1em;
+    box-sizing: border-box;
+    background: none;
+    border: none;
+  }
+  
+  &.focused{
+    border-bottom: solid 1px #333;
+  }
+}

@@ -1,0 +1,103 @@
+
+button.btn{
+	transition: all .2s linear;
+	display: inline-block;
+  padding: .8em;
+  margin-bottom: 1em;
+  font-weight: 500;
+  width:100%;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid;
+	border-radius: 99999999px; 
+  color: inherit;
+
+  &:active, &:focus{
+    box-shadow: none;
+  }
+
+  @mixin createBtn($bk: #999, $color: white ){
+    $borderColor: darken($bk, 5%);
+    border-color: $borderColor;
+    background-color: $bk;
+    color: $color;
+  
+    &:active, &:focus{
+      border-color: darken($borderColor, 8%) !important;
+      background-color: darken($borderColor, 2%) !important; 
+      color:$color !important;
+    }
+  }
+  
+  &.btn-success{
+    @include createBtn($color-success);
+  }
+  
+  &.btn-secondary{
+    @include createBtn($color-secondary);
+  }
+  
+  &.btn-danger{
+    @include createBtn($color-danger);
+  }
+  
+  &.btn-warning{
+    @include createBtn($color-warning);
+  }
+  
+  &.btn-negative{
+    $color: #d4d4d4;
+    $colorDark: darken($color, 10%);
+    border-color: $colorDark;
+    background-color: $color;
+    /*color: white;*/
+  
+    &:active, &:focus{
+      /*border-color: $colorDark !important;*/
+      background-color: $colorDark !important; 
+      /*color: white !important;*/
+    }
+  
+  }
+  
+  &.btn-default{
+    $color: $color-1st;
+    $colorDark: darken($color, 5%);
+    border-color: $colorDark;
+    background-color: $color;
+    /*color: white;*/
+  
+    &:active, &:focus{
+      /*border-color: $colorDark !important;*/
+      background-color: $colorDark !important; 
+      /*color: white !important;*/
+    }
+  
+  }
+
+  &.btn-glass{
+    $color: $color-1st;
+    $colorDark: darken($color, 5%);
+    border-color: initial;
+    background-color: transparent;
+    /*color: white;*/
+  
+    &:active, &:focus{
+      /*border-color: $colorDark !important;*/
+      background-color: $colorDark !important; 
+      /*color: white !important;*/
+    }
+  
+  }
+}
+
