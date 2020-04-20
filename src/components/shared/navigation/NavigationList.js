@@ -105,7 +105,7 @@ class NavigationList extends Component {
         <div className="navigation--list" ref={(el) => { this.navigationList = el; }}>
           <Drawer
             className="ps-panel--mobile"
-            placement="right"
+            placement="left"
             closable={false}
             onClose={this.handleDrawerClose}
             visible={this.state.menuDrawer}
@@ -155,7 +155,7 @@ class NavigationList extends Component {
       <div className="navigation--list" ref={(el) => { this.navigationList = el; }}>
         <Drawer
           className="ps-panel--mobile"
-          placement="right"
+          placement="left"
           closable={false}
           onClose={this.handleDrawerClose}
           visible={this.state.menuDrawer}

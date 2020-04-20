@@ -170,13 +170,15 @@ class Messages extends Component {
             </Link>
           ))}
         </div>
-        <Link
-          to="/messages/new"
-          id="newMessage"
+
+        <div
+          id="createMessage"
           style={{ bottom: `calc(1em + ${nav.height}px)` }}
         >
-          <span className="icon-pencil" />
-        </Link>
+          <Link to="/messages/new">
+            <span className="icon-pencil" />
+          </Link>
+        </div>
       </section>
     );
   }

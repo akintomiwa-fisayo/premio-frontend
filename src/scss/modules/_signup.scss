@@ -4,6 +4,8 @@
   // background: radial-gradient($color-1st, darken($color-1st, 10%));
   height: 100vh;
   width: 100vw;
+  display: flex;
+  justify-content: center;
 
   #header{
     position: sticky;
@@ -30,7 +32,7 @@
 
   #content{
     position: relative;
-    width: 100%;
+    width: $tbl-content-width;
     padding: 0 $paddingLeft;
     padding-top: 2em;
     height: max-content;
@@ -55,4 +57,15 @@
       margin-top: 1em;
     }
   }
+
+  @include media('<md') {
+
+    #content{
+      width: 100%;
+      // align-items: flex-start;
+
+    }
+
+  }
+
 } 

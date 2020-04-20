@@ -133,6 +133,7 @@ class MyAccount extends Component {
           <figure>
             <figcaption>Hello!</figcaption>
             <p>Akintomiwa fisayo</p>
+            {/* <div>(#1234)</div> */}
           </figure>
         </div>
 

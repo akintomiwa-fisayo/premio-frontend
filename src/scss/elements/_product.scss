@@ -2096,13 +2096,16 @@
     }
 
     .ps-product__thumbnail {
-        max-width: 56px;
+        max-width: 23%;
     }
 
     .ps-product__content {
         position: relative;
         padding-right: 30px;
         padding-left: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
 
         .ps-product__remove {
             position: absolute;
@@ -2147,7 +2150,7 @@
     }
 
     .ps-product__thumbnail {
-        max-width: 56px;
+
     }
 
     .ps-product__content {

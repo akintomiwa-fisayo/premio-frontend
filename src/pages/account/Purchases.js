@@ -70,12 +70,12 @@ class Purchases extends Component {
             cartItems.map((product) => (
               <div className="ps-product--cart-mobile" key={product.id}>
                 <div className="ps-product__thumbnail">
-                  <Link to={`/product/${product.id}`}>
+                  <Link to={`/products/${product.id}`}>
                     <img src={product.thumbnail} alt="martfury" />
                   </Link>
                 </div>
                 <div className="ps-product__content">
-                  <Link to={`/product/${product.id}`} className="ps-product__title"> {product.title} </Link>
+                  <Link to={`/products/${product.id}`} className="ps-product__title"> {product.title} </Link>
                   <p className="vendor"> <strong>Sold by:</strong> {product.vendor} </p>
                   <p className="purchased-on"><strong>Purchased:</strong> today at 2:20 pm </p>
                 </div>

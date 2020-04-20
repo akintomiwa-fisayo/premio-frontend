@@ -57,9 +57,10 @@ class ViewMyProducts extends Component {
                     <img src={product.thumbnail} alt="martfury" />
                   </Link>
                 </div>
-                <div className="ps-product__content">
-                  <Link to={`/my-products/${product.id}`} className="ps-product__title"> {product.title} </Link>
-                </div>
+                <Link to={`/my-products/${product.id}`} className="ps-product__content">
+                  <p className="ps-product__title"> {product.title} </p>
+                  <p className="description">The product description comes down here but will be truncated if it exit more than two lines </p>
+                </Link>
               </div>
             ))
           ) : (
@@ -68,13 +69,14 @@ class ViewMyProducts extends Component {
             </div>
           )}
         </div>
-        <Link
-          to="/my-products/new"
+        <div
           id="submiNewProduct"
           style={{ bottom: `calc(1em + ${nav.height}px)` }}
         >
-          <span className="icon-pencil" />
-        </Link>
+          <Link to="/my-products/new">
+            <span className="icon-pencil" />
+          </Link>
+        </div>
       </div>
     );
   }

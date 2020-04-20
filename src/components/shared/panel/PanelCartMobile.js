@@ -23,11 +23,13 @@ class PanelCartMobile extends Component {
   }
 
   render() {
-    const { amount, cartItems, navHeight } = this.props;
+    const {
+      amount, cartItems, nav, header,
+    } = this.props;
     console.log(this.props);
     return (
-      <div className="ps-panel--wrapper" style={{ height: `calc(100vh - ${navHeight}px)` }}>
-        <div className="ps-panel__header">
+      <div id="cartDrawalContent" className="ps-panel--wrapper" style={{ height: `calc(100vh - ${nav.height}px)` }}>
+        <div className="ps-panel__header" style={{ height: `${header.height}px` }}>
           <h3>Shopping Cart</h3>
         </div>
         <div className="ps-panel__content">
@@ -37,7 +39,7 @@ class PanelCartMobile extends Component {
                 cartItems.map((product) => (
                   <div className="ps-product--cart-mobile" key={product.id}>
                     <div className="ps-product__thumbnail">
-                      <Link to={`/product/${product.id}`}>
+                      <Link to={`/products/${product.id}`}>
                         <img src={product.thumbnail} alt="martfury" />
                       </Link>
                     </div>
@@ -48,7 +50,7 @@ class PanelCartMobile extends Component {
                       >
                         <i className="icon-cross" />
                       </a>
-                      <Link to={`/product/${product.id}`} className="ps-product__title"> {product.title} </Link>
+                      <Link to={`/products/${product.id}`} className="ps-product__title"> {product.title} </Link>
                       <p className="vendor"> <strong>Sold by:</strong> {product.vendor} </p>
                       <p className="price"> ${product.price} </p>
                     </div>
@@ -74,5 +76,8 @@ class PanelCartMobile extends Component {
   }
 }
 
-const mapStateToProps = (state) => state.cart;
+const mapStateToProps = (state) => ({
+  ...state.cart,
+  ...state.setting,
+});
 export default connect(mapStateToProps)(PanelCartMobile);

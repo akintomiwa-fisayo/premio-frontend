@@ -52,7 +52,8 @@ body {
 
 .ps-container {
     margin: 0 auto;
-    padding: 0 50px;
+    padding-left: 50px !important;
+    padding-right: 50px !important;
 
    /*  @media (max-width: 1680px) {
         padding: 0 30px;
@@ -60,7 +61,8 @@ body {
     } */
 
     @include media('<md') {
-        padding: 0 $document-sm-padding-left;
+        padding-left: $document-sm-padding-left !important;
+        padding-right: $document-sm-padding-left !important;
     }
 }
 

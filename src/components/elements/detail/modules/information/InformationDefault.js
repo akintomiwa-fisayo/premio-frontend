@@ -49,7 +49,7 @@ class InformationDefault extends Component {
   render() {
     const { product, currency } = this.props;
     return (
-      <div className="ps-product__info">
+      <div id="productInfo" className="ps-product__info">
         <h4>{product.title}</h4>
         <div className="ps-product__meta">
           <p>
@@ -84,7 +84,7 @@ class InformationDefault extends Component {
           </p>
           <p>The items description inlorem for nowwhich means placeholder text will come be change to to the items actual description posted by the author</p>
         </div>
-        <div className="ps-product__shopping">
+        <div id="productActions" className="ps-product__shopping">
           {/* <div className="ps-product__actions">
             <a
               href="#"

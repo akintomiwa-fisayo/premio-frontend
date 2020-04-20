@@ -13,7 +13,7 @@ class PanelMenu extends Component {
   }
 
   render() {
-    const { user } = this.props;
+    const { user, header } = this.props;
     let AccountLinks = (
       <NavLink to="/search" onClick={this.props.close}>
         <span className="icon icon-tag" />
@@ -31,8 +31,8 @@ class PanelMenu extends Component {
     }
 
     return (
-      <div className="ps-panel__wrapper">
-        <div className="ps-panel__header">
+      <div id="menuDrawalContent" className="ps-panel__wrapper">
+        <div className="ps-panel__header" style={{ height: `${header.height}px` }}>
           <h3>Menu</h3>
         </div>
         <div className="ps-panel__content">

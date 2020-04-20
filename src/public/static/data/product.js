@@ -1508,6 +1508,70 @@ exports.sameBrands = [
       },
     ],
   },
+  {
+    id: '10',
+    thumbnail: shop9,
+    title: 'Rayban Rounded Sunglass Brown Color',
+    vendor: 'Young shop',
+    price: '35.89',
+    rating: true,
+    ratingCount: '5',
+    categories: [
+      {
+        id: '3',
+        value: 'clothing',
+        name: 'Clothing & Apparel',
+      },
+    ],
+  },
+  {
+    id: '11',
+    thumbnail: shop10,
+    title: 'Sleeve Linen Blend Caro Pane Shirt',
+    vendor: 'Go Pro',
+    price: '29.39 ',
+    rating: true,
+    ratingCount: '4',
+    categories: [
+      {
+        id: '3',
+        value: 'clothing',
+        name: 'Clothing & Apparel',
+      },
+    ],
+  },
+  {
+    id: '10',
+    thumbnail: shop9,
+    title: 'Rayban Rounded Sunglass Brown Color',
+    vendor: 'Young shop',
+    price: '35.89',
+    rating: true,
+    ratingCount: '5',
+    categories: [
+      {
+        id: '3',
+        value: 'clothing',
+        name: 'Clothing & Apparel',
+      },
+    ],
+  },
+  {
+    id: '11',
+    thumbnail: shop10,
+    title: 'Sleeve Linen Blend Caro Pane Shirt',
+    vendor: 'Go Pro',
+    price: '29.39 ',
+    rating: true,
+    ratingCount: '4',
+    categories: [
+      {
+        id: '3',
+        value: 'clothing',
+        name: 'Clothing & Apparel',
+      },
+    ],
+  },
 ];
 exports.brands = [
   {

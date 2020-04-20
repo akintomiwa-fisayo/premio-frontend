@@ -384,23 +384,31 @@
 
 .widget_same-brand {
     border: 1px solid #e1e1e1;
+    padding: 0;
 
     h3 {
         padding: 14px 20px;
         background-color: #f4f4f4;
         font-size: 20px;
         font-weight: 600;
-        margin-bottom: 40px;
+        margin-bottom: 0;
         margin-top: 0;
         color: #000;
     }
 
     .widget__content {
         padding: 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 2em;
+        
+        @include media('<md') {
+            grid-template-columns: 1fr  1fr;
+        }
+        
     }
 
     .ps-product {
-        margin-bottom: 30px;
         border: 1px solid #eaeaea;
         transition: all 0.4s ease;
         

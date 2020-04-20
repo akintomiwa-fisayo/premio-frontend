@@ -4,6 +4,10 @@
   // background: radial-gradient($color-1st, darken($color-1st, 10%));
   height: 100vh;
   width: 100vw;
+  display: flex;
+  justify-content: center;
+
+
 
   #header{
     position: sticky;
@@ -29,19 +33,19 @@
 
   #content{
     position: relative;
-    width: 100%;
+    width: $tbl-content-width;
     padding: 0 $paddingLeft;
     padding-top: 2em;
     height: max-content;
     position: relative;
-    top: 12vh;
+    top: 15vh;
     display: flex;
     flex-direction: column;
     align-items: center;
 
     #logo{
       margin-bottom: 3em;
-      width: 45vw;
+      width: 15vw;
       height: auto;
     }
 
@@ -77,6 +81,19 @@
       }
     }
     
+  }
+
+  @include media('<md') {
+
+    #content{
+      width: 100%;
+      top: 12vh;
+
+      #logo{
+        width: 45vw;
+      }
+    }
+
   }
 
 } 

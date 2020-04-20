@@ -62,7 +62,6 @@
 }
 
 header#header {
-  // @extend %list-reset;
   position: sticky;
   top: 0;
   left: 0;
@@ -76,7 +75,9 @@ header#header {
   text-align: center;
   border-bottom: 0 none;
   background-color: $color-1st;
-  padding: $document-sm-padding-top $document-sm-padding-left;
+  padding-top: $document-sm-padding-top;
+  padding-bottom: $document-sm-padding-top;
+  @extend .ps-container;
   // @include clearfix();
   // @include transition(all 0.4s $ease-in-out-quad);
 
@@ -565,135 +566,58 @@ header#header {
 }
 
 .navigation--list {
-    position: sticky;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 10002;
-    padding: .8em $document-sm-padding-left;
-    border-top: 1px solid #ccc;
-    background-color: #ffffff;
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10002;
+  padding-top: .8em;
+  padding-bottom: .8em;
+  border-top: 1px solid #ccc;
+  background-color: #ffffff;
+  @extend .ps-container;
 
 
-    .navigation__item {
-      text-align: center;
-      text-decoration: none;
-      color: inherit;
+  .navigation__item {
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
 
+    i {
+      font-size: 1.3em;
+    }
+
+    span {
+      display: block;
+      font-size: .8em
+    }
+
+    &.active {
       i {
-        font-size: 1.3em;
+          color: $color-1st;
       }
 
       span {
-        display: block;
-        font-size: .8em
-      }
-
-      &.active {
-        i {
-            color: $color-1st;
-        }
-
-        span {
-            color: $color-1st;
-        }
+          color: $color-1st;
       }
     }
+  }
 
-    .navigation__content {
-      // max-width: 400px;
-      margin: 0 auto;
-      display: flex;
-      flex-flow: row nowrap;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    @media (min-width: 1200px) {
-      display: none;
-    }
-}
-
-.navigation--mobile-product {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 10002;
-    border-top: 1px solid #ccc;
-    background-color: #ffffff;
+  .navigation__content {
+    // max-width: 400px;
+    margin: 0 auto;
     display: flex;
-    justify-content: space-between;
-
-    > * {
-        width: 100%;
-        flex-basis: 50%;
-        font-size: 16px;
-        border-radius: 0;
-        text-align: center;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+    
+    @include media('<md') {
+      justify-content: space-around;
+  
     }
+  }
+  
 
-    .ps-btn--black {
-        color: #ffffff;
-    }
-
-    @media (min-width: 1200px) {
-        display: none;
-    }
-}
-
-.navigation--sticky {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    background-color: #fff;
-
-    .navigation {
-        background-color: #fff;
-    }
-
-    .header__top {
-        display: none;
-    }
-
-    &.navigation--pin {
-        @include transform(translate(0, 0));
-    }
-
-    &.navigation--unpin {
-        @include transform(translate(0, -100%));
-    }
-
-    &.header--1 {
-        &.navigation--pin {
-            .navigation {
-                background-color: rgba(#000, 0.95);
-            }
-
-            &.header--black {
-                .navigation {
-                    background-color: rgba(#fff, 0.95);
-                }
-            }
-        }
-    }
-
-    &.header--2 {
-        &.navigation--pin {
-            &.active {
-                background-color: #fff;
-                @include transform(translate(270px, 0));
-            }
-        }
-    }
-
-    @include media('<lg') {
-        &.navigation--unpin {
-            @include transform(translate(0, 0));
-        }
-    }
 }
 
 .ps-site-overlay {
@@ -718,3 +642,55 @@ header#header {
     padding: 10px 20px;
 }
 
+
+#menuDrawalContent{
+  .ps-panel__content{
+    padding-right: 2em !important;
+    @extend .ps-container;
+  }
+}
+
+#cartDrawalContent{
+  .ps-panel__content{
+    padding-left: 2em !important;
+    @extend .ps-container;
+  }
+}
+
+#searchPanel{
+  .ps-panel__header{
+    display: flex;
+    @extend .ps-container;
+    padding-left: 2em !important;
+
+    .search-bar{
+      width: 100%;
+    }
+
+  }
+  
+  #result{
+    padding-top: 1em;
+    padding-bottom: 1em;
+    padding-left: 2em !important;
+
+    .ps-product--cart-mobile{
+      a{
+        color: inherit;
+      }
+
+      .price{
+        color: red;
+      }
+    }
+    
+  }
+
+  @include media('<md') {
+    .ps-panel__header{
+      padding-left: inherit;
+    
+    }
+  
+  }
+}

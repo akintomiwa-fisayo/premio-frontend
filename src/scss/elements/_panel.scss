@@ -13,10 +13,12 @@
     @extend %list-reset;
 
     .ps-panel__header {
-        position: relative;
-        text-align: center;
-        padding: 15px 20px;
-        background-color: $color-1st;
+      display: flex;
+      align-items: center;
+      position: relative;
+      text-align: center;
+      padding: 15px 20px;
+      background-color: $color-1st;
 
         h3 {
             margin-bottom: 0;
@@ -56,12 +58,16 @@
 }
 
 .ant-drawer {
-    z-index: 9999 !important;
-    @media screen and (max-width: 768px) {
-        .ant-drawer-content-wrapper {
-            min-width: 100%;
-        }
+  z-index: 9999 !important;
+  .ant-drawer-content-wrapper {
+    width: 40vw !important;
+  }
+
+  @include media('<md') {
+    .ant-drawer-content-wrapper {
+      min-width: 100%;
     }
+  }
 }
 
 .ps-panel--mobile {
@@ -82,31 +88,34 @@
     }
 
     .ps-panel__header {
-        position: relative;
-        text-align: center;
-        padding: 15px 20px;
-        background-color: $color-1st;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      text-align: center;
+      padding: 15px 20px;
+      background-color: $color-1st;
 
-        h3 {
-            margin-bottom: 0;
-            font-weight: 600;
-            // color: #ffffff;
-            font-size: 1.6rem;
-            line-height: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+      h3 {
+        margin-bottom: 0;
+        font-weight: 600;
+        // color: #ffffff;
+        font-size: 1.6rem;
+        line-height: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .ps-btn--close {
+        @include vertical-align();
+        right: 10px;
+
+        &:before,
+        &:after {
+            background-color: #ffffff;
+            height: 60%;
         }
-
-        .ps-btn--close {
-            @include vertical-align();
-            right: 10px;
-
-            &:before,
-            &:after {
-                background-color: #ffffff;
-                height: 60%;
-            }
-        }
+      }
     }
 
     .ps-panel__content {

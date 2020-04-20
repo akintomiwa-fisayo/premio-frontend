@@ -388,43 +388,29 @@
   // background: red;
 
   #thumbnail{
-    background: green;
     width: 100%;
+    height: max-content;
 
     img{
       width: 100%;
     }
   }
+
+  #productInfo{
+    margin-top: 1em;
+  }
+
+  #productActions{
+    button{
+      margin-right: 0;
+      &:last-child{
+        margin-bottom: 0;
+      }
+    }
+  }
 }
 
 #myProducts{
-  .ps-shopping__header {
-    position: sticky;
-    z-index: 9;
-    top: 0;
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-columns: auto auto;
-    grid-gap: 1em;
-    width: 100%;
-    background-color: #f5f5f5;
-    align-items: center;
-    padding: .5em $document-sm-padding-left;
-    margin-bottom: 1em;
-    @extend %list-reset;
-        
-    .ps-select{
-      padding: .6em 0;
-      background: none;
-      border: none;
-      width: 100%;
-      max-width: 100%;
-      text-overflow: ellipsis;
-      overflow: hidden;
-
-    }        
-  }
-
   .ps-cart__content{
     padding-top: 1em;
     padding-bottom: 1em;
@@ -457,11 +443,21 @@
         position: relative;
         padding-right: 30px;
         padding-left: 20px;
-  
-        a {
-          color: inherit;  
+        color: inherit;
+
+        .ps-product__title{
+          font-size: 1.2em;
+          font-weight: 500;
         }
-  
+
+        .description{
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+
+        }
       }
     }
 
@@ -472,28 +468,33 @@
     top: auto;
     bottom: 1em;
     left: auto;
-    right: $document-sm-padding-left;
-    background: $color-1st;
-    box-shadow: 0px 0px .4em rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 3.5em;
-    border-radius: 999999px;
-    overflow: hidden;
-
-    span{
-      position: absolute;
-      font-size: 1.4em;
-      color: white;
-      // font-weight: bold;
-    }
-
-    &::after{
-      display: block;
-      content: "";
-      padding-top: 100%;
-
+    right: 0;
+    padding-bottom: 1em;
+    @extend .ps-container;
+    
+    a{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 3.5em;
+      background: $color-1st;
+      box-shadow: 0px 0px .4em rgba(0, 0, 0, 0.5);
+      border-radius: 999999px;
+      overflow: hidden;
+      
+      span{
+        position: absolute;
+        font-size: 1.4em;
+        color: white;
+        // font-weight: bold;
+      }
+      
+      &::after{
+        display: block;
+        content: "";
+        padding-top: 100%;
+        
+      }
     }
   }
 
@@ -511,9 +512,11 @@
     width: 100%;
     background-color: #f5f5f5;
     align-items: center;
-    padding: .5em $document-sm-padding-left;
+    padding-top: .5em;
+    padding-bottom: .5em;
     margin-bottom: 1em;
     @extend %list-reset;
+    @extend .ps-container;
         
     .ps-select{
       padding: .6em 0;
@@ -528,6 +531,10 @@
   }
 
   .ps-cart__content{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1em;
+
     .ps-product--cart-mobile {
       display: flex;
       flex-flow: row nowrap;
@@ -555,6 +562,9 @@
         position: relative;
         padding-right: 30px;
         padding-left: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
   
         a {
           color: #06c;
@@ -578,7 +588,15 @@
           font-size: 1.2em;
           color: $color-heading;
         }
+
+        @include media('<md') {
+          display: block;
+        }
       }
+    }
+
+    @include media('<md') {
+      display: block;
     }
 
   }
@@ -646,7 +664,6 @@
   }
 }
 
-
 .search-bar{
   display: flex;
   align-items: center;
@@ -682,32 +699,6 @@
     &.focused{
       border-color: inherit;
     }
-}
-
-#searchPanel{
-  .ps-panel__header{
-    display: flex;
-
-    .search-bar{
-      width: 100%;
-    }
-
-  }
-  
-  #result{
-    padding: 1em;
-
-    .ps-product--cart-mobile{
-      a{
-        color: inherit;
-      }
-
-      .price{
-        color: red;
-      }
-    }
-    
-  }
 }
 
 .ps-page--404 {
@@ -1053,13 +1044,19 @@
       display: grid;
       grid-auto-flow: column;
       grid-gap: 1em;  
+      grid-auto-columns: max-content;
       
       button{
         width: 100%;
-
+        min-width: 20vw;
+        
         &:last-child{
           margin-right: 0;
         }
+      }
+      
+      @include media('<md') {
+        grid-auto-columns: auto;
       }
     }
 
@@ -1139,7 +1136,7 @@
 
   .content{
     background: white;
-    width: 100%;
+    width: 50%;
     padding: 2em; 
     border-radius: 10px;
 
@@ -1198,6 +1195,12 @@
     }
   
   }
+
+  @include media('<md') {
+    .content{
+      width: 100%;
+    }
+  }
 }
 
 #messages{
@@ -1226,7 +1229,7 @@
       .avi{
         display: flex;
         align-items: center;
-        width: 15%;
+        width: 7%;
 
         .holder{
           position: relative;
@@ -1249,6 +1252,9 @@
       }
 
       .details{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         width: 100%;
         padding-left: 1em;
 
@@ -1288,36 +1294,48 @@
           -webkit-box-orient: vertical;
         }
       }
+
+      @include media('<md') {
+        .avi{
+          width: 15%;
+
+        }
+      }
     }
   }
 
-  #newMessage{
+  #createMessage{
     position: fixed;
     top: auto;
     bottom: 1em;
     left: auto;
-    right: $document-sm-padding-left;
-    background: $color-1st;
-    box-shadow: 0px 0px .4em rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 3.5em;
-    border-radius: 999999px;
-    overflow: hidden;
-
-    span{
-      position: absolute;
-      font-size: 1.4em;
-      color: white;
-      // font-weight: bold;
-    }
-
-    &::after{
-      display: block;
-      content: "";
-      padding-top: 100%;
-
+    right: 0;
+    padding-bottom: 1em;
+    @extend .ps-container;
+    
+    a{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 3.5em;
+      background: $color-1st;
+      box-shadow: 0px 0px .4em rgba(0, 0, 0, 0.5);
+      border-radius: 999999px;
+      overflow: hidden;
+      
+      span{
+        position: absolute;
+        font-size: 1.4em;
+        color: white;
+        // font-weight: bold;
+      }
+      
+      &::after{
+        display: block;
+        content: "";
+        padding-top: 100%;
+        
+      }
     }
   }
 }
@@ -1434,7 +1452,7 @@
     .avi{
       display: flex;
       align-items: center;
-      width: 15%;
+      width: 6%;
 
       .holder{
         position: relative;
@@ -1467,6 +1485,13 @@
       font-weight: 500;
       padding-left: .6em;
     }
+
+    @include media('<md') {
+      .avi{
+        width: 12%;
+      }
+    }
+
   } 
 }
 

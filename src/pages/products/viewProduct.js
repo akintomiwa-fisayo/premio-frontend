@@ -60,7 +60,7 @@ class ViewProduct extends React.Component {
                 <ProductWidgets />
               </div>
             </div>
-            <RelatedProductFullwidth />
+            {/* <RelatedProductFullwidth /> */}
           </div>
         </div>
       </div>

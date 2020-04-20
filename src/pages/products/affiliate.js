@@ -20,7 +20,7 @@ const ProductAffiliatePage = () => (
           </div>
         </div>
         <CustomerBought />
-        <RelatedProduct />
+        {/* <RelatedProduct /> */}
       </div>
     </div>
     <Newletters />

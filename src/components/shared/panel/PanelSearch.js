@@ -27,17 +27,17 @@ class PanelSearch extends Component {
     const {
       amount,
       cartItems,
-      navHeight,
+      header,
       close,
     } = this.props;
 
     return (
       <div id="searchPanel" className="ps-panel__wrapper">
-        <div className="ps-panel__header">
+        <div className="ps-panel__header" style={{ height: `${header.height}px` }}>
           <SearchBar />
         </div>
 
-        <div id="result">
+        <div id="result" className="ps-container">
           { cartItems.map((product) => (
             <div className="ps-product--cart-mobile" key={product.id}>
               <div className="ps-product__thumbnail">
@@ -65,5 +65,8 @@ class PanelSearch extends Component {
   }
 }
 
-const mapStateToProps = (state) => state.cart;
+const mapStateToProps = (state) => ({
+  ...state.cart,
+  ...state.setting,
+});
 export default connect(mapStateToProps)(PanelSearch);
