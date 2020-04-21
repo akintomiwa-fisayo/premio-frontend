@@ -49,7 +49,7 @@ class App extends React.Component {
               )}
             />
             <Route
-              path="/account"
+              path="/account/:userId"
               render={(props) => (
                 <MyAccount {...props} />
               )}

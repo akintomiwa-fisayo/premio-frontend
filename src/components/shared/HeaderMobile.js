@@ -27,14 +27,14 @@ class HeaderMobile extends Component {
     const { props } = this;
     const { state } = this;
     const {
-      type, noUser, onGoBack, label, show,
+      type, noUser, onGoBack, label, show, icon,
     } = props.header;
 
     if (!show) return '';
 
     let leftComp = <span className="icon-home3 home-icon" />;
     let centerComp = <SearchBar />;
-    const rightComp = noUser ? '' : (
+    const rightComp = noUser ? '' : icon || (
       <Link to="/account">
         <img src={user3} alt="" />
       </Link>

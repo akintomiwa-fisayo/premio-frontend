@@ -5,7 +5,7 @@ import { changeHeader, resetHeader } from '../../store/setting/action';
 import ChangePassword from '../../components/partials/account/ChangePassword';
 import BecomeVendor from '../../components/partials/account/BecomeVendor';
 import SearchBar from '../../components/shared/SearchBar';
-import user3 from '../../public/static/img/users/3.jpg';
+import user3 from '../../public/static/img/users/1.jpg';
 
 
 class Messages extends Component {

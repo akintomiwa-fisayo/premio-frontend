@@ -13,6 +13,7 @@ export const initialState = {
     noUser: false,
     show: true,
     height: 0,
+    icon: false,
   },
   nav: {
     height: 0,

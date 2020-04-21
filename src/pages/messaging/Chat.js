@@ -7,6 +7,8 @@ import BecomeVendor from '../../components/partials/account/BecomeVendor';
 import SearchBar from '../../components/shared/SearchBar';
 import { getRelativeTime } from '../../lib/js';
 import Composer from './Composer';
+import user1 from '../../public/static/img/users/1.jpg';
+
 
 class Chat extends Component {
   constructor(props) {
@@ -26,6 +28,10 @@ class Chat extends Component {
     this.props.dispatch(changeHeader({
       type: 'goBack',
       label: 'Client Name',
+      icon: (
+        <Link to="/account/client">
+          <img src={user1} alt="" />
+        </Link>),
       onGoBack: () => {
         this.props.history.goBack();
       },

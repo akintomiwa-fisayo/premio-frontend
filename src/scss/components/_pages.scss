@@ -987,57 +987,41 @@
     }
 }
 
-.ps-page--account {
+#myAccount{
     padding-top: 1em;
 
-    .ps-page__left {
-        height: 100%;
-        padding: 30px 20px;
-        border-radius: 4px;
-        background-color: #fff;
-    }
-
-    .ps-page__dashboard {
-        p {
-            font-size: 16px;
-            a {
-                color: $color-linkedin;
-                &:hover {
-                    color: $color-1st;
-                }
-            }
-        }
-    }
-
     .ps-widget__header {
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: space-between;
-        align-items: flex-start;
-        padding-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      // flex-flow: row nowrap;
+      align-items: center;
+      padding-bottom: 20px;
+      
+      img {
+        width: 15vw;
+        height: auto;
+        border-radius: 100%;
+        margin-bottom: .6em;
+        box-shadow: 0px 0px 1em -.5em $color-1st;
+        
+        @include media('<md') {
+          width: 28vw;
 
-        img {
-            flex-basis: 60px;
-            max-width: 60px;
-            border-radius: 50%;
         }
+      }
 
-        figure {
-            flex-basis: 100%;
-            padding-left: 10px;
+      .user-name{
+        font-size: 2em;
+        font-weight: bold;
+        text-transform: capitalize;
+      }
 
-            figcaption {
-                font-size: 16px;
-                color: $color-text;
-            }
+      .user-handler{
+        opacity: .6;
+        margin-bottom: 1.2em;
 
-            p {
-                margin-bottom: 0;
-                font-size: 16px;
-                font-weight: 600;
-                color: $color-heading;
-            }
-        }
+      }
+
     }
 
     .actions{
@@ -1045,10 +1029,12 @@
       grid-auto-flow: column;
       grid-gap: 1em;  
       grid-auto-columns: max-content;
+      width: 100%;
+      justify-content: center;
       
       button{
         width: 100%;
-        min-width: 20vw;
+        min-width: 35vw;
         
         &:last-child{
           margin-right: 0;
@@ -1065,22 +1051,22 @@
       overflow: hidden;
       font-size: 1em;
       @extend %list-reset;
+      margin-bottom: 1em;
       
       .header{
-        padding: 1.2em;
+        padding: 1.2em 2em;
         line-height: 1;
         font-size: 1.1em;
         font-weight: 500;
         color: $color-heading;
         text-transform: capitalize;
-        background-color: #dddddd;
+        // background-color: #dddddd;
       }
 
       #userDetails{
-        padding: 1em 1.2em; 
+        padding: 2em; 
         font-size: inherit;
         background: white;
-        margin-bottom: 1em;
 
         .user-detail{
           text-transform: capitalize;
@@ -1098,8 +1084,10 @@
             width: 100%;
           }
 
-          input.detail{
+          input.detail, select.detail{
             border-bottom: solid 1px #ccc;
+            line-height: 1;
+            padding: .4em 0;
 
             &:focus{
               border-color: inherit;
