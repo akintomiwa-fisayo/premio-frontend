@@ -44,13 +44,17 @@ class PanelMenu extends Component {
             {
               AccountLinks
             }
-            <NavLink to="/commisions" onClick={this.props.close}>
+            <NavLink to="/my-commisions" onClick={this.props.close}>
               <span className="icon icon-coin-dollar" />
               <h5>My commisions </h5>
             </NavLink>
             <NavLink to="/team-mates" onClick={this.props.close}>
               <span className="icon icon-group-work" />
               <h5>Team mates </h5>
+            </NavLink>
+            <NavLink to="/invite-friend" onClick={this.props.close}>
+              <span className="icon icon-group-work" />
+              <h5>Invite friend</h5>
             </NavLink>
             <NavLink to="/logout" onClick={this.props.close}>
               <span className="icon icon-exit-left" />

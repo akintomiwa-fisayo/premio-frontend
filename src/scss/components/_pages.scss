@@ -989,6 +989,7 @@
 
 #myAccount{
     padding-top: 1em;
+    background: white;
 
     .ps-widget__header {
       display: flex;
@@ -1002,7 +1003,7 @@
         height: auto;
         border-radius: 100%;
         margin-bottom: .6em;
-        box-shadow: 0px 0px 1em -.5em $color-1st;
+        // box-shadow: 0px 0px 1em -.5em $color-1st;
         
         @include media('<md') {
           width: 28vw;
@@ -1035,6 +1036,7 @@
       button{
         width: 100%;
         min-width: 35vw;
+        margin: 0;
         
         &:last-child{
           margin-right: 0;
@@ -1064,7 +1066,7 @@
       }
 
       #userDetails{
-        padding: 2em; 
+        padding: 0 2em; 
         font-size: inherit;
         background: white;
 
@@ -1549,4 +1551,99 @@
     padding-bottom: .6em;
     background: #ebebeb;
   }
+}
+
+#inviteFriend{
+  padding-top: 1em;
+  padding-bottom: 1em;
+
+  .input-field{
+    margin: 2em 0;
+  }
+}
+
+#myCommissions{
+  padding-top: 1em;
+  padding-bottom: 1em;
+
+  #balance{
+    @extend .ps-container;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1em;
+    
+    h1{
+      font-weight: bold;
+    }
+    
+    span{
+      font-weight: 500;
+      opacity: .3;
+      font-size: 1.2em;
+    }
+
+    button{
+      margin-top: 1.5em;
+      min-width: 30vw;
+      width: max-content;
+    }
+  }
+
+  .am-badge{
+    font-weight: bold;
+  }
+
+  .am-tabs-pane-wrap{
+    
+    .tab-content{
+      width: 100%;
+      $bk-color: #f1f1f1;
+      
+      .income-icon{
+        color: green;
+        margin-left: .3em;
+      }
+      
+      .withdrawal-icon{
+        margin-left: .3em;
+        color: red;
+        
+      }
+      
+      tr{        
+        th, td{
+          padding-top: 1em;
+          padding-bottom: 1em;
+          @extend .ps-container;
+        }
+        
+        th{
+          font-size: 1.15em;
+          font-weight: 500;
+          background: fade-out($color-1st, .9);
+          border-bottom: solid 1px $bk-color;
+        }
+      }
+
+      tbody{
+        tr{
+          
+          td{
+            text-transform: capitalize;
+          }
+
+          &:nth-child(even){
+            td{
+              background: $bk-color;
+            }
+          }
+        
+        }
+
+      }
+    }
+  }
+
 }

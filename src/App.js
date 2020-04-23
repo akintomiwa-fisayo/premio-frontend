@@ -17,6 +17,8 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import ChangePassword from './pages/auth/ChangePassword';
 import ModeSelector from './pages/auth/ModeSelector';
 import SignIn from './pages/auth/SignIn';
+import InviteFriend from './pages/InviteFriend';
+import MyCommisions from './pages/myCommissions/MyCommisions';
 
 class App extends React.Component {
   render() {
@@ -52,6 +54,18 @@ class App extends React.Component {
               path="/account/:userId"
               render={(props) => (
                 <MyAccount {...props} />
+              )}
+            />
+            <Route
+              path="/my-commisions"
+              render={(props) => (
+                <MyCommisions {...props} />
+              )}
+            />
+            <Route
+              path="/invite-friend"
+              render={(props) => (
+                <InviteFriend {...props} />
               )}
             />
             <Route
