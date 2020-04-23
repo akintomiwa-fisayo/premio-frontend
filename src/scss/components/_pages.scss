@@ -662,6 +662,13 @@
     }
 
   }
+
+  .actions{
+    display: grid;
+    grid-auto-flow: column;
+    grid-gap : 1.5em;
+
+  }
 }
 
 .search-bar{
@@ -1543,13 +1550,31 @@
 
 #myClients{
   #top{
+    @extend .ps-container;
     position: sticky;
     top: 0;
     z-index: 2;
-    @extend .ps-container;
     padding-top: .6em;
     padding-bottom: .6em;
     background: #ebebeb;
+  }
+  
+  #addNewContact{
+    @extend .ps-container;
+    width: 100%;
+    background: rgb(245, 245, 245);
+    padding-top: 1em;
+    padding-bottom: 1em;
+    
+    *{
+      color: inherit;
+    }
+    
+    
+    span{
+      margin: 0 1em;
+      font-weight: bold;
+    }
   }
 }
 

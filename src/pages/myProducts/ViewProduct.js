@@ -43,7 +43,6 @@ class ViewProduct extends Component {
     this.props.dispatch(resetHeader());
   }
 
-  
 
   pickFile() {
     if (this.filePicker) {
@@ -88,12 +87,19 @@ class ViewProduct extends Component {
           <input type="number" max="100" defaultValue={product.commision} />
         </div>
 
-        <div className="ps-container">
+        <div className="ps-container actions">
+          {!createProduct ? (
+            <button
+              type="button"
+              className="btn btn-glass"
+            >Delete Product
+            </button>
+          ) : ''}
           <button
             type="button"
             className="btn btn-default"
           >
-            {createProduct ? 'Product' : 'Update'} Product
+            {createProduct ? 'Submit' : 'Update'} Product
           </button>
         </div>
       </div>

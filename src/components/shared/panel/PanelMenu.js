@@ -53,7 +53,7 @@ class PanelMenu extends Component {
               <h5>Team mates </h5>
             </NavLink>
             <NavLink to="/invite-friend" onClick={this.props.close}>
-              <span className="icon icon-group-work" />
+              <span className="icon icon-user-plus" />
               <h5>Invite friend</h5>
             </NavLink>
             <NavLink to="/logout" onClick={this.props.close}>

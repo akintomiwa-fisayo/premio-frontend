@@ -13,7 +13,7 @@ import user3 from '../../public/static/img/users/3.jpg';
 import user1 from '../../public/static/img/users/1.jpg';
 import HistoryLog from './HistoryLog';
 
-class MyCommisions extends Component {
+class SalesReport extends Component {
   constructor(props) {
     super(props);
   }
@@ -21,7 +21,7 @@ class MyCommisions extends Component {
   componentDidMount() {
     this.props.dispatch(changeHeader({
       type: 'goBack',
-      label: 'my commisions',
+      label: 'sales report',
       onGoBack: () => {
         this.props.history.goBack();
       },
@@ -62,25 +62,25 @@ class MyCommisions extends Component {
             onTabClick={(tab, index) => { console.log('onTabClick', index, tab); }}
           >
             <HistoryLog
-              headers={['Team Mate', 'Commission', 'Date']}
+              headers={['Product', 'Price', 'Date']}
               data={[
                 [
-                  <Link to="/account/client">akintomiwa fisayo</Link>,
+                  <Link to="/account/client">#12345</Link>,
                   <>$400 <span className="icon-arrow-down income-icon" /></>,
                   '22/04/2020',
                 ],
                 [
-                  <Link to="/account/client">akintomiwa fisayo</Link>,
+                  <Link to="/account/client">#12345</Link>,
                   <>$400 <span className="icon-arrow-down income-icon" /></>,
                   '22/04/2020',
                 ],
                 [
-                  <Link to="/account/client">akintomiwa fisayo</Link>,
+                  <Link to="/account/client">#12345</Link>,
                   <>$400 <span className="icon-arrow-down income-icon" /></>,
                   '22/04/2020',
                 ],
                 [
-                  <Link to="/account/client">akintomiwa fisayo</Link>,
+                  <Link to="/account/client">#12345</Link>,
                   <>$400 <span className="icon-arrow-down income-icon" /></>,
                   '22/04/2020',
                 ],
@@ -112,4 +112,4 @@ const mapStateToProps = (state) => ({
   ...state.setting,
 });
 
-export default connect(mapStateToProps)(MyCommisions);
+export default connect(mapStateToProps)(SalesReport);

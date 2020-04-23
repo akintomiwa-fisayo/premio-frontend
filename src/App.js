@@ -19,6 +19,8 @@ import ModeSelector from './pages/auth/ModeSelector';
 import SignIn from './pages/auth/SignIn';
 import InviteFriend from './pages/InviteFriend';
 import MyCommisions from './pages/myCommissions/MyCommisions';
+import SalesReport from './pages/salesReport/SalesReport';
+import TeamMates from './pages/TeamMates';
 
 class App extends React.Component {
   render() {
@@ -54,6 +56,18 @@ class App extends React.Component {
               path="/account/:userId"
               render={(props) => (
                 <MyAccount {...props} />
+              )}
+            />
+            <Route
+              path="/sales-report"
+              render={(props) => (
+                <SalesReport {...props} />
+              )}
+            />
+            <Route
+              path="/team-mates"
+              render={(props) => (
+                <TeamMates {...props} />
               )}
             />
             <Route
