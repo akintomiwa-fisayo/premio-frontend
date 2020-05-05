@@ -359,17 +359,6 @@
         padding: 20px;
     }
 
-    &:hover {
-        border: 1px solid #ccc;
-
-        .ps-product__content {
-            display: block;
-            height: auto;
-            opacity: 1;
-            visibility: visible;
-        }
-    }
-
     @media (max-width: 1024px) {
         .ps-product__shopping {
             // margin-top: 20px;

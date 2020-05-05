@@ -288,6 +288,9 @@ header#header {
       width: $contentWidth;
       height: inherit;
       transition: left 150ms linear;
+      overflow-y: auto;
+      overflow-x: hidden;
+  
 
       .user{
         display: flex;
