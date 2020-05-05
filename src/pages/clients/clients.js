@@ -12,10 +12,6 @@ class Clients extends React.Component {
           render={(props) => <Chat {...props} />}
         />
         <Route
-          path="/my-clients/:id"
-          render={(props) => <Chat {...props} />}
-        />
-        <Route
           path="/"
           render={(props) => <ViewClients {...props} />}
         />

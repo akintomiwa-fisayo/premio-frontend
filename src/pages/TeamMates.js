@@ -157,12 +157,7 @@ class Messages extends Component {
     ];
 
     return (
-      <section
-        id="myClients"
-        style={{
-          minHeight: `calc(100vh - ${header.height + nav.height}px)`,
-        }}
-      >
+      <section id="myClients">
         <div
           id="top"
           style={{

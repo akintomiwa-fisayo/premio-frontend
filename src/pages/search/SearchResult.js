@@ -21,7 +21,7 @@ class ShopSidebarWithoutBannerPage extends React.Component {
   componentDidMount() {
     this.props.dispatch(changeHeader({
       type: 'goBack',
-      label: 'search query come her and every othwer thing about the nigga',
+      label: 'search query come her and every other thing about the nigga',
       onGoBack: () => {
         this.props.history.goBack();
       },

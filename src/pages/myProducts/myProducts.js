@@ -11,12 +11,19 @@ class MyProducts extends React.Component {
       <Switch>
         <Route
           path="/my-products/new"
-          render={(props) => <ViewProduct createProduct {...props} />}
+          render={(props) => (
+            <ViewProduct
+              {...this.props}
+              createProduct
+              {...props}
+            />
+          )}
         />
         <Route
           path="/my-products/:id"
           render={(props) => (
             <ViewProduct
+              {...this.props}
               {...props}
               createProduct={false}
               product={{
@@ -31,7 +38,12 @@ class MyProducts extends React.Component {
         />
         <Route
           path="/"
-          render={(props) => <ViewMyProducts {...props} />}
+          render={(props) => (
+            <ViewMyProducts
+              {...this.props}
+              {...props}
+            />
+          )}
         />
       </Switch>
     );

@@ -21,7 +21,6 @@
 
 .ps-product {
     position: relative;
-    padding: 20px 20px 0;
     border: 1px solid transparent;
     // border-bottom: none;
     min-width: 0px;
@@ -32,7 +31,7 @@
     .ant-rate {
         .ant-rate-star {
             i {
-                font-size: 12px !important;
+                font-size: 1em !important;
             }
         }
     }
@@ -42,24 +41,23 @@
             display: inline-block;
 
             a {
-                font-size: 13px;
+                font-size: 1em;
                 color: #fcb800;
             }
         }
 
         span {
             color: $color-text;
-            margin-left: 10px;
         }
     }
 
     .ps-product__price {
         position: relative;
-        font-size: 16px;
+        font-size: 1.15em;
         color: $color-heading;
+        margin-bottom: .3em;
 
         &.sale {
-            color: #f30;
 
             del {
                 color: $color-text;
@@ -102,9 +100,8 @@
     .ps-product__vendor {
         display: block;
         padding-bottom: 8px;
-        margin-bottom: 13px;
         line-height: 1.2;
-        font-size: 12px;
+        font-size: 1em;
         color: #000;
         text-transform: uppercase;
         border-bottom: 1px solid #e1e1e1;
@@ -115,7 +112,7 @@
         top: 0;
         right: 0;
         color: #fff;
-        font-size: 14px;
+        font-size: 1em;
         font-weight: 600;
         line-height: 20px;
         padding: 5px 10px;
@@ -133,41 +130,25 @@
     }
 
     .ps-product__title {
-        margin: 0;
-        display: block;
-        padding: 0 0 5px;
-        font-size: 14px;
-        line-height: 1.2em;
-        color: #06c;
-        --max-lines: 2;
-        max-height: calc(1.2em * var(--max-lines));
-        overflow: hidden;
-        padding-right: 1rem;
+      margin: 0;
+      display: block;
+      padding: 0 0 5px;
+      font-size: 14px;
+      line-height: 1.2em;
+      color: #06c;
+      --max-lines: 2;
+      max-height: calc(1.2em * var(--max-lines));
+      overflow: hidden;
+      padding-right: 1rem;
 
-        &:hover {
-            color: $color-1st;
-        }
+      &:hover {
+        color: $color-1st;
+      }
     }
 
-    .ps-product__progress-bar {
-        display: block;
-        width: 100%;
-
-        .ps-progress__value {
-            margin-bottom: 5px;
-            position: relative;
-            display: block;
-            height: 11px;
-            background-color: #e4e4e4;
-
-            > span {
-                @include vertical-align();
-                left: 0;
-                height: 100%;
-                background-color: $color-1st;
-                width: 50%;
-            }
-        }
+      
+    .sales-count{
+      margin: 0;
     }
 
     .ps-product__thumbnail {
@@ -446,7 +427,6 @@
         color: $color-heading;
 
         &.sale {
-            color: #f30;
 
             del {
                 color: $color-text;
@@ -780,8 +760,6 @@
     }
 
     .ps-product__desc {
-        margin-bottom: 20px;
-        border-bottom: 1px solid #e1e1e1;
 
         p {
             color: $color-heading;

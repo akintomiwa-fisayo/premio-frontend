@@ -1,7 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Product from './viewProduct';
-import ProductAffiliatePage from './affiliate';
+import ViewProduct from './viewProduct';
 
 class Products extends React.Component {
   render() {
@@ -10,7 +9,7 @@ class Products extends React.Component {
         <Route
           path="/products/:productId"
           render={(props) => (
-            <Product {...props} />
+            <ViewProduct {...this.props} {...props} />
           )}
         />
       </Switch>

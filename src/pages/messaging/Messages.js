@@ -56,8 +56,7 @@ class Messages extends Component {
 
   render() {
     const { state } = this;
-    const { header, nav, user } = this.props;
-    console.log({ header, nav });
+    const { nav } = this.props;
 
     const clientMessages = [
       {
@@ -135,12 +134,7 @@ class Messages extends Component {
     ];
 
     return (
-      <section
-        id="messages"
-        style={{
-          minHeight: `calc(100vh - ${header.height + nav.height}px)`,
-        }}
-      >
+      <section id="messages">
         <div id="top">
           <SearchBar
             placeholder="Search"

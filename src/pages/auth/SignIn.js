@@ -1,14 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Modal } from 'antd-mobile';
 import InputField from '../../components/elements/InputField';
 import logo from '../../public/static/img/logo.png';
 import {
   changeHeader, resetHeader, changeNav, resetNav,
 } from '../../store/setting/action';
 
+import { alert } from '../../lib/js';
+
 class Login extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: '',
+      password: '',
+    };
+
+    this._isMounted = false;
+    this.changeState = this.changeState.bind(this);
+    this.submit = this.submit.bind(this);
+  }
+
   componentDidMount() {
+    this._isMounted = true;
     this.props.dispatch(changeHeader({
       show: false,
     }));
@@ -18,30 +35,96 @@ class Login extends React.Component {
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
     this.props.dispatch(resetHeader());
     this.props.dispatch(resetNav());
   }
 
+  changeState(props) {
+    this.setState(() => (props));
+  }
+
+  submit() {
+    const { props } = this;
+    const { email, password } = this.state;
+
+    props.fetchRequest({
+      url: `${process.env.REACT_APP_API}/auth/login`,
+      method: 'POST',
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => {
+      console.log('login response : ', res);
+      if (this._isMounted) {
+        localStorage.setItem('sessionUserToken', res.token);
+        localStorage.setItem('sessionUserId', res.id);
+        // this.props.history.push('/home');
+      }
+    }).catch(({ data: { error } }) => {
+      if (this._isMounted) {
+        if (error === 'Incorrect email or password') {
+          alert(
+            'Login Failed',
+            'Username or Password invalid',
+            [{
+              text: 'ok',
+            }],
+          );
+        } else {
+          alert(
+            'Login Failed',
+            'Please try again',
+            [{
+              text: 'ok',
+            }],
+          );
+        }
+      }
+    }).finally(() => {
+      this.props.history.push('/account-mode');
+    });
+  }
+
   render() {
+    console.log('SIGN IN PROPS', this.props);
     return (
       <div id="signinComp">
         <div id="content">
           <img id="logo" src={logo} alt="logo" />
           <InputField
-            label="Username"
+            label="Email"
             type="text"
+            onChange={(value) => {
+              this.changeState({
+                email: value,
+              });
+            }}
           />
           <InputField
             label="Password"
             type="password"
+            onChange={(value) => {
+              this.changeState({
+                password: value,
+              });
+            }}
           />
           <p id="forgotPassword">
             <Link to="/forgot-password"> Forgot Password? </Link>
           </p>
 
-          <Link to="/mode-selector" id="signIn">
-            <button type="button" className="btn btn-default">SIGN IN</button>
-          </Link>
+          <button
+            type="button"
+            className="btn btn-default"
+            onClick={this.submit}
+          >SIGN IN
+          </button>
+
           <p id="register">Don't have an account yet? <Link to="/sign-up">Register Now</Link></p>
         </div>
       </div>

@@ -29,7 +29,7 @@ class Chat extends Component {
       type: 'goBack',
       label: 'Client Name',
       icon: (
-        <Link to="/account/client">
+        <Link to="/account/client?user=other&type=vendor">
           <img src={user1} alt="" />
         </Link>),
       onGoBack: () => {
@@ -63,49 +63,49 @@ class Chat extends Component {
 
     const conversation = [
       {
-        sender: 12,
+        sender: '12',
         content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
         sentOn: '08/11/2019',
         status: 'seen',
       },
       {
-        sender: 11,
+        sender: '11',
         content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
         sentOn: '08/11/2019',
         status: 'seen',
       },
       {
-        sender: 12,
+        sender: '12',
         content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
         sentOn: '08/11/2019',
         status: 'seen',
       },
       {
-        sender: 11,
+        sender: '11',
         content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
         sentOn: '08/11/2019',
         status: 'seen',
       },
       {
-        sender: 12,
+        sender: '12',
         content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
         sentOn: '08/11/2019',
         status: 'seen',
       },
       {
-        sender: 11,
+        sender: '11',
         content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
         sentOn: '08/11/2019',
         status: 'seen',
       },
       {
-        sender: 12,
+        sender: '12',
         content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
         sentOn: 'today',
         status: 'sent',
       },
       {
-        sender: 11,
+        sender: '11',
         content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
         sentOn: 'today',
         status: 'sent',
@@ -113,12 +113,7 @@ class Chat extends Component {
     ];
 
     return (
-      <section
-        id="messageChat"
-        style={{
-          height: `calc(100vh - ${header.height + nav.height}px)`,
-        }}
-      >
+      <section id="messageChat">
         <div
           id="conversation"
           style={{
@@ -139,6 +134,7 @@ class Chat extends Component {
         </div>
         <Composer
           onComponentDidUpdate={this.regComposerHeight}
+          reciver={"reciever's id"}
           reference={(e) => {
             console.log('the e is ', e);
             this.composer = e;

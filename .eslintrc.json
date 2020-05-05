@@ -31,6 +31,8 @@
         "react/jsx-props-no-spreading":0,
         "react/forbid-prop-types":0,
         "no-underscore-dangle":0,
+        "no-restricted-syntax":0,
+        "guard-for-in":0,
         "react/no-array-index-key":0,
         "jsx-a11y/media-has-caption":0,
         "jsx-a11y/control-has-associated-label":0

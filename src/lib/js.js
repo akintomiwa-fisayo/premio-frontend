@@ -1,3 +1,11 @@
+const { Modal } = require('antd-mobile');
+
+const { alert } = Modal;
+
+exports.alert = (title = '', message = '', actions = []) => {
+  alert(title, message, actions, 'android');
+};
+
 exports.getWeekDay = (day) => {
   const weekdays = [
     'sunday',
@@ -73,3 +81,18 @@ exports.getRelativeTime = (timestamp, relative = true) => {
 
   return relativeTime;
 };
+
+exports.parseQueryString = (query) => {
+  const obj = {};
+  let values = query.split('?');
+  if (values[1]) {
+    values = values[1].split('&');
+    values.forEach((value) => {
+      const foo = value.split('=');
+      obj[foo[0]] = foo[1];
+    });
+  }
+  return obj;
+};
+
+exports.isEmpty = (str) => (str ? !`${str}`.trim() : true);

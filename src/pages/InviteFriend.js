@@ -33,13 +33,7 @@ class InviteFriend extends Component {
   render() {
     const { header, nav } = this.props;
     return (
-      <section
-        id="inviteFriend"
-        className="ps-container"
-        style={{
-          minHeight: `calc(100vh - ${header.height + nav.height}px)`,
-        }}
-      >
+      <section id="inviteFriend" className="ps-container">
         <span>Your friend will recieve a text message tell him/her that you are iniviting him/her to join premio</span>
         <InputField
           label="Phone no"

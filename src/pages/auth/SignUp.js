@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox, Input } from 'antd';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import InputField from '../../components/elements/InputField';
 import logo from '../../public/static/img/logo.png';
@@ -57,15 +57,23 @@ class SignUp extends React.Component {
             type="text"
           />
           <InputField
+            label="Mobile Number"
+            type="number"
+          />
+          <InputField
             label="Date of Birth"
             type="date"
           />
           <div id="terms&cond">
             <Checkbox style={{ marginRight: '1em' }} />
-            <span>You have to agree to our <NavLink to="#">terms and conditions</NavLink></span>
+            <span>You have to agree to our <Link to="#">terms and conditions</Link></span>
           </div>
 
           <button type="button" className="btn btn-default" onClick={this.submit}>CONTINUE</button>
+          <div id="switcher">
+            <span>or</span>
+            <p><Link to="/">Sign In</Link>, if you already have an account</p>
+          </div>
         </div>
       </div>
     );

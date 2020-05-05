@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Drawer } from 'antd';
 import { Link, NavLink } from 'react-router-dom';
-import PanelMenu from '../panel/PanelMenu';
-import PanelCartMobile from '../panel/PanelCartMobile';
-import PanelSearch from '../panel/PanelSearch';
-import PanelCategories from '../panel/PanelCategories';
 import { changeNav } from '../../../store/setting/action';
+import MenuDrawal from './MenuDrawal';
+import { changeUser } from '../../../store/auth/action';
 
 class NavigationList extends Component {
   constructor(props) {
@@ -16,7 +13,6 @@ class NavigationList extends Component {
       cartDrawer: false,
       searchDrawer: false,
       categoriesDrawer: false,
-      navHeight: 0,
     };
 
     this.navigationList = null;
@@ -92,94 +88,14 @@ class NavigationList extends Component {
       searchDrawer,
       cartDrawer,
       categoriesDrawer,
-      navHeight,
     } = this.state;
 
     const { user, nav } = this.props;
 
     if (!nav.show) return '';
 
-
-    if (user.type === 'vendor') {
-      return (
-        <div className="navigation--list" ref={(el) => { this.navigationList = el; }}>
-          <Drawer
-            className="ps-panel--mobile"
-            placement="left"
-            closable={false}
-            onClose={this.handleDrawerClose}
-            visible={this.state.menuDrawer}
-          >
-            <PanelMenu close={this.resetDrawals} />
-          </Drawer>
-          <div className="navigation__content">
-            <span
-              className={`navigation__item ${menuDrawer === true ? 'active' : ''}`}
-              onClick={this.handleShowMenuDrawer}
-            >
-              <i className="icon-menu" />
-              <span> Menu</span>
-            </span>
-            <NavLink
-              to="/my-products"
-              onClick={this.resetDrawals}
-              className={`navigation__item ${categoriesDrawer === true ? 'active' : ''}`}
-            >
-              <i className="icon-tags" />
-              <span>My Products</span>
-            </NavLink>
-            <NavLink
-              to="/my-clients"
-              className={`navigation__item ${
-                searchDrawer === true ? 'active' : ''
-              }`}
-              onClick={this.handleShowSearchDrawer}
-            >
-              <i className="icon-users2" />
-              <span>My Clients</span>
-            </NavLink>
-            <NavLink
-              to="/messages"
-              className={`navigation__item ${cartDrawer === true ? 'active' : ''}`}
-              onClick={this.handleShowCartDrawer}
-            >
-              <i className="icon-envelope" />
-              <span>Messages</span>
-            </NavLink>
-          </div>
-        </div>
-      );
-    }
-
     return (
-      <div className="navigation--list" ref={(el) => { this.navigationList = el; }}>
-        <Drawer
-          className="ps-panel--mobile"
-          placement="left"
-          closable={false}
-          onClose={this.handleDrawerClose}
-          visible={this.state.menuDrawer}
-        >
-          <PanelMenu close={this.resetDrawals} />
-        </Drawer>
-        <Drawer
-          className="ps-panel--mobile"
-          placement="right"
-          closable={false}
-          onClose={this.handleDrawerClose}
-          visible={this.state.cartDrawer}
-        >
-          <PanelCartMobile navHeight={navHeight} />
-        </Drawer>
-        <Drawer
-          className="ps-panel--mobile"
-          placement="right"
-          closable={false}
-          onClose={this.handleDrawerClose}
-          visible={this.state.searchDrawer}
-        >
-          <PanelSearch close={this.resetDrawals} />
-        </Drawer>
+      <div id="navigation" ref={(el) => { this.navigationList = el; }}>
         <div className="navigation__content">
           <span
             className={`navigation__item ${menuDrawer === true ? 'active' : ''}`}
@@ -188,31 +104,67 @@ class NavigationList extends Component {
             <i className="icon-menu" />
             <span> Menu</span>
           </span>
+
+          {
+            user.accountType === 'vendor' ? (
+              <>
+                <NavLink
+                  to="/my-products"
+                  onClick={this.resetDrawals}
+                  className={`navigation__item ${categoriesDrawer === true ? 'active' : ''}`}
+                >
+                  <i className="icon-tags" />
+                  <span>My Products</span>
+                </NavLink>
+                <NavLink
+                  to="/my-clients"
+                  className={`navigation__item ${
+                    searchDrawer === true ? 'active' : ''
+                  }`}
+                  onClick={this.handleShowSearchDrawer}
+                >
+                  <i className="icon-users2" />
+                  <span>My Clients</span>
+                </NavLink>
+              </>
+            ) : (
+
+              <>
+                <NavLink
+                  to="/purchases"
+                  onClick={this.resetDrawals}
+                  className={`navigation__item ${categoriesDrawer === true ? 'active' : ''}`}
+                >
+                  <i className="icon-bag2" />
+                  <span>Purchases</span>
+                </NavLink>
+                <NavLink
+                  to="/search"
+                  className={`navigation__item ${
+                    searchDrawer === true ? 'active' : ''
+                  }`}
+                  onClick={this.handleShowSearchDrawer}
+                >
+                  <i className="icon-magnifier" />
+                  <span> Search</span>
+                </NavLink>
+              </>
+            )
+          }
+
           <NavLink
-            to="/purchases"
-            onClick={this.resetDrawals}
-            className={`navigation__item ${categoriesDrawer === true ? 'active' : ''}`}
-          >
-            <i className="icon-user" />
-            <span>Purchases</span>
-          </NavLink>
-          <span
-            className={`navigation__item ${
-              searchDrawer === true ? 'active' : ''
-            }`}
-            onClick={this.handleShowSearchDrawer}
-          >
-            <i className="icon-magnifier" />
-            <span> Search</span>
-          </span>
-          <span
+            to="/messages"
             className={`navigation__item ${cartDrawer === true ? 'active' : ''}`}
             onClick={this.handleShowCartDrawer}
           >
-            <i className="icon-bag2" />
-            <span> Cart</span>
-          </span>
+            <i className="icon-envelope" />
+            <span>Messages</span>
+          </NavLink>
         </div>
+        <MenuDrawal
+          onClose={this.resetDrawals}
+          hide={!menuDrawer}
+        />
       </div>
     );
   }

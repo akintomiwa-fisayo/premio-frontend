@@ -35,8 +35,8 @@ class HeaderMobile extends Component {
     let leftComp = <span className="icon-home3 home-icon" />;
     let centerComp = <SearchBar />;
     const rightComp = noUser ? '' : icon || (
-      <Link to="/account/owner">
-        <img src={user3} alt="" />
+      <Link to="/cart">
+        <span className="icon icon-cart" />
       </Link>
     );
 

@@ -1,12 +1,17 @@
 export const actionTypes = {
   DOCUMENT_LOADED: 'DOCUMENT_LOADED',
   CHANGE_CURRENCY: 'CHANGE_CURRENCY',
+  CHANGE_APP_MODE: 'CHANGE_APP_MODE',
   CHANGE_CURRENCY_SUCCESS: 'CHANGE_CURRENCY_SUCCESS',
   CHANGE_NAV: 'CHANGE_NAV',
   CHANGE_HEADER: 'CHANGE_HEADER',
   RESET_HEADER: 'RESET_HEADER',
   RESET_NAV: 'RESET_NAV',
 };
+
+export function changeAppMode() {
+  return { type: actionTypes.CHANGE_APP_MODE };
+}
 
 export function documentLoaded() {
   return { type: actionTypes.DOCUMENT_LOADED };

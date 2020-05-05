@@ -2,6 +2,7 @@ import { actionTypes } from './action';
 
 export const initialState = {
   documentLoaded: false,
+  appMode: 'customer',
   currency: {
     symbol: '$',
     text: 'USD',
@@ -23,6 +24,11 @@ export const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
+    case actionTypes.CHANGE_APP_MODE:
+      return {
+        ...state,
+        appMode: state.appMode === 'customer' ? 'vendor' : 'customer',
+      };
     case actionTypes.DOCUMENT_LOADED:
       return {
         ...state,

@@ -2,7 +2,7 @@
 button.btn{
 	transition: all .2s linear;
 	display: inline-block;
-  padding: .8em;
+  padding: .6em;
   margin-bottom: 1em;
   font-weight: 500;
   width:100%;
@@ -86,7 +86,7 @@ button.btn{
   }
 
   &.btn-glass{
-    $color: $color-1st;
+    $color: #fdfdfd;
     $colorDark: darken($color, 5%);
     border-color: initial;
     background-color: transparent;
@@ -94,10 +94,17 @@ button.btn{
   
     &:active, &:focus{
       /*border-color: $colorDark !important;*/
-      background-color: $colorDark !important; 
+      background-color: #fafafa !important; 
       /*color: white !important;*/
     }
   
   }
 }
 
+html{
+  font-size: $document-sm-font-size;
+}
+
+.am-modal-title{
+  font-weight: 500;
+}

@@ -22,7 +22,7 @@ class HomeBanner extends Component {
       prevArrow: <PrevArrow />,
     };
     return (
-      <div className="ps-home-banner ps-home-banner--1 ps-container">
+      <div className="ps-home-banner ps-home-banner--1">
         <SlideShow items={[
           {
             label: '1 the label of tthe item',

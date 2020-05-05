@@ -1,23 +1,25 @@
 import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
-import FooterDefault from '../../components/shared/footers/FooterDefault';
-import Newletters from '../../components/partials/commons/Newletters';
-import CustomerBought from '../../components/partials/product/CustomerBought';
-import ProductDetailFullwidth from '../../components/elements/detail/ProductDetailFullwidth';
+import { products } from '../../public/static/data/product';
 import ProductWidgets from '../../components/partials/product/ProductWidgets';
-import NavigationList from '../../components/shared/navigation/NavigationList';
-import BreadCrumb from '../../components/elements/BreadCrumb';
-import RelatedProductFullwidth from '../../components/partials/product/RelatedProductFullwidth';
 import { changeHeader, resetHeader } from '../../store/setting/action';
+import { getProductsById } from '../../store/product/action';
+import InformationDefault from '../../components/elements/detail/modules/information/InformationDefault';
+import ProductComments from './ProductComments';
 
 class ViewProduct extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      productId: props.match.params.productId,
+      product: {},
+      loading: true,
     };
+
+    this.productId = null;
+    this.prevSearch = '';
+    this.getProduct = this.getProduct.bind(this);
   }
 
   componentDidMount() {
@@ -28,41 +30,50 @@ class ViewProduct extends React.Component {
         this.props.history.goBack();
       },
     }));
-  }
 
-  componentDidUpdate() {
-    const { productId } = this.props.match.params;
-    console.log('prev id', this.state.productId, 'new id', productId);
-    if (productId !== this.state.productId) {
-      this.setState(() => ({ productId }));
-    }
+    this.getProduct();
   }
 
   componentWillUnmount() {
     this.props.dispatch(resetHeader());
   }
 
-  /* useEffect(() => {
-    if (isNaN(pid)) {
-      Router.push('/page/page-404');
+  getProduct() {
+    const { props } = this;
+    const { productId } = this.props.match.params;
+
+    if (this.productId !== productId) {
+      document.querySelector('html').scrollTop = 0;
+      props.fetchRequest({
+        url: `${process.env.REACT_APP_API}/products/${productId}`,
+        method: 'GET',
+      }).then((product) => {
+        if (this._isMounted) {
+          this.setState(() => ({ product, loading: false }));
+        }
+      });
     }
-  }); */
+  }
+
   render() {
+    const product = products[2];
     return (
       <div id="viewProduct" className="site-content">
-        <div className="ps-page--product">
-          <div className="ps-container">
-            <div className="ps-page__container">
-              <div className="ps-page__left">
-                <ProductDetailFullwidth productId={this.state.productId} />
+        <div className="ps-page__left">
+          <div className="ps-product--detail ps-product--fullwidth">
+            <div className="ps-product__header">
+              <div id="thumbnail">
+                <img src={product.thumbnail} alt="" />
               </div>
-              <div className="ps-page__right">
-                <ProductWidgets />
-              </div>
+              <InformationDefault {...this.props} product={product} />
             </div>
-            {/* <RelatedProductFullwidth /> */}
           </div>
         </div>
+        <div className="ps-page__right">
+          <ProductComments {...this.props} product={product} />
+          <ProductWidgets {...this.props} product={product} />
+        </div>
+        {/* <RelatedProductFullwidth /> */}
       </div>
     );
   }

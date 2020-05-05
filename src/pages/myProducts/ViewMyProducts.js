@@ -30,7 +30,6 @@ class ViewMyProducts extends Component {
     this.props.dispatch(resetHeader());
   }
 
-
   handleRemoveCartItem(product) {
     this.props.dispatch(removeItem(product));
   }
@@ -44,9 +43,6 @@ class ViewMyProducts extends Component {
       <div
         id="myProducts"
         className="ps-panel--wrapper "
-        style={{
-          height: `calc(100vh - ${header.height + nav.height}px)`,
-        }}
       >
         <div className="ps-cart__content ps-container">
           {cartItems && cartItems.length > 0 ? (

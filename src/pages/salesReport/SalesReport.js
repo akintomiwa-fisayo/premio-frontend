@@ -42,12 +42,7 @@ class SalesReport extends Component {
     ];
 
     return (
-      <section
-        id="myCommissions"
-        style={{
-          minHeight: `calc(100vh - ${header.height + nav.height}px)`,
-        }}
-      >
+      <section id="myCommissions">
         <div id="balance">
           <h1>$5,000.00</h1>
           <span>Total balance</span>

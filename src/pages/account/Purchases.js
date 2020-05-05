@@ -41,13 +41,7 @@ class Purchases extends Component {
     } = this.props;
     console.log(this.props);
     return (
-      <div
-        id="myPurchases"
-        className="ps-panel--wrapper "
-        style={{
-          height: `calc(100vh - ${header.height + nav.height}px)`,
-        }}
-      >
+      <div id="myPurchases" className="ps-panel--wrapper">
         <div className="ps-shopping__header">
           <select className="ps-select">
             <option>filter: All products</option>

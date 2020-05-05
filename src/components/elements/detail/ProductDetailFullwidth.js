@@ -36,7 +36,6 @@ class ProductDetailFullwidth extends Component {
       <div className="ps-product--detail ps-product--fullwidth">
         {singleProduct ? (
           <div className="ps-product__header">
-            {/* <ThumbnailDefault product={singleProduct} /> */}
             <div id="thumbnail">
               <img src={singleProduct.thumbnail} alt="" />
             </div>
@@ -45,7 +44,6 @@ class ProductDetailFullwidth extends Component {
         ) : (
           ''
         )}
-        <DefaultDescription />
       </div>
     );
   }

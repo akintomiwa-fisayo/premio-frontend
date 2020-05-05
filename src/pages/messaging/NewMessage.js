@@ -56,12 +56,7 @@ class Chat extends Component {
     const { header, nav, user } = this.props;
 
     return (
-      <section
-        id="newMessage"
-        style={{
-          height: `calc(100vh - ${header.height + nav.height}px)`,
-        }}
-      >
+      <section id="newMessage">
         <div
           id="holder"
           style={{

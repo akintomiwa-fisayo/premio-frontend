@@ -78,42 +78,21 @@ class Product extends Component {
           <Link to={`/products/${product.id}`}>
             <img src={product.thumbnail} alt="martfury" />
           </Link>
-          {product.badge ? productBadge : ''}
+          {/* {product.badge ? productBadge : ''} */}
         </div>
         <div className="ps-product__container">
-          <Link to="/shop" className="ps-product__vendor">Young Shop </Link>
+          <Link to={`/products/${product.id}`} className="ps-product__vendor">Young Shop </Link>
           <div className="ps-product__content">
-            {product.sale === true ? (
-              <p className="ps-product__price sale">
-                {currency ? currency.symbol : '$'}
-                {product.price}
-                <del className="ml-2">
-                  {currency ? currency.symbol : '$'}
-                  {product.salePrice}
-                </del>
-                <small>18% off</small>
-              </p>
-            ) : (
-              <p className="ps-product__price">
-                {currency ? currency.symbol : '$'}
-                {product.price}
-              </p>
-            )}
+            <p className="ps-product__price sale">
+               ${product.price}
+            </p>
             <Link to={`/products/${product.id}`} className="ps-product__title">{product.title} </Link>
 
             <div className="ps-product__rating">
               <Rating />
               <span>{product.ratingCount}</span>
             </div>
-            <div
-              className="ps-product__progress-bar ps-progress"
-              data-value="97"
-            >
-              <div className="ps-progress__value">
-                <span style={{ width: `${50}%` }} />
-              </div>
-              <p>Sold:22</p>
-            </div>
+            <p className="sales-count">Sold:22</p>
           </div>
         </div>
         <Modal

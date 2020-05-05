@@ -25,8 +25,8 @@ class ModeSelector extends React.Component {
     this.props.dispatch(resetNav());
   }
 
-  selectMode(type = 'customer') {
-    this.props.dispatch(changeUser({ type }));
+  selectMode(accountType = 'customer') {
+    this.props.dispatch(changeUser({ accountType }));
   }
 
   render() {
@@ -37,14 +37,14 @@ class ModeSelector extends React.Component {
           style={{ width: '100%' }}
           onClick={() => { this.selectMode('customer'); }}
         >
-          <button type="button" className="btn btn-default">Customer mode</button>
+          <button type="button" className="btn btn-default">Customer account</button>
         </Link>
         <Link
           to="/home"
           style={{ marginLeft: '1em', width: '100%' }}
           onClick={() => { this.selectMode('vendor'); }}
         >
-          <button type="button" className="btn btn-default">Vendor mode</button>
+          <button type="button" className="btn btn-default">Vendor account</button>
         </Link>
       </div>
     );

@@ -38,6 +38,11 @@
     height: max-content;
     // background: aqua;
 
+    a{
+      color: inherit;
+      font-weight: bold;
+    }
+
     #logo{
       margin-bottom: 4em;
       width: 45vw;
@@ -56,6 +61,15 @@
     button{
       margin-top: 1em;
     }
+
+    #switcher{
+      text-align: center;
+
+      p{
+        margin-top: 1em;
+      }
+    }
+
   }
 
   @include media('<md') {

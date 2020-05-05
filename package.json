@@ -6,6 +6,7 @@
   "dependencies": {
     "antd": "^4.1.2",
     "antd-mobile": "^2.3.1",
+    "axios": "^0.19.2",
     "es6-promise": "^4.2.8",
     "gh-pages": "^2.2.0",
     "node-sass": "^4.13.1",

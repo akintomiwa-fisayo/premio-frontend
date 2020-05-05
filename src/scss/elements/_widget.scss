@@ -400,7 +400,7 @@
         padding: 20px;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        grid-gap: 2em;
+        grid-gap: 1em;
         
         @include media('<md') {
             grid-template-columns: 1fr  1fr;
@@ -413,7 +413,11 @@
         transition: all 0.4s ease;
         
         .ps-product__container{
-          padding: 0 1em;
+            padding: 0;
+
+            .ps-product__vendor, .ps-product__content{
+                padding: 1em;
+            }
 
           .ps-product__content {
               display: block;
