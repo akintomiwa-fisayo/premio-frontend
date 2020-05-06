@@ -88,7 +88,7 @@ class InformationDefault extends Component {
               <i className="icon-heart" />
             </a>
           </div> */}
-          {false
+          {true
             ? (
               <div id="actions">
                 <button
@@ -116,15 +116,23 @@ class InformationDefault extends Component {
             <Link to="/shop">technologies </Link>
             <Link to="/shop">wireless </Link>
           </p>
-          <button
-            type="button"
-            id="reportAbuse"
-            className="btn btn-glass"
-            onClick={() => {
-              this.setState(() => ({ showReoptDialog: true }));
-            }}
-          >Report Abuse
-          </button>
+          <div id="subAction">
+            <button
+              type="button"
+              id="reportAbuse"
+              className="btn btn-glass"
+              onClick={() => {
+                this.setState(() => ({ showReoptDialog: true }));
+              }}
+            >Report
+            </button>
+            <button
+              type="button"
+              id="reportAbuse"
+              className="btn btn-glass"
+            >Recommend
+            </button>
+          </div>
         </div>
         {
           state.showReoptDialog

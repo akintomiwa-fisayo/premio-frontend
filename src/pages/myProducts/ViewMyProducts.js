@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { getCart, removeItem, updateCartSuccess } from '../../store/cart/action';
 import { onSale } from '../../public/static/data/product';
 import { changeHeader, resetHeader } from '../../store/setting/action';
+import SearchBar from '../../components/shared/SearchBar';
 
 
 class ViewMyProducts extends Component {
@@ -40,24 +41,29 @@ class ViewMyProducts extends Component {
     } = this.props;
     console.log(this.props);
     return (
-      <div
-        id="myProducts"
-        className="ps-panel--wrapper "
-      >
-        <div className="ps-cart__content ps-container">
+      <div id="myProducts">
+        <div className="ps-shopping__header" style={{ top: `${header.height}px` }}>
+          <SearchBar
+            placeholder="Search by keyword"
+            onEnter={() => {
+              // alert('ama fdfind clients for you');
+            }}
+          />
+        </div>
+        <div className="ps-cart__content">
           {cartItems && cartItems.length > 0 ? (
             cartItems.map((product) => (
-              <div className="ps-product--cart-mobile" key={product.id}>
+              <Link to={`/my-products/${product.id}`} className="ps-product--cart-mobile" key={product.id}>
                 <div className="ps-product__thumbnail">
-                  <Link to={`/my-products/${product.id}`}>
+                  <div>
                     <img src={product.thumbnail} alt="martfury" />
-                  </Link>
+                  </div>
                 </div>
-                <Link to={`/my-products/${product.id}`} className="ps-product__content">
+                <div className="ps-product__content">
                   <p className="ps-product__title"> {product.title} </p>
                   <p className="description">The product description comes down here but will be truncated if it exit more than two lines </p>
-                </Link>
-              </div>
+                </div>
+              </Link>
             ))
           ) : (
             <div className="ps-cart__items">

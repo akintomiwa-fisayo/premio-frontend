@@ -65,16 +65,16 @@ class ProductWide extends Component {
       });
     }
     return (
-      <div className="ps-product ps-product--wide">
+      <Link to={`/products/${product.id}`} className="ps-product ps-product--wide">
         <div className="ps-product__thumbnail">
-          <Link to={`/product/${product.id}`}>
+          <div>
             <img src={product.thumbnail} alt="martfury" />
-          </Link>
+          </div>
         </div>
         <div className="ps-product__container">
           <div className="ps-product__content">
-            <Link to={`/product/${product.id}`} className="ps-product__title">{product.title} </Link>
-            <strong className="ps-product__vendor"> Sold by : <Link to="/shop">{product.vendor} </Link> </strong>
+            <p className="ps-product__title">{product.title} </p>
+            <strong className="ps-product__vendor">Vendor : <Link to="/shop">{product.vendor} </Link> </strong>
             <p className="ps-product__desc">
             The items description inlorem for nowwhich means placeholder text will come be change to to the items actual description posted by the author
             </p>
@@ -98,7 +98,7 @@ class ProductWide extends Component {
             <button type="button" className="ps-btn btn btn-default" onClick={this.handleAddItemToCart.bind(this)}> Add to cart </button>
           </div>
         </div>
-      </div>
+      </Link>
     );
   }
 }

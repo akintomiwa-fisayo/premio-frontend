@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { getCart, removeItem, updateCartSuccess } from '../../store/cart/action';
 import { onSale } from '../../public/static/data/product';
 import { changeHeader, resetHeader } from '../../store/setting/action';
+import SearchBar from '../../components/shared/SearchBar';
 
 
 class Purchases extends Component {
@@ -41,39 +42,31 @@ class Purchases extends Component {
     } = this.props;
     console.log(this.props);
     return (
-      <div id="myPurchases" className="ps-panel--wrapper">
-        <div className="ps-shopping__header">
-          <select className="ps-select">
-            <option>filter: All products</option>
-            <option>filter: Images</option>
-            <option>filter: Videos</option>
-            <option>filter: PDFs: low to high</option>
-          </select>
-
-          <select className="ps-select">
-            <option>Sort by latest</option>
-            <option>Sort by popularity</option>
-            <option>Sort by average rating</option>
-            <option>Sort by price: low to high</option>
-            <option>Sort by price: high to low</option>
-          </select>
+      <div id="myPurchases">
+        <div className="ps-shopping__header" style={{ top: `${header.height}px` }}>
+          <SearchBar
+            placeholder="Search by keyword"
+            onEnter={() => {
+              // alert('ama fdfind clients for you');
+            }}
+          />
         </div>
 
-        <div className="ps-cart__content ps-container">
+        <div className="ps-cart__content">
           {cartItems && cartItems.length > 0 ? (
             cartItems.map((product) => (
-              <div className="ps-product--cart-mobile" key={product.id}>
+              <Link to={`/products/${product.id}`} className="ps-product--cart-mobile" key={product.id}>
                 <div className="ps-product__thumbnail">
-                  <Link to={`/products/${product.id}`}>
+                  <div>
                     <img src={product.thumbnail} alt="martfury" />
-                  </Link>
+                  </div>
                 </div>
                 <div className="ps-product__content">
-                  <Link to={`/products/${product.id}`} className="ps-product__title"> {product.title} </Link>
-                  <p className="vendor"> <strong>Sold by:</strong> {product.vendor} </p>
+                  <div className="ps-product__title"> {product.title} </div>
+                  <p className="vendor"> <strong>Vendor:</strong> {product.vendor} </p>
                   <p className="purchased-on"><strong>Purchased:</strong> today at 2:20 pm </p>
                 </div>
-              </div>
+              </Link>
             ))
           ) : (
             <div className="ps-cart__items">

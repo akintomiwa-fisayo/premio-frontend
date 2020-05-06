@@ -73,20 +73,20 @@ class Product extends Component {
     }
 
     return (
-      <div className="ps-product">
+      <Link to={`/products/${product.id}`} className="ps-product">
         <div className="ps-product__thumbnail">
-          <Link to={`/products/${product.id}`}>
+          <div>
             <img src={product.thumbnail} alt="martfury" />
-          </Link>
+          </div>
           {/* {product.badge ? productBadge : ''} */}
         </div>
         <div className="ps-product__container">
-          <Link to={`/products/${product.id}`} className="ps-product__vendor">Young Shop </Link>
+          <span className="ps-product__vendor">Young Shop </span>
           <div className="ps-product__content">
             <p className="ps-product__price sale">
                ${product.price}
             </p>
-            <Link to={`/products/${product.id}`} className="ps-product__title">{product.title} </Link>
+            <p className="ps-product__title">{product.title} </p>
 
             <div className="ps-product__rating">
               <Rating />
@@ -105,7 +105,7 @@ class Product extends Component {
         >
           <ProductDetailQuickView product={product} />
         </Modal>
-      </div>
+      </Link>
     );
   }
 }
