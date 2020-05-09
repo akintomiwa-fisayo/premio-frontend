@@ -89,12 +89,18 @@ class Home extends React.Component {
             vendors.map((vendor) => (
               <Link to="/account/client?user=other&type=vendor" className="vendor">
                 <div className="avi">
-                  <img src={vendor.displayImage} alt="" />
+                  <div className="holder">
+                    <img src={vendor.displayImage} alt="" />
+                  </div>
                 </div>
-                <div className="details">
-                  <p className="name">{vendor.firstName} {vendor.lastName}</p>
-                  <p className="description">{vendor.description}</p>
-                  <p className="products">{vendor.productsCount} Products</p>
+
+                <div className="holder">
+                  <div className="details">
+                    <p className="name">{vendor.firstName} {vendor.lastName}</p>
+                    <p className="description">{vendor.description}</p>
+                    <p className="products">{vendor.productsCount} Products</p>
+                  </div>
+                  <button type="button" className="btn btn-glass" />
                 </div>
               </Link>
             ))

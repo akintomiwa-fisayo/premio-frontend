@@ -128,7 +128,6 @@ class InformationDefault extends Component {
             </button>
             <button
               type="button"
-              id="reportAbuse"
               className="btn btn-glass"
             >Recommend
             </button>

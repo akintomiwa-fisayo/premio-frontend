@@ -187,7 +187,7 @@
       padding: 0;
     }
 
-    &:focus{
+    &:focus, &:hover{
       text-decoration: none;
     }
 }
