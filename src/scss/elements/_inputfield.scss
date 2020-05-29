@@ -16,13 +16,20 @@ $paddingLeft: 1em;
     font-weight: bold;
   }
   
-  input{
+  input, select{
     margin: .35em 0;
     width: 100%;  
     font-size: 1em;
     box-sizing: border-box;
     background: none;
-    border: none;
+    border: none !important;
+    outline: none !important;
+    
+    &:focus, &:hover, &:active{
+      border: none !important;
+      outline: none !important;
+
+    }
   }
   
   &.focused{

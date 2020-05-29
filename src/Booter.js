@@ -1,9 +1,12 @@
 import React from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import './App.css';
+import { connect } from 'react-redux';
 import Auth from './pages/auth/auth';
 import App from './App';
 import { isEmpty } from './lib/js';
+import { setCountryStates } from './store/countries/action';
 
 const fetchRequest = (params = {
   url: '',
@@ -100,15 +103,76 @@ const fetchRequest = (params = {
 });
 
 class Booter extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.getCountries = this.getCountries.bind(this);
+    this.getCountryStates = this.getCountryStates.bind(this);
+  }
+
+  getCountries() {
+    const { props } = this;
+    const { countries } = props;
+
+    return Object.keys(countries).map((id) => ({
+      id,
+      value: countries[id].value,
+    }));
+  }
+
+  getCountryStates(countryId) {
+    return new Promise((resolve) => {
+      const { props } = this;
+      const { countries } = props;
+      if (countries[countryId]) {
+        const { states } = countries[countryId];
+        if (states === false) {
+          axios({
+            url: `https://geodata.solutions/api/api.php?type=getStates&countryId=${countryId}`,
+          }).then((response) => {
+            const { result } = response.data;
+            const newStates = {};
+            Object.keys(result).forEach((id) => {
+              newStates[id] = {
+                value: result[id],
+                cities: false,
+              };
+            });
+            props.setCountryStates(countryId, newStates);
+            resolve(newStates);
+          }).catch(() => {
+            this.getCountryStates(countryId).then(resolve);
+          });
+        } else resolve(states);
+      } else resolve(false);
+    });
+  }
+
   render() {
+    console.log('BOOTER PROPS : ', this.props);
     // return false ? <Auth /> : <App />;
     return (
       <>
-        <App fetchRequest={fetchRequest} />
+        <App
+          fetchRequest={fetchRequest}
+          getCountries={this.getCountries}
+          getCountryStates={this.getCountryStates}
+        />
         {/* <Auth fetchRequest={fetchRequest} /> */}
       </>
     );
   }
 }
 
-export default Booter;
+
+Booter.propTypes = {
+  countries: PropTypes.object.isRequired,
+};
+const mapStateToProps = (state) => ({
+  countries: state.countries,
+});
+
+const mapDispatchToProps = (dispath) => ({
+  setCountryStates: (countryId, states) => dispath(setCountryStates(countryId, states)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Booter);

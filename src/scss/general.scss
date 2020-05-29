@@ -1,3 +1,11 @@
+input.placeholder, select.placeholder {
+  font-style: italic !important;
+  color: #a3a3a3 !important;
+}
+input.placeholder option:not([disabled]), select.placeholder option:not([disabled]) {
+  font-style: normal;
+  font-weight: inherit;
+}
 
 button.btn{
 	transition: all .2s linear;

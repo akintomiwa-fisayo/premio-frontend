@@ -96,3 +96,49 @@ exports.parseQueryString = (query) => {
 };
 
 exports.isEmpty = (str) => (str ? !`${str}`.trim() : true);
+exports.devalueString = (string) => {
+  let returnee = '';
+  for (let i = 0; i < string.length; i += 1) {
+    if (exports.isUpperCase(string[i])) {
+      // popMessage(string[i] + " is isUpperCase")
+      returnee += ` ${string[i].toLowerCase()}`;
+    } else if (string[i] === '_' || string[i] === '-') {
+      returnee += ' ';
+    } else {
+      returnee += string[i];
+    }
+  }
+
+  return returnee;
+};
+exports.isUpperCase = (v) => (!!(v.toUpperCase() !== v.toLowerCase() && v === v.toUpperCase()));
+
+exports.isLowerCase = (v) => (!!(v.toUpperCase() !== v.toLowerCase() && v === v.toLowerCase()));
+exports.ucFirst = (value) => {
+  if (isNaN(value)) {
+    let newValue = '';
+    for (let i = 0; i < value.length; i += 1) {
+      if (i === 0) {
+        newValue = value[0].toUpperCase();
+      } else {
+        newValue += value[i];
+      }
+    }
+    return newValue;
+  }
+  return value;
+};
+exports.lcFirst = (value) => {
+  if (isNaN(value)) {
+    let newValue = '';
+    for (let i = 0; i < value.length; i += 1) {
+      if (i === 0) {
+        newValue = value[0].toLowerCase();
+      } else {
+        newValue += value[i];
+      }
+    }
+    return newValue;
+  }
+  return value;
+};

@@ -11,6 +11,19 @@ import {
 class SignUp extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      form: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        mobileNumber: '',
+        dateOfBirth: '',
+        countryId: '',
+        stateId: '',
+        city: '',
+      },
+      submitting: false,
+    };
 
     this.submit = this.submit.bind(this);
   }
@@ -34,11 +47,59 @@ class SignUp extends React.Component {
     this.props.dispatch(resetNav());
   }
 
+  regField(props) {
+    this.setState((prev) => ({
+      form: {
+        ...prev.form,
+        ...props,
+      },
+    }));
+  }
+
+  getStates(countryId) {
+    const { props } = this;
+    props.getCountryStates(countryId).then((states) => {
+      console.log('OUR STATE IS : ', states);
+    });
+  }
+
+
   submit() {
     this.props.history.push('/confirm-sign-up');
   }
 
   render() {
+    const { props, state } = this;
+    const { form } = state;
+
+    const countries = [{
+      value: '-placeholder-',
+      label: 'Select Country',
+      defaultValue: true,
+      disabled: true,
+    },
+    ...(props.getCountries().map((country) => ({
+      value: country.id,
+      label: country.value,
+    }))),
+    ];
+
+    let states = [{
+      value: '-placeholder-',
+      label: 'Select State',
+      defaultValue: true,
+      disabled: true,
+    }];
+
+    if (form.stateId === 'loading') {
+      states = [{
+        value: '-placeholder-',
+        label: 'Please wait...',
+        defaultValue: true,
+        disabled: true,
+      }];
+    }
+
     return (
       <div id="signupComp">
 
@@ -63,6 +124,36 @@ class SignUp extends React.Component {
           <InputField
             label="Date of Birth"
             type="date"
+          />
+          <InputField
+            label="Country"
+            type="select"
+            value={form.countryId}
+            options={countries}
+            onChange={(countryId) => {
+              this.regField({
+                countryId,
+                stateId: 'loading',
+              });
+
+              this.getStates(countryId);
+            }}
+          />
+          <InputField
+            label="State"
+            type="select"
+            options={states}
+          />
+          <InputField
+            label="City"
+            type="select"
+            options={[
+              { value: '1' },
+              { value: '2' },
+              { value: '3' },
+              { value: '4' },
+              { value: '5' },
+            ]}
           />
           <div id="terms&cond">
             <Checkbox style={{ marginRight: '1em' }} />
