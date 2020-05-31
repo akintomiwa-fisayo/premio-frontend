@@ -15,7 +15,6 @@ import ConfirmSignUp from './pages/auth/ConfirmSignUp';
 import SignUp from './pages/auth/SignUp';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import ChangePassword from './pages/auth/ChangePassword';
-import ModeSelector from './pages/auth/ModeSelector';
 import SignIn from './pages/auth/SignIn';
 import InviteFriend from './pages/InviteFriend';
 import MyCommisions from './pages/myCommissions/MyCommisions';
@@ -30,6 +29,7 @@ class App extends React.Component {
     console.log({
       process: process.env,
     });
+
     console.log('BIG BOSS PROPS IS ', this.props);
     const { header, nav } = this.props.setting;
     return (
@@ -42,121 +42,187 @@ class App extends React.Component {
         >
           <Switch>
             <Route
-              path="/account-mode"
-              render={(props) => (
-                <ModeSelector {...this.props} {...props} />
-              )}
-            />
-            <Route
               path="/cart"
               render={(props) => (
-                <Cart {...this.props} {...props} />
+                <Cart
+                  {...this.props}
+                  {...props}
+                />
               )}
             />
             <Route
               path="/messages"
               render={(props) => (
-                <Messages {...this.props} {...props} />
+                <Messages
+                  {...this.props}
+                  {...props}
+                />
               )}
             />
             <Route
               path="/my-products"
               render={(props) => (
-                <MyProducts {...this.props} {...props} />
+                <MyProducts
+                  {...this.props}
+                  {...props}
+                />
               )}
             />
             <Route
               path="/my-clients"
               render={(props) => (
-                <Clients {...this.props} {...props} />
+                <Clients
+                  {...this.props}
+                  {...props}
+                />
               )}
             />
             <Route
               path="/purchases"
               render={(props) => (
-                <Purchases {...this.props} {...props} />
+                <Purchases
+                  {...this.props}
+                  {...props}
+                />
               )}
             />
             <Route
               path="/account/:userId"
               render={(props) => (
-                <Account {...this.props} {...props} />
+                <Account
+                  {...this.props}
+                  {...props}
+                />
               )}
             />
             <Route
               path="/sales-report"
               render={(props) => (
-                <SalesReport {...this.props} {...props} />
+                <SalesReport
+                  {...this.props}
+                  {...props}
+                />
               )}
             />
             <Route
               path="/team-mates"
               render={(props) => (
-                <TeamMates {...this.props} {...props} />
+                <TeamMates
+                  {...this.props}
+                  {...props}
+                />
               )}
             />
             <Route
               path="/my-commisions"
               render={(props) => (
-                <MyCommisions {...this.props} {...props} />
+                <MyCommisions
+                  {...this.props}
+                  {...props}
+                />
               )}
             />
             <Route
               path="/invite-friend"
               render={(props) => (
-                <InviteFriend {...this.props} {...props} />
+                <InviteFriend
+                  {...this.props}
+                  {...props}
+                />
               )}
             />
             <Route
               path="/search"
               render={(props) => (
-                <SearchResult {...this.props} {...props} />
+                <SearchResult
+                  {...this.props}
+                  {...props}
+                />
               )}
             />
             <Route
               path="/products"
               render={(props) => (
-                <Products {...this.props} {...props} />
+                <Products
+                  {...this.props}
+                  {...props}
+                />
               )}
             />
             <Route
               path="/vendors/:id"
               render={(props) => (
-                <Vendor {...this.props} {...props} />
+                <Vendor
+                  {...this.props}
+                  {...props}
+                />
               )}
             />
             <Route
               path="/home"
               render={(props) => (
-                <Home {...this.props} {...props} />
+                <Home
+                  {...this.props}
+                  {...props}
+                />
               )}
             />
 
             {/* FOR AUTH PAGE */}
             <Route
               path="/confirm-sign-up"
-              render={(props) => <ConfirmSignUp {...this.props} {...props} />}
+              render={(props) => (
+                <ConfirmSignUp
+                  {...this.props}
+                  {...props}
+                />
+              )}
             />
             <Route
               path="/sign-up"
-              render={(props) => <SignUp {...this.props} {...props} />}
+              render={(props) => (
+                <SignUp
+                  {...this.props}
+                  {...props}
+                />
+              )}
             />
             <Route
               path="/forgot-password"
-              render={(props) => <ForgotPassword {...this.props} {...props} />}
+              render={(props) => (
+                <ForgotPassword
+                  {...this.props}
+                  {...props}
+                />
+              )}
             />
             <Route
               path="/change-password"
-              render={(props) => <ChangePassword {...this.props} {...props} />}
+              render={(props) => (
+                <ChangePassword
+                  {...this.props}
+                  {...props}
+                />
+              )}
             />
             <Route
               path="/premio-frontend"
-              render={(props) => <SignIn {...this.props} {...props} />}
+              render={(props) => (
+                <SignIn
+                  {...this.props}
+                  {...props}
+                />
+              )}
             />
             <Route
               path="/"
               exact
-              render={(props) => <SignIn {...this.props} {...props} />}
+              render={(props) => (
+                <SignIn
+                  {...this.props}
+                  {...props}
+                />
+              )}
             />
           </Switch>
         </main>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Modal } from 'antd-mobile';
 import InputField from '../../components/elements/InputField';
 import logo from '../../public/static/img/logo.png';
 import {
@@ -10,7 +10,7 @@ import {
 
 import { alert } from '../../lib/js';
 
-class Login extends React.Component {
+class SignIn extends React.Component {
   constructor(props) {
     super(props);
 
@@ -59,11 +59,10 @@ class Login extends React.Component {
         'Content-Type': 'application/json',
       },
     }).then((res) => {
-      console.log('login response : ', res);
       if (this._isMounted) {
         localStorage.setItem('sessionUserToken', res.token);
         localStorage.setItem('sessionUserId', res.id);
-        // this.props.history.push('/home');
+        this.props.history.push('/home');
       }
     }).catch(({ data: { error } }) => {
       if (this._isMounted) {
@@ -85,13 +84,10 @@ class Login extends React.Component {
           );
         }
       }
-    }).finally(() => {
-      this.props.history.push('/account-mode');
     });
   }
 
   render() {
-    console.log('SIGN IN PROPS', this.props);
     return (
       <div id="signinComp">
         <div id="content">
@@ -132,5 +128,11 @@ class Login extends React.Component {
   }
 }
 
+SignIn.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  fetchRequest: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+};
+
 const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(Login);
+export default connect(mapStateToProps)(SignIn);

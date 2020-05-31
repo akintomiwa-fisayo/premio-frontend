@@ -7,6 +7,7 @@ class InputField extends React.Component {
     super(props);
     this.state = {
       isFocused: false,
+      value: '',
     };
 
     this.focusInput = this.focusInput.bind(this);
@@ -25,12 +26,13 @@ class InputField extends React.Component {
     let input = '';
     if (props.type === 'select') {
       let defaultValue = null;
-      let value = null;
       const options = [];
+      let Value = null;
+      const isPropValue = ([undefined, null].indexOf(props.value) === -1);
 
       props.options.forEach((option, index) => {
         if (option.defaultValue) defaultValue = option.value;
-        if (props.value === option.value) value = props.value;
+        if (isPropValue && props.value === option.value) Value = props.value;
 
         options.push(
           <option
@@ -42,16 +44,19 @@ class InputField extends React.Component {
         );
       });
 
-      if (value === null && defaultValue) {
-        value = defaultValue;
+      if (Value === null) {
+        if (defaultValue) {
+          Value = defaultValue;
+        } else {
+          Value = state.value;
+        }
       }
 
-      const isPlaceholder = value === '-placeholder-';
-
+      const isPlaceholder = Value === '-placeholder-';
 
       input = (
         <select
-          value={value}
+          value={Value}
           className={`${isPlaceholder ? ' placeholder' : ''}`}
           onFocus={() => {
             this.focusInput();
@@ -60,14 +65,18 @@ class InputField extends React.Component {
             this.focusInput(false);
           }}
           onChange={(e) => {
-            props.onChange(e.target.value);
+            const { value } = e.target;
+            this.setState(() => ({ value }));
+            props.onChange(value);
           }}
         >{options}
         </select>
       );
     } else {
+      const Value = [undefined, null].indexOf(props.value) === -1 ? props.value : state.value;
       input = (
         <input
+          value={Value}
           type={props.type}
           onFocus={() => {
             this.focusInput();
@@ -76,7 +85,9 @@ class InputField extends React.Component {
             this.focusInput(false);
           }}
           onChange={(e) => {
-            props.onChange(e.target.value);
+            const { value } = e.target;
+            this.setState(() => ({ value }));
+            props.onChange(value);
           }}
         />
       );

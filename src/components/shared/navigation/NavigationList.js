@@ -160,6 +160,14 @@ class NavigationList extends Component {
             <i className="icon-envelope" />
             <span>Messages</span>
           </NavLink>
+          <NavLink
+            to="/sign-up"
+            className={`navigation__item ${cartDrawer === true ? 'active' : ''}`}
+            onClick={this.handleShowCartDrawer}
+          >
+            <i className="icon-envelope" />
+            <span>sign-up</span>
+          </NavLink>
         </div>
         <MenuDrawal
           onClose={this.resetDrawals}

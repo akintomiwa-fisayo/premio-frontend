@@ -1,28 +1,28 @@
 export const actionTypes = {
-  LOGIN_REQUEST: 'LOGIN_REQUEST',
-  LOGIN_SUCCESS: 'LOGIN_SUCCESS',
-  LOGOUT: 'LOGOUT',
-  LOGOUT_SUCCESS: 'LOGOUT_SUCCESS',
-  CHECK_AUTHORIZATION: 'CHECK_AUTHORIZATION',
-  CHANGE_USER: 'CHANGE_USER',
+  AUTH_LOGIN_REQUEST: 'AUTH_LOGIN_REQUEST',
+  AUTH_LOGIN_SUCCESS: 'AUTH_LOGIN_SUCCESS',
+  AUTH_LOGOUT: 'AUTH_LOGOUT',
+  AUTH_LOGOUT_SUCCESS: 'AUTH_LOGOUT_SUCCESS',
+  AUTH_CHECK_AUTHORIZATION: 'AUTH_CHECK_AUTHORIZATION',
+  AUTH_SET_SESSION_USER: 'AUTH_SET_SESSION_USER',
 };
 
 export function login() {
-  return { type: actionTypes.LOGIN_REQUEST };
+  return { type: actionTypes.AUTH_LOGIN_REQUEST };
 }
 
 export function loginSuccess() {
-  return { type: actionTypes.LOGIN_SUCCESS };
+  return { type: actionTypes.AUTH_LOGIN_SUCCESS };
 }
 
 export function logOut() {
-  return { type: actionTypes.LOGOUT };
+  return { type: actionTypes.AUTH_LOGOUT };
 }
 
 export function logOutSuccess() {
-  return { type: actionTypes.LOGOUT_SUCCESS };
+  return { type: actionTypes.AUTH_LOGOUT_SUCCESS };
 }
 
-export function changeUser(user) {
-  return { type: actionTypes.CHANGE_USER, user };
+export function setSessionUser(user) {
+  return { type: actionTypes.AUTH_SET_SESSION_USER, user };
 }

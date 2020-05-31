@@ -96,6 +96,7 @@ exports.parseQueryString = (query) => {
 };
 
 exports.isEmpty = (str) => (str ? !`${str}`.trim() : true);
+exports.isEmail = (str) => (!((/[a-z0-9]+@+[a-z0-9]+\.+[a-z]{3,}/i.test(str) === false || /[^a-z0-9._@]/i.test(str) === true)));
 exports.devalueString = (string) => {
   let returnee = '';
   for (let i = 0; i < string.length; i += 1) {

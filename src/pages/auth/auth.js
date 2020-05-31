@@ -5,7 +5,6 @@ import SignUp from './SignUp';
 import ConfirmSignUp from './ConfirmSignUp';
 import ForgotPassword from './ForgotPassword';
 import ChangePassword from './ChangePassword';
-import ModeSelector from './ModeSelector';
 
 class Auth extends React.Component {
   render() {
@@ -13,32 +12,58 @@ class Auth extends React.Component {
       <Switch>
         <Route
           path="/confirm-sign-up"
-          render={(props) => <ConfirmSignUp {...props} />}
+          render={(props) => (
+            <ConfirmSignUp
+              {...this.props}
+              {...props}
+            />
+          )}
         />
         <Route
           path="/sign-up"
-          render={(props) => <SignUp {...props} />}
+          render={(props) => (
+            <SignUp
+              {...this.props}
+              {...props}
+            />
+          )}
         />
         <Route
           path="/forgot-password"
-          render={(props) => <ForgotPassword {...props} />}
+          render={(props) => (
+            <ForgotPassword
+              {...this.props}
+              {...props}
+            />
+          )}
         />
         <Route
           path="/change-password"
-          render={(props) => <ChangePassword {...props} />}
-        />
-        <Route
-          path="/mode-selector"
-          render={(props) => <ModeSelector {...props} />}
+          render={(props) => (
+            <ChangePassword
+              {...this.props}
+              {...props}
+            />
+          )}
         />
         <Route
           path="/premio-frontend"
-          render={(props) => <SignIn {...props} />}
+          render={(props) => (
+            <SignIn
+              {...this.props}
+              {...props}
+            />
+          )}
         />
         <Route
-          path="/"
+          path="/sign-in"
           exact
-          render={(props) => <SignIn {...props} />}
+          render={(props) => (
+            <SignIn
+              {...this.props}
+              {...props}
+            />
+          )}
         />
       </Switch>
     );

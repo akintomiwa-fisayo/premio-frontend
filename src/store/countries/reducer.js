@@ -910,17 +910,18 @@ function reducer(state = initState, action) {
           states: action.states,
         },
       };
-    case actionTypes.LOGOUT_SUCCESS:
+    case actionTypes.SET_COUNTRY_STATE_CITIES:
       return {
         ...state,
-        ...{ isLoggedIn: false },
-      };
-    case actionTypes.CHANGE_USER:
-      return {
-        ...state,
-        user: {
-          ...initState.user,
-          ...action.user,
+        [action.countryId]: {
+          value: state[action.countryId].value,
+          states: {
+            ...state[action.countryId].states,
+            [action.stateId]: {
+              value: state[action.countryId].states[action.stateId].value,
+              cities: action.cities,
+            },
+          },
         },
       };
     default:

@@ -37,6 +37,24 @@
     padding-top: 2em;
     height: max-content;
     // background: aqua;
+    
+
+    .input-field{
+      margin-bottom: 1.5em;
+
+      .label{
+        .error{
+          color: red;
+          padding-left: .5em;
+        }
+      }
+    }
+
+    #termsCond.error{
+      .ant-checkbox-inner{
+        border-color: red;
+      }
+    }
 
     a{
       color: inherit;
