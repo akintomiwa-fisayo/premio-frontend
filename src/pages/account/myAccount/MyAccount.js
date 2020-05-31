@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-import { Tabs, Badge, Accordion } from 'antd-mobile';
+import { Tabs } from 'antd-mobile';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { List } from 'antd/lib/form/Form';
 import { changeHeader, resetHeader } from '../../../store/setting/action';
 import user3 from '../../../public/static/img/users/3.jpg';
 import user1 from '../../../public/static/img/users/1.jpg';
 import { parseQueryString } from '../../../lib/js';
-import { onSale } from '../../../public/static/data/product';
-import Product from '../../../components/elements/products/Product';
-import ChangePassword from '../../../components/partials/account/ChangePassword';
-import BecomeVendor from '../../../components/partials/account/BecomeVendor';
+import ChangePassword from './ChangePassword';
+import BecomeVendor from './BecomeVendor';
 
 class ViewAccount extends Component {
   constructor(props) {

@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import FooterDefault from '../../components/shared/footers/FooterDefault';
-import LayoutShopSidebarWithoutBanner from '../../components/partials/shop/LayoutShopSidebarWithoutBanner';
+import LayoutShopSidebarWithoutBanner from './LayoutShopSidebarWithoutBanner';
 
 import {
   getProducts,

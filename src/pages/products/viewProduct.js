@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { connect } from 'react-redux';
 import { products } from '../../public/static/data/product';
-import ProductWidgets from '../../components/partials/product/ProductWidgets';
+import ProductWidgets from './ProductWidgets';
 import { changeHeader, resetHeader } from '../../store/setting/action';
-import { getProductsById } from '../../store/product/action';
-import InformationDefault from '../../components/elements/detail/modules/information/InformationDefault';
+import InformationDefault from './InformationDefault';
 import ProductComments from './ProductComments';
 
 class ViewProduct extends React.Component {

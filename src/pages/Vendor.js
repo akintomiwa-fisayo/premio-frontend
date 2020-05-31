@@ -4,13 +4,13 @@ import { Accordion } from 'antd-mobile';
 import { List } from 'antd/lib/form/Form';
 import { connect } from 'react-redux';
 import { changeHeader, resetHeader } from '../store/setting/action';
-import ChangePassword from '../components/partials/account/ChangePassword';
-import BecomeVendor from '../components/partials/account/BecomeVendor';
+import ChangePassword from './account/myAccount/ChangePassword';
+import BecomeVendor from './account/myAccount/BecomeVendor';
 import user3 from '../public/static/img/users/3.jpg';
 import user1 from '../public/static/img/users/1.jpg';
 import InputField from '../components/elements/InputField';
 import { onSale } from '../public/static/data/product';
-import Product from '../components/elements/products/Product';
+import Product from './products/Product';
 
 
 class Vendor extends Component {

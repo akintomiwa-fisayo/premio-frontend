@@ -1,13 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Accordion } from 'antd-mobile';
-import { List } from 'antd/lib/form/Form';
 import { connect } from 'react-redux';
 import { changeHeader, resetHeader } from '../store/setting/action';
-import ChangePassword from '../components/partials/account/ChangePassword';
-import BecomeVendor from '../components/partials/account/BecomeVendor';
-import user3 from '../public/static/img/users/3.jpg';
-import user1 from '../public/static/img/users/1.jpg';
 import InputField from '../components/elements/InputField';
 
 class InviteFriend extends Component {

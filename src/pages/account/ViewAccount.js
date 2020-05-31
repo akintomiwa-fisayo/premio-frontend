@@ -6,7 +6,7 @@ import user3 from '../../public/static/img/users/3.jpg';
 import user1 from '../../public/static/img/users/1.jpg';
 import { parseQueryString } from '../../lib/js';
 import { onSale } from '../../public/static/data/product';
-import Product from '../../components/elements/products/Product';
+import Product from '../products/Product';
 
 class ViewAccount extends Component {
   constructor(props) {

@@ -132,9 +132,11 @@ class Booter extends React.Component {
         // console.log('We a valid user with token', res);
         props.setSessionUser(res);
         this.setState(() => ({ loading: false }));
-        props.history.push('/home');
       }
     }).catch((error) => {
+      if (this._isMounted) {
+        props.history.push('/');
+      }
       console.log('GOT ULTIMATE ERROR', error);
     });
   }

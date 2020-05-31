@@ -2,8 +2,8 @@ import React from 'react';
 import './App.css';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import NavigationList from './components/shared/navigation/NavigationList';
-import Home from './pages/home';
+import Navigation from './components/shared/navigation/Navigation';
+import Home from './pages/home/home';
 import './scss/style.scss';
 import Products from './pages/products/products';
 import SearchResult from './pages/search/SearchResult';
@@ -206,15 +206,6 @@ class App extends React.Component {
               )}
             />
             <Route
-              path="/premio-frontend"
-              render={(props) => (
-                <SignIn
-                  {...this.props}
-                  {...props}
-                />
-              )}
-            />
-            <Route
               path="/"
               exact
               render={(props) => (
@@ -226,7 +217,7 @@ class App extends React.Component {
             />
           </Switch>
         </main>
-        <NavigationList {...this.props} />
+        <Navigation {...this.props} />
       </>
     );
   }
