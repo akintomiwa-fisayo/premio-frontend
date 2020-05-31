@@ -286,6 +286,7 @@ class Booter extends React.Component {
         getCountries={this.getCountries}
         getCountryStates={this.getCountryStates}
         getCountryStateCities={this.getCountryStateCities}
+        sessionUser={props.sessionUser}
       />
     ) : (
       <Auth
