@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/premio-frontend/static/css/main.34b2449f.chunk.css",
-    "main.js": "/premio-frontend/static/js/main.5a19e2d7.chunk.js",
-    "main.js.map": "/premio-frontend/static/js/main.5a19e2d7.chunk.js.map",
+    "main.js": "/premio-frontend/static/js/main.decaafea.chunk.js",
+    "main.js.map": "/premio-frontend/static/js/main.decaafea.chunk.js.map",
     "runtime-main.js": "/premio-frontend/static/js/runtime-main.806986c2.js",
     "runtime-main.js.map": "/premio-frontend/static/js/runtime-main.806986c2.js.map",
     "static/css/2.54e6f0dc.chunk.css": "/premio-frontend/static/css/2.54e6f0dc.chunk.css",
     "static/js/2.e2fcd9e1.chunk.js": "/premio-frontend/static/js/2.e2fcd9e1.chunk.js",
     "static/js/2.e2fcd9e1.chunk.js.map": "/premio-frontend/static/js/2.e2fcd9e1.chunk.js.map",
     "index.html": "/premio-frontend/index.html",
-    "precache-manifest.59b8df906281e9a4837ab55839c448e4.js": "/premio-frontend/precache-manifest.59b8df906281e9a4837ab55839c448e4.js",
+    "precache-manifest.7ec2b23cf8d134d4988e9691146b3819.js": "/premio-frontend/precache-manifest.7ec2b23cf8d134d4988e9691146b3819.js",
     "service-worker.js": "/premio-frontend/service-worker.js",
     "static/css/2.54e6f0dc.chunk.css.map": "/premio-frontend/static/css/2.54e6f0dc.chunk.css.map",
     "static/css/main.34b2449f.chunk.css.map": "/premio-frontend/static/css/main.34b2449f.chunk.css.map",
@@ -34,6 +34,6 @@
     "static/css/2.54e6f0dc.chunk.css",
     "static/js/2.e2fcd9e1.chunk.js",
     "static/css/main.34b2449f.chunk.css",
-    "static/js/main.5a19e2d7.chunk.js"
+    "static/js/main.decaafea.chunk.js"
   ]
 }
