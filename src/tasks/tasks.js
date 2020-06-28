@@ -23,6 +23,4 @@ export default (props = {
   teamMates(props);
   myClients(props);
   messages(props);
-  /*
- */
 };

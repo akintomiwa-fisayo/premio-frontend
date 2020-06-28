@@ -68,8 +68,9 @@ export default ({
           dispatchEvent(appendToTexts(Texts));
         }
 
-        if (notDeliveredTextIds.length > 0) { 
+        if (notDeliveredTextIds.length > 0) {
           // mark texts as delivered
+          alert(`themake, ${notDeliveredTextIds.join(' ')}`);
           markAsDelivered(notDeliveredTextIds);
         }
       }).catch((err) => {

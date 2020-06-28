@@ -36,7 +36,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.executeBackgroundTasks();
-    this.backgroundTasksInterval = setInterval(this.executeBackgroundTasks, 10000);
+    this.backgroundTasksInterval = setInterval(this.executeBackgroundTasks, 700);
   }
 
   componentWillUnmount() {

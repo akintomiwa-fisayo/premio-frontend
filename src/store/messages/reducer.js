@@ -1,5 +1,6 @@
 import { actionTypes } from './action';
 import textsToConversations from '../../pages/messaging/textsToConversations';
+import { alert } from '../../lib/js';
 
 export const initState = {
   texts: [],
@@ -78,7 +79,7 @@ function reducer(state = initState, action) {
       };
     }
     case actionTypes.MESSAGES_APPEND_TO_CONVERSATIONS: {
-      console.log('WE WE WE WE WE WE WE WE WE WE WE WE WE WE WE MADE IT', { action });
+      // console.log('WE WE WE WE WE WE WE WE WE WE WE WE WE WE WE MADE IT', { action });
       return {
         ...state,
         conversations: {
@@ -91,6 +92,7 @@ function reducer(state = initState, action) {
       const texts = state.texts.map((text) => {
         const indexInIds = action.ids.indexOf(text.id);
         if (indexInIds > -1) {
+          // alert('found the change');
           return {
             ...text,
             ...action.props[indexInIds],
