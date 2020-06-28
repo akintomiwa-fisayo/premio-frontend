@@ -170,6 +170,7 @@ class Navigation extends Component {
           {...this.props}
           onClose={this.resetDrawals}
           hide={!menuDrawer}
+          backgroundTasksInterval={this.props.backgroundTasksInterval}
         />
       </div>
     );

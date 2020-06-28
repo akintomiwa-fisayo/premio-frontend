@@ -223,7 +223,10 @@ class App extends React.Component {
 
           </Switch>
         </main>
-        <Navigation {...this.props} />
+        <Navigation
+          {...this.props}
+          backgroundTasksInterval={this.backgroundTasksInterval}
+        />
       </>
     );
   }

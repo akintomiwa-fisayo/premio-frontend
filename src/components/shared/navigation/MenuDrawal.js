@@ -14,6 +14,7 @@ class PanelMenu extends Component {
     localStorage.removeItem('sessionUserToken');
     localStorage.removeItem('sessionUserId');
     this.props.setSessionUser(false);
+    clearInterval(this.props.backgroundTasksInterval);
     this.props.history.push('sign-in');
   }
 

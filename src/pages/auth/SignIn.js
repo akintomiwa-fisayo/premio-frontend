@@ -35,6 +35,10 @@ class SignIn extends React.Component {
     this.props.dispatch(changeNav({
       show: false,
     }));
+
+    if (this.props.store.auth.user) {
+      this.props.history.push('/home');
+    }
   }
 
 
@@ -153,7 +157,7 @@ class SignIn extends React.Component {
             this.props.history.push('/confirm-sign-up');
           }}
           >confrim Register Now
-          </p>
+                                                      </p>
           </p>
         </div>
       </div>
