@@ -1,6 +1,6 @@
 import React from 'react';
-import { Checkbox, Input } from 'antd';
-import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import InputField from '../../components/elements/InputField';
 import logo from '../../public/static/img/logo.png';
@@ -17,16 +17,22 @@ class ConfirmSignUp extends React.Component {
         minutes: 0,
         seconds: 59,
       },
+      code: '',
+      codeError: false,
+      submitting: false,
     };
 
+    this._isMounted = false;
     this.timerHandler = null;
+    this.regCode = this.regCode.bind(this);
     this.startTimerCount = this.startTimerCount.bind(this);
     this.timerCount = this.timerCount.bind(this);
-    this.sendCode = this.sendCode.bind(this);
+    this.confirmSignUp = this.confirmSignUp.bind(this);
     this.resendCode = this.resendCode.bind(this);
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.props.dispatch(changeHeader({
       show: false,
     }));
@@ -38,6 +44,7 @@ class ConfirmSignUp extends React.Component {
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
     this.props.dispatch(resetHeader());
     this.props.dispatch(resetNav());
   }
@@ -48,7 +55,8 @@ class ConfirmSignUp extends React.Component {
         minutes: 4,
         seconds: 59,
       },
-    })); this.timerHandler = setInterval(this.timerCount, 1000);
+    }));
+    this.timerHandler = setInterval(this.timerCount, 1000);
   }
 
   timerCount() {
@@ -70,17 +78,76 @@ class ConfirmSignUp extends React.Component {
     }));
   }
 
-  sendCode() {
+  regCode(code) {
+    if (code.length <= 8) {
+      this.setState({
+        code,
+        codeError: false,
+      });
+      if (code.length === 8) {
+        this.confirmSignUp(code);
+      }
+    }
+  }
 
+  confirmSignUp(code = false) {
+    const { state, props } = this;
+    const { signUp } = props;
+    if (!state.submitting) {
+      this.setState({
+        submitting: true,
+      });
+
+      props.FetchRequest({
+        url: `${process.env.REACT_APP_API}/auth/register/${signUp.regId}/finalize`,
+        method: 'POST',
+        body: JSON.stringify({
+          token: code || state.code,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then((res) => {
+        if (this._isMounted) {
+          const { user } = res.data.data;
+          const { token, ...User } = user;
+          localStorage.setItem('sessionUserToken', token);
+          localStorage.setItem('sessionUserId', User.id);
+          props.setSessionUser(User);
+          this.props.history.push('/home');
+        }
+      }).catch((err) => {
+        if (this._isMounted) {
+          const { error } = err.data;
+          const newState = {
+            code: '',
+            submitting: false,
+          };
+
+          if (error.token) {
+            newState.codeError = 'incorrect';
+          }
+
+
+          this.setState(newState);
+        }
+      });
+    }
   }
 
   resendCode() {
-    this.sendCode();
+    const { props } = this;
+    const { signUp } = props;
     this.startTimerCount();
+    props.FetchRequest({
+      url: `${process.env.REACT_APP_API}/auth/register/${signUp.regId}/resendCode`,
+      method: 'POST',
+    });
   }
 
   render() {
     const { state } = this;
+    const { signUp } = this.props;
 
     const { seconds } = state.timer;
     const { minutes } = state.timer;
@@ -101,13 +168,23 @@ class ConfirmSignUp extends React.Component {
       <div id="confirmSignupComp">
         <div id="content">
           <img id="logo" src={logo} alt="logo" />
-          <p>A verification code was sent to <b>theEmail@add.com</b></p>
+          <p>A verification code was sent to <b>{signUp.form.email}</b></p>
           <InputField
-            label="Code"
+            label={(
+              <>
+                Code
+                {state.codeError !== false
+                  ? <span className="error"> : {state.codeError}</span>
+                  : ''}
+              </>
+            )}
+            value={state.code}
+            disabled={state.submitting}
             type="text"
+            onChange={this.regCode}
           />
           <p id="changeEmail">
-            if this is email is not yours please <NavLink to="/sign-up">change email</NavLink>
+            if this is email is not yours please <Link to="/sign-up">change email</Link>
           </p>
           <button
             id="resendCode"
@@ -119,10 +196,18 @@ class ConfirmSignUp extends React.Component {
           >
             Resend code {timer}
           </button>
+
           <button
+            id="submit"
             type="button"
-            className="btn btn-default"
-          >Verify code
+            className={`btn btn-default${state.submitting ? ' disabled' : ''}`}
+          >
+            Verify code
+            {
+              state.submitting
+                ? <span className="fa fa-spin fa-spinner icon" />
+                : ''
+            }
           </button>
         </div>
       </div>
@@ -130,4 +215,16 @@ class ConfirmSignUp extends React.Component {
   }
 }
 
-export default connect()(ConfirmSignUp);
+ConfirmSignUp.propTypes = {
+  FetchRequest: PropTypes.func.isRequired,
+  setSessionUser: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  signUp: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  signUp: state.auth.signUp,
+});
+
+export default connect(mapStateToProps)(ConfirmSignUp);

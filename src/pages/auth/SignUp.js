@@ -8,36 +8,14 @@ import InputField from '../../components/elements/InputField';
 import {
   changeHeader, resetHeader, resetNav, changeNav,
 } from '../../store/setting/action';
-import { isEmpty, isEmail, devalueString } from '../../lib/js';
+import {
+  isEmpty, isEmail, devalueString, parseQueryString,
+} from '../../lib/js';
+import { changeSignUp, changeSignUpForm } from '../../store/auth/action';
 
 class SignUp extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      form: {
-        firstName: '',
-        firstNameError: false,
-        lastName: '',
-        lastNameError: false,
-        email: '',
-        emailError: false,
-        mobileNumber: '',
-        mobileNumberError: false,
-        dateOfBirth: '',
-        dateOfBirthError: false,
-        countryId: '',
-        countryIdError: false,
-        stateId: '',
-        stateIdError: false,
-        cityId: '',
-        cityIdError: false,
-        termsAgree: false,
-        termsAgreeError: false,
-      },
-      statesOptions: false,
-      citiesOptions: false,
-      submitting: false,
-    };
 
     this._isMounted = false;
     this.submit = this.submit.bind(this);
@@ -61,6 +39,13 @@ class SignUp extends React.Component {
     props.changeNav({
       show: false,
     });
+
+    const query = parseQueryString(this.props.location.search);
+    if (query.referer) {
+      this.props.changeSignUpForm({
+        referer: query.referer,
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -72,19 +57,19 @@ class SignUp extends React.Component {
 
   getStates(countryId) {
     const { props } = this;
-    this.setState(() => ({
+    props.changeSignUp({
       statesOptions: 'loading',
       citiesOptions: false,
-    }));
+    });
     props.getCountryStates(countryId).then((states) => {
       if (this._isMounted) {
         const statesOptions = Object.keys(states).map((id) => ({
           value: id,
           label: states[id].value,
         }));
-        this.setState(() => ({
+        props.changeSignUp({
           statesOptions,
-        }));
+        });
         console.log('OUR STATE OPTIONS IS : ', statesOptions);
       }
     });
@@ -92,18 +77,19 @@ class SignUp extends React.Component {
 
   getCitites(stateId) {
     const { props } = this;
-    this.setState(() => ({
+    props.changeSignUp({
       citiesOptions: 'loading',
-    }));
-    props.getCountryStateCities(this.state.form.countryId, stateId).then((cities) => {
+    });
+
+    props.getCountryStateCities(props.signUp.form.countryId, stateId).then((cities) => {
       if (this._isMounted) {
         const citiesOptions = Object.keys(cities).map((id) => ({
           value: id,
           label: cities[id],
         }));
-        this.setState(() => ({
+        props.changeSignUp({
           citiesOptions,
-        }));
+        });
         console.log('OUR STATE OPTIONS IS : ', citiesOptions);
       }
     });
@@ -131,19 +117,17 @@ class SignUp extends React.Component {
   }
 
   regField(field, value) {
-    this.setState((prev) => ({
-      form: {
-        ...prev.form,
-        [field]: value,
-        ...this.validateField(field, value),
-      },
-    }));
+    this.props.changeSignUpForm({
+      [field]: value,
+      ...this.validateField(field, value),
+    });
   }
 
   submit() {
-    const { state, props } = this;
+    const { props } = this;
+    const { signUp } = props;
 
-    if (!state.submitting) {
+    if (!signUp.submitting) {
       const {
         firstName,
         lastName,
@@ -154,7 +138,8 @@ class SignUp extends React.Component {
         stateId,
         cityId,
         termsAgree,
-      } = state.form;
+        referer,
+      } = signUp.form;
 
       const validateFields = () => {
         const fields = {
@@ -178,15 +163,11 @@ class SignUp extends React.Component {
           };
         });
 
-        this.setState((prev) => ({
-          form: {
-            ...prev.form,
-            ...errors,
-          },
-        }));
+        props.changeSignUpForm({
+          ...errors,
+        });
 
         for (const key in errors) {
-          console.log(key, errors[key]);
           if (errors[key] !== false) {
             return false;
           }
@@ -196,8 +177,8 @@ class SignUp extends React.Component {
       };
 
       if (validateFields()) {
-        console.log('made it all through man');
-        props.fetchRequest({
+        props.changeSignUp({ submitting: true });
+        props.FetchRequest({
           url: `${process.env.REACT_APP_API}/auth/register`,
           method: 'POST',
           body: JSON.stringify({
@@ -209,6 +190,7 @@ class SignUp extends React.Component {
             stateId,
             mobileNumber,
             cityId,
+            referer,
           }),
           headers: {
             'Content-Type': 'application/json',
@@ -216,26 +198,28 @@ class SignUp extends React.Component {
         }).then((res) => {
           console.log('login response : ', res);
           if (this._isMounted) {
-            localStorage.setItem('sessionUserToken', res.token);
-            localStorage.setItem('sessionUserId', res.id);
-            this.props.history.push('/home');
+            const { regId } = res.data.data;
+            props.changeSignUp({
+              regId,
+            });
+            this.props.history.push('/confirm-sign-up');
           }
         }).catch((err) => {
+          console.log('the error', { ...err });
           if (this._isMounted) {
             const reqFormError = {};
-            const { error } = err.data;
+            const { error } = err.response.data;
             Object.keys(error).forEach((key) => {
               reqFormError[`${key}Error`] = error[key];
             });
 
-            this.setState((prev) => ({
-              form: {
-                ...prev.form,
-                ...reqFormError,
-              },
+            props.changeSignUpForm({
+              ...reqFormError,
+            });
+
+            props.changeSignUp({
               submitting: false,
-            }));
-            console.log('THE ERROR STRCUTURE', { ...error });
+            });
           }
         });
       }
@@ -243,8 +227,10 @@ class SignUp extends React.Component {
   }
 
   render() {
-    const { props, state } = this;
-    const { form } = state;
+    const { props } = this;
+    const { signUp } = props;
+    const { form } = signUp;
+
 
     const countries = [{
       value: '-placeholder-',
@@ -265,15 +251,15 @@ class SignUp extends React.Component {
       disabled: true,
     }];
 
-    if (state.statesOptions === 'loading') {
+    if (signUp.statesOptions === 'loading') {
       states = [{
         value: '-placeholder-',
         label: 'Please wait...',
         defaultValue: true,
         disabled: true,
       }];
-    } else if (state.statesOptions) {
-      states.push(...state.statesOptions);
+    } else if (signUp.statesOptions) {
+      states.push(...signUp.statesOptions);
     }
 
     let cities = [{
@@ -283,15 +269,15 @@ class SignUp extends React.Component {
       disabled: true,
     }];
 
-    if (state.citiesOptions === 'loading') {
+    if (signUp.citiesOptions === 'loading') {
       cities = [{
         value: '-placeholder-',
         label: 'Please wait...',
         defaultValue: true,
         disabled: true,
       }];
-    } else if (state.citiesOptions) {
-      cities.push(...state.citiesOptions);
+    } else if (signUp.citiesOptions) {
+      cities.push(...signUp.citiesOptions);
     }
 
     return (
@@ -445,9 +431,14 @@ class SignUp extends React.Component {
 
           <button
             type="button"
-            className="btn btn-default"
+            className={`btn btn-default${signUp.submitting ? ' disabled' : ''}`}
             onClick={this.submit}
           >CONTINUE
+            {
+              signUp.submitting
+                ? <span className="fa fa-spin fa-spinner icon" />
+                : ''
+            }
           </button>
 
           <div id="switcher">
@@ -461,7 +452,7 @@ class SignUp extends React.Component {
 }
 
 SignUp.propTypes = {
-  fetchRequest: PropTypes.func.isRequired,
+  FetchRequest: PropTypes.func.isRequired,
   changeHeader: PropTypes.func.isRequired,
   changeNav: PropTypes.func.isRequired,
   resetHeader: PropTypes.func.isRequired,
@@ -469,11 +460,14 @@ SignUp.propTypes = {
   getCountries: PropTypes.func.isRequired,
   getCountryStates: PropTypes.func.isRequired,
   getCountryStateCities: PropTypes.func.isRequired,
+  changeSignUp: PropTypes.func.isRequired,
+  changeSignUpForm: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  signUp: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = () => ({
-
+const mapStateToProps = (state) => ({
+  signUp: state.auth.signUp,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -481,6 +475,8 @@ const mapDispatchToProps = (dispatch) => ({
   changeHeader: (header) => dispatch(changeHeader(header)),
   resetHeader: () => dispatch(resetHeader()),
   resetNav: () => dispatch(resetNav()),
+  changeSignUp: (props) => dispatch(changeSignUp(props)),
+  changeSignUpForm: (props) => dispatch(changeSignUpForm(props)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

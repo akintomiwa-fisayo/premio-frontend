@@ -7,44 +7,57 @@ import { Link } from 'react-router-dom';
 import { List } from 'antd/lib/form/Form';
 import { connect } from 'react-redux';
 import { changeHeader, resetHeader } from '../../store/setting/action';
-import ChangePassword from '../account/myAccount/ChangePassword';
-import BecomeVendor from '../account/myAccount/BecomeVendor';
-import user3 from '../../public/static/img/users/3.jpg';
-import user1 from '../../public/static/img/users/1.jpg';
 import HistoryLog from './HistoryLog';
 
 class SalesReport extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
-    this.props.dispatch(changeHeader({
+    this.props.onComponentMount();
+    this.props.changeHeader({
       type: 'goBack',
       label: 'sales report',
       onGoBack: () => {
         this.props.history.goBack();
       },
-    }));
+    });
   }
 
   componentWillUnmount() {
-    this.props.dispatch(resetHeader());
+    this.props.resetHeader();
   }
 
-
   render() {
-    const { header, nav } = this.props;
+    const { props } = this;
+    const { sales } = props;
+    if (sales.loading) {
+      return (
+        <section id="myCommissions">
+          <p className="page-loader" />
+        </section>
+      );
+    }
 
     const tabs = [
       { title: <Badge>INCOME</Badge> },
       { title: <Badge>WITHDRAWAL</Badge> },
     ];
 
+    let Total = 0;
+
+    const salesReport = sales.report.map((sale) => {
+      Total += sale.amount;
+      return [
+        <Link to="/account/client">{sale.productId}</Link>,
+        <><span>#</span>{sale.amount.toLocaleString('en-GB')} <span className="icon-arrow-down income-icon" /></>,
+        '22/04/2020',
+      ];
+    });
+
+    console.log({ salesReport });
+
     return (
       <section id="myCommissions">
         <div id="balance">
-          <h1>$5,000.00</h1>
+          <h1><span>#</span>{Total.toLocaleString('en-GB')}</h1>
           <span>Total balance</span>
           {/* <button type="button" className="btn btn-glass">Make Withdrawal</button> */}
         </div>
@@ -58,28 +71,7 @@ class SalesReport extends Component {
           >
             <HistoryLog
               headers={['Product', 'Price', 'Date']}
-              data={[
-                [
-                  <Link to="/account/client">#12345</Link>,
-                  <>$400 <span className="icon-arrow-down income-icon" /></>,
-                  '22/04/2020',
-                ],
-                [
-                  <Link to="/account/client">#12345</Link>,
-                  <>$400 <span className="icon-arrow-down income-icon" /></>,
-                  '22/04/2020',
-                ],
-                [
-                  <Link to="/account/client">#12345</Link>,
-                  <>$400 <span className="icon-arrow-down income-icon" /></>,
-                  '22/04/2020',
-                ],
-                [
-                  <Link to="/account/client">#12345</Link>,
-                  <>$400 <span className="icon-arrow-down income-icon" /></>,
-                  '22/04/2020',
-                ],
-              ]}
+              data={salesReport}
             />
             <HistoryLog
               headers={['Withdrawal', 'Date']}
@@ -104,7 +96,7 @@ class SalesReport extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  ...state.setting,
+  sales: state.sales,
 });
 
 export default connect(mapStateToProps)(SalesReport);

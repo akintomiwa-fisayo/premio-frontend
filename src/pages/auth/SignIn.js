@@ -17,15 +17,18 @@ class SignIn extends React.Component {
     this.state = {
       email: '',
       password: '',
+      submitting: false,
     };
 
     this._isMounted = false;
     this.changeState = this.changeState.bind(this);
+    this.preventBack = this.preventBack.bind(this);
     this.submit = this.submit.bind(this);
   }
 
   componentDidMount() {
     this._isMounted = true;
+    // window.addEventListener('popstate', this.preventBack);
     this.props.dispatch(changeHeader({
       show: false,
     }));
@@ -34,10 +37,17 @@ class SignIn extends React.Component {
     }));
   }
 
+
   componentWillUnmount() {
     this._isMounted = false;
     this.props.dispatch(resetHeader());
     this.props.dispatch(resetNav());
+    // window.removeEventListener('popstate', this.preventBack);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  preventBack() {
+    // window.history.go(0);
   }
 
   changeState(props) {
@@ -46,48 +56,59 @@ class SignIn extends React.Component {
 
   submit() {
     const { props } = this;
-    const { email, password } = this.state;
+    const { email, password, submitting } = this.state;
 
-    props.fetchRequest({
-      url: `${process.env.REACT_APP_API}/auth/login`,
-      method: 'POST',
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((res) => {
-      if (this._isMounted) {
-        localStorage.setItem('sessionUserToken', res.token);
-        localStorage.setItem('sessionUserId', res.id);
-        this.props.history.push('/home');
-      }
-    }).catch(({ data: { error } }) => {
-      if (this._isMounted) {
-        if (error === 'Incorrect email or password') {
-          alert(
-            'Login Failed',
-            'Username or Password invalid',
-            [{
-              text: 'ok',
-            }],
-          );
-        } else {
-          alert(
-            'Login Failed',
-            'Please try again',
-            [{
-              text: 'ok',
-            }],
-          );
+
+    if (!submitting) {
+      this.setState({ submitting: true });
+      props.FetchRequest({
+        url: `${process.env.REACT_APP_API}/auth/login`,
+        method: 'POST',
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then((res) => {
+        if (this._isMounted) {
+          const { data } = res.data;
+          localStorage.setItem('sessionUserToken', data.token);
+          localStorage.setItem('sessionUserId', data.id);
+          this.props.setSessionUser(data);
+          this.props.history.push('/home');
         }
-      }
-    });
+      }).catch((erroRes) => {
+        console.log('REAL WEID ERRO', erroRes);
+        const { error } = erroRes.response.data;
+        if (this._isMounted) {
+          this.setState({ submitting: false });
+
+          if (error === 'Incorrect email or password') {
+            alert(
+              'Login Failed',
+              'Username or Password invalid',
+              [{
+                text: 'ok',
+              }],
+            );
+          } else {
+            alert(
+              'Login Failed',
+              'Please try again',
+              [{
+                text: 'ok',
+              }],
+            );
+          }
+        }
+      });
+    }
   }
 
   render() {
+    const { state } = this;
     return (
       <div id="signinComp">
         <div id="content">
@@ -116,12 +137,24 @@ class SignIn extends React.Component {
 
           <button
             type="button"
-            className="btn btn-default"
+            className={`btn btn-default${state.submitting ? ' disabled' : ''}`}
             onClick={this.submit}
-          >SIGN IN
+          >
+            SIGN IN
+            {
+              state.submitting
+                ? <span className="fa fa-spin fa-spinner icon" />
+                : ''
+            }
           </button>
 
           <p id="register">Don't have an account yet? <Link to="/sign-up">Register Now</Link></p>
+          <p id="register">Don't have an account yet? <p onClick={() => {
+            this.props.history.push('/confirm-sign-up');
+          }}
+          >confrim Register Now
+          </p>
+          </p>
         </div>
       </div>
     );
@@ -130,7 +163,8 @@ class SignIn extends React.Component {
 
 SignIn.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  fetchRequest: PropTypes.func.isRequired,
+  FetchRequest: PropTypes.func.isRequired,
+  setSessionUser: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
 };
 

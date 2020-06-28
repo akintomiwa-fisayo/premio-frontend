@@ -4,25 +4,25 @@ import { Link } from 'react-router-dom';
 import { changeHeader, resetHeader } from '../store/setting/action';
 import SearchBar from '../components/shared/SearchBar';
 import user3 from '../public/static/img/users/1.jpg';
+import { ucFirst, stringSimilarity } from '../lib/js';
 
 
-class Messages extends Component {
+class TeamMates extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      updateDetails: false,
-      changePassword: false,
+      searchResult: false,
     };
 
-    this.updateDetails = this.updateDetails.bind(this);
-    this.changePassword = this.changePassword.bind(this);
-    this.becomeVendor = this.becomeVendor.bind(this);
+    this.getTeamMates = this.getTeamMates.bind(this);
   }
 
   componentDidMount() {
+    this.props.onComponentMount();
     this.props.dispatch(changeHeader({
       type: 'goBack',
-      label: 'team mates',
+      label: 'team Mates',
       onGoBack: () => {
         this.props.history.goBack();
       },
@@ -33,129 +33,53 @@ class Messages extends Component {
     this.props.dispatch(resetHeader());
   }
 
-  updateDetails(updateDetails = true) {
-    this.setState(() => ({
-      updateDetails,
+  getTeamMates(query) {
+    const { props, state } = this;
+    const { loading } = state;
+    const { sessionUser, teamMates } = props;
+    let { users } = teamMates;
+    let searchResult = [];
+    // const query = this.parseQueryString(this.props.location.search);
+
+    if (query) {
+      for (let i = 0; i < users.length; i += 1) {
+        users[i].score = stringSimilarity(query, users[i].isVendor ? users[i].companyName : `${users[i].firstName} ${users[i].lastName}`);
+      }
+
+      users.sort((a, b) => {
+        const scoreA = a.score;
+        const scoreB = b.score;
+
+        if (scoreA < scoreB) {
+          return 1;
+        }
+        if (scoreA > scoreB) {
+          return -1;
+        }
+        return 0;
+      });
+
+      const tempUsers = users;
+      users = [];
+      tempUsers.forEach((user) => {
+        if (user.score > 0) {
+          users.push(user);
+        }
+      });
+    } else {
+      searchResult = users;
     }
-    ));
+
+    this.setState({ searchResult });
   }
 
-  changePassword(changePassword = true) {
-    this.setState(() => ({
-      changePassword,
-    }));
-  }
-
-  becomeVendor(becomeVendor = true) {
-    this.setState(() => ({
-      becomeVendor,
-    }));
-  }
 
   render() {
-    const { state } = this;
-    const { header, nav, user } = this.props;
-    console.log({ header, nav });
+    const { setting, teamMates } = this.props;
+    const { header, nav } = setting;
+    const { searchResult } = this.state;
 
-    const clients = [
-      {
-        id: 12,
-        avi: user3,
-        firstName: 'Akintomiwa',
-        lastName: 'fisayo',
-        lastMessage: {
-          sender: 12,
-          content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
-          sentOn: 'today',
-        },
-
-      },
-      {
-        id: 11,
-        avi: user3,
-        firstName: 'Mr',
-        lastName: 'shola',
-        lastMessage: {
-          sender: 13,
-          content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
-          sentOn: 'today',
-        },
-
-      },
-      {
-        id: 12,
-        avi: user3,
-        firstName: 'Fine-boy',
-        lastName: 'samuel',
-        lastMessage: {
-          sender: 12,
-          content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
-          sentOn: 'today',
-        },
-
-      },
-      {
-        id: 12,
-        avi: user3,
-        firstName: 'Akintomiwa',
-        lastName: 'fisayo',
-        lastMessage: {
-          sender: 12,
-          content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
-          sentOn: 'today',
-        },
-
-      },
-      {
-        id: 12,
-        avi: user3,
-        firstName: 'Akintomiwa',
-        lastName: 'fisayo',
-        lastMessage: {
-          sender: 12,
-          content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
-          sentOn: 'today',
-        },
-
-      },
-      {
-        id: 11,
-        avi: user3,
-        firstName: 'Mr',
-        lastName: 'shola',
-        lastMessage: {
-          sender: 13,
-          content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
-          sentOn: 'today',
-        },
-
-      },
-      {
-        id: 12,
-        avi: user3,
-        firstName: 'Fine-boy',
-        lastName: 'samuel',
-        lastMessage: {
-          sender: 12,
-          content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
-          sentOn: 'today',
-        },
-
-      },
-      {
-        id: 12,
-        avi: user3,
-        firstName: 'Akintomiwa',
-        lastName: 'fisayo',
-        lastMessage: {
-          sender: 12,
-          content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
-          sentOn: 'today',
-        },
-
-      },
-    ];
-
+    const viewTeamMates = searchResult !== false ? searchResult : teamMates.users;
     return (
       <section id="myClients">
         <div
@@ -166,28 +90,29 @@ class Messages extends Component {
         >
           <SearchBar
             placeholder="Search"
-            onEnter={() => {
-              alert('ama fdfind clients for you');
+            onChange={(query) => {
+              this.getTeamMates(query);
             }}
           />
         </div>
-        <div id="addNewContact">
+        <Link to="/invite-friend" id="addNewContact">
           <span className="icon-plus" />
-          <Link to="/invite-friend"> Invite Friend </Link>
-        </div>
+          Invite Friend
+        </Link>
         <div className="client-list">
-          {
-            clients.map((client) => (
-              <Link to={`/my-clients/${client.id}/messages`} className="client">
-                <div className="avi">
+          {teamMates.loading ? (
+            <p className="page-loader" />
+          )
+            : viewTeamMates.map((teamMate) => (
+              <Link to={`/account/${teamMate.id}`} className="client">
+                <div className={`avi${teamMate.isVendor ? ' vendor' : ''}`}>
                   <div className="holder">
-                    <img src={client.avi} alt="" />
+                    <img src={teamMate.displayImage} alt="" />
                   </div>
                 </div>
-                <p className="name">{client.firstName} {client.lastName}</p>
+                <p className="name">{ucFirst(teamMate.firstName)} {teamMate.lastName}</p>
               </Link>
-            ))
-          }
+            ))}
         </div>
       </section>
     );
@@ -195,7 +120,7 @@ class Messages extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  ...state.setting,
+  teamMates: state.teamMates,
 });
 
-export default connect(mapStateToProps)(Messages);
+export default connect(mapStateToProps)(TeamMates);

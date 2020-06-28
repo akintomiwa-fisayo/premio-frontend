@@ -20,6 +20,10 @@ header#header {
   // @include transition(all 0.4s $ease-in-out-quad);
 
   $icons-size: 1.5em;
+  .icon{
+    font-size: $icons-size;
+  }
+
   .left, .center, .right{
     display: flex;
     align-items: center;
@@ -27,6 +31,7 @@ header#header {
   
   .left, .right{
     width: 3em;
+
   }
   
   .center{
@@ -56,18 +61,52 @@ header#header {
       
       .icon{
         font-size: 1.5em;
-        
+      
       }
 
+      
       &:active,&:hover,&:focus{
         color: inherit;
         
       }
     }
+    
+    #cartIcon{
+      position: relative;
+      overflow: unset;
+
+      .counter{
+        position: absolute;
+        display: flex;
+        background: white;
+        background: lighten($color: $color-1st, $amount: 35);
+        justify-content: center;
+        align-items: center;
+        border-radius: 9999px;
+        top: -.4em;
+        left: auto;
+        right: -45%;
+        z-index: 999;
+        height: 1.3em;
+        min-width: 1.3em;
+        width: max-content;
+        padding: .3em;
+
+        span{
+          line-height: 1;
+          font-size: .8em;
+        }
+
+        /* &:after{
+          content:"";
+          display: block;
+          padding-top: 100%;
+        } */
+      }
+    }
   }
 
   .home-icon, .go-back-icon, .user-avi{
-    font-size: $icons-size;
   }
 
   .user-avi{
@@ -276,6 +315,7 @@ header#header {
     left: 0px;
     width: 0;
     
+    $contentWidthLg: 28vw;
     $contentWidth: 70vw;
     
     .content{
@@ -285,7 +325,7 @@ header#header {
       background: white;
       padding-top: 1em;
       padding-bottom: 1em;
-      width: $contentWidth;
+      width: $contentWidthLg;
       height: inherit;
       transition: left 150ms linear;
       overflow-y: auto;
@@ -296,12 +336,13 @@ header#header {
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         margin-bottom: 1.2em;
         @extend .ps-container;
 
         .avi{
           position: relative;
-          width: 30%;
+          width: $contentWidthLg * .3;
           border-radius: 9999999px;
           overflow: hidden;
 
@@ -310,7 +351,7 @@ header#header {
             width: 100%;
             height: 100%;
             border-radius: inherit;
-
+            object-fit: cover;
           }
           
           &.vendor{
@@ -331,11 +372,12 @@ header#header {
 
         .name{
           font-weight: bold;
-          font-size: 1.3em;
+          font-size: 1.4em;
           text-transform: capitalize;
           margin: 0;
           margin-top: .4em;
           line-height: 1;
+          text-align: center;
           color: inherit;
         }
         
@@ -369,8 +411,9 @@ header#header {
           background: fade-out($color-1st, .8);
         }
       }
-    }
 
+    }
+    
     .bk-block{
       position: fixed;
       top: 0px;
@@ -379,20 +422,41 @@ header#header {
       height: inherit;
       background: rgba(0, 0, 0, 0.5);
     }
-
+    
     &.hide{
       .content{
-        left: -$contentWidth;
+        left: -$contentWidthLg;
       }
-
+      
       .bk-block{
         display: none;
       }
+      
+    }
+    
+    
+    @include media('<md') {
+      .content{
+        justify-content: space-between;
+        width: $contentWidth;
+        
+        .user{
+          .avi{
+            width: $contentWidth * .3;
+            
+          }
+        }
+      }
 
+      &.hide{
+        .content{
+          left: -$contentWidth;
+        }
+                
+      }
+      
     }
   }
-
-
 
   
   .navigation__content {
@@ -411,6 +475,7 @@ header#header {
     @extend .ps-container;  
     
     .navigation__item {
+      position: relative;
       text-align: center;
       text-decoration: none;
       color: inherit;
@@ -419,9 +484,33 @@ header#header {
         font-size: 1.3em;
       }
   
-      span {
+      >span {
         display: block;
         font-size: .8em
+      }
+
+      .counter{
+        position: absolute;
+        display: flex;
+        background: white;
+        background: lighten($color: $color-1st, $amount: 5);
+        justify-content: center;
+        align-items: center;
+        border-radius: 9999px;
+        top: -.5em;
+        left: auto;
+        left: 1.8em;
+        z-index: 999;
+        height: 1.3em;
+        min-width: 1.3em;
+        width: max-content;
+        padding: .3em;
+
+        span{
+          line-height: 1;
+          font-size: .8em;
+          color: #404040;
+        }
       }
   
       &.active {
@@ -429,7 +518,7 @@ header#header {
             color: $color-1st;
         }
   
-        span {
+        >span {
             color: $color-1st;
         }
       }
@@ -443,13 +532,6 @@ header#header {
   }
   
 
-}
-
-#cartDrawalContent{
-  .ps-panel__content{
-    padding-left: 2em !important;
-    @extend .ps-container;
-  }
 }
 
 #searchPanel{

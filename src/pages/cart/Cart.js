@@ -1,67 +1,129 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getCart, removeItem, updateCartSuccess } from '../../store/cart/action';
-import { onSale } from '../../public/static/data/product';
+import { changeHeader, resetHeader } from '../../store/setting/action';
+import { removeCartProduct } from '../../store/cart/action';
+import { setPaymentInfo } from '../../store/payment/action';
 
 
 class Cart extends Component {
   constructor(props) {
     super(props);
+
+    this.handleRemoveCartItem = this.handleRemoveCartItem.bind(this);
+    this.buyProducts = this.buyProducts.bind(this);
   }
 
   componentDidMount() {
-    // this.props.dispatch(getCart());
-    // set Cart items
-    this.props.dispatch(updateCartSuccess({
-      cartItems: onSale,
+    this.props.onComponentMount();
+    this.props.dispatch(changeHeader({
+      type: 'goBack',
+      label: 'details',
+      onGoBack: () => {
+        this.props.history.goBack();
+      },
     }));
   }
 
-  handleRemoveCartItem(product) {
-    this.props.dispatch(removeItem(product));
+  componentWillUnmount() {
+    this.props.dispatch(resetHeader());
+  }
+
+  handleRemoveCartItem(productId) {
+    const { props } = this;
+    props.dispatch(removeCartProduct(productId));
+
+    props.fetchRequest({
+      url: `${process.env.REACT_APP_API}/products/${productId}/remove_from_cart`,
+      method: 'DELETE',
+    }).then((res) => {
+      const { cartProducts } = res;
+      props.setCartProducts(cartProducts);
+    });
+  }
+
+  buyProducts() {
+    const { cartProducts } = this.props;
+    this.props.setPaymentInfo({
+      paymentFor: 'ProductsPurchase',
+      summary: cartProducts.map((product) => ({
+        id: product.id,
+        description: `Product purchase (${product.id})`,
+        units: 1,
+        price: product.price,
+        referer: product.referer,
+      })),
+    });
+
+    this.props.history.push('/payment');
+    // alert("stat function that checks ")
   }
 
   render() {
-    const {
-      amount, cartItems, nav, header,
-    } = this.props;
+    const { cartProducts } = this.props;
+
+    let amount = 0;
+    // Get the total  price
+    cartProducts.forEach((pro) => {
+      amount += pro.price;
+    });
+
     console.log(this.props);
     return (
       <div id="cartDrawalContent">
         <div className="ps-panel__content  ps-container">
           <div className="ps-cart--mobile">
             <div className="ps-cart__content">
-              {cartItems && cartItems.length > 0 ? (
-                cartItems.map((product) => (
-                  <div className="ps-product--cart-mobile" key={product.id}>
+              {cartProducts.length > 0 ? (
+                cartProducts.map((product) => (
+                  <Link
+                    to={`/products/${product.id}`}
+                    className="ps-product--cart-mobile"
+                    key={product.id}
+                  >
                     <div className="ps-product__thumbnail">
-                      <Link to={`/products/${product.id}`}>
-                        <img src={product.thumbnail} alt="martfury" />
-                      </Link>
+                      <img src={product.thumbnail} alt="martfury" />
                     </div>
                     <div className="ps-product__content">
                       <span
                         className="ps-product__remove"
-                        onClick={this.handleRemoveCartItem.bind(this, product)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          this.handleRemoveCartItem(product.id);
+                        }}
                       >
                         <i className="icon-cross" />
                       </span>
-                      <Link to={`/products/${product.id}`} className="ps-product__title"> {product.title} </Link>
-                      <p className="vendor"> <strong>Sold by:</strong> {product.vendor} </p>
-                      <p className="price"> ${product.price} </p>
+                      <p className="ps-product__title"> {product.title} </p>
+                      <p className="vendor">
+                        <span>Sold by:</span>
+                        <Link to={`account/${product.vendor.id}`}>
+                          {product.vendor.companyName}
+                        </Link>
+                      </p>
+                      <div className="price product-price">
+                        <span><span>#</span>{product.price.toLocaleString('en-GB')}</span>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 ))
               ) : (
-                <div className="ps-cart__items">
-                  <span>No products in cart</span>
-                </div>
+                <p className="page-empty-msg">There are no products in cart</p>
               )}
             </div>
             <div className="ps-cart__footer">
-              <h3> Sub Total:<strong>${amount || 4000}</strong> </h3>
-              <button type="button" className="btn btn-default">Checkout </button>
+              <h3>
+                Sub Total:
+                <strong>
+                  #{amount.toLocaleString('en-GB')}
+                </strong>
+              </h3>
+              <button
+                type="button"
+                className="btn btn-default"
+                onClick={this.buyProducts}
+              >Checkout
+              </button>
             </div>
           </div>
         </div>
@@ -72,6 +134,10 @@ class Cart extends Component {
 
 const mapStateToProps = (state) => ({
   ...state.cart,
-  ...state.setting,
 });
-export default connect(mapStateToProps)(Cart);
+
+const mapDispatchToProps = (dispatch) => ({
+  setPaymentInfo: (props) => dispatch(setPaymentInfo(props)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);

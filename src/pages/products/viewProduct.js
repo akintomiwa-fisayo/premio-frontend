@@ -1,10 +1,9 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-import { products } from '../../public/static/data/product';
 import ProductWidgets from './ProductWidgets';
 import { changeHeader, resetHeader } from '../../store/setting/action';
-import InformationDefault from './InformationDefault';
+import ProductInformations from './ProductInformations';
 import ProductComments from './ProductComments';
 
 class ViewProduct extends React.Component {
@@ -12,16 +11,12 @@ class ViewProduct extends React.Component {
     super(props);
 
     this.state = {
-      product: {},
-      loading: true,
+      productId: this.props.match.params.productId,
     };
-
-    this.productId = null;
-    this.prevSearch = '';
-    this.getProduct = this.getProduct.bind(this);
   }
 
   componentDidMount() {
+    this.props.onComponentMount();
     this.props.dispatch(changeHeader({
       type: 'goBack',
       label: 'details',
@@ -29,53 +24,46 @@ class ViewProduct extends React.Component {
         this.props.history.goBack();
       },
     }));
+  }
 
-    this.getProduct();
+  componentDidUpdate() {
+    // this.props.onComponentMount();
+    const { productId } = this.props.match.params;
+
+    if (this.state.productId !== productId) {
+      this.setState({ productId });
+      this.props.onComponentMount();
+    }
   }
 
   componentWillUnmount() {
     this.props.dispatch(resetHeader());
   }
 
-  getProduct() {
-    const { props } = this;
-    const { productId } = this.props.match.params;
-
-    if (this.productId !== productId) {
-      document.querySelector('html').scrollTop = 0;
-      props.fetchRequest({
-        url: `${process.env.REACT_APP_API}/products/${productId}`,
-        method: 'GET',
-      }).then((product) => {
-        if (this._isMounted) {
-          this.setState(() => ({ product, loading: false }));
-        }
-      });
-    }
-  }
-
   render() {
-    const product = products[2];
+    const { productId } = this.state;
+
     return (
-      <div id="viewProduct" className="site-content">
+      <div id="viewProduct" className="">
         <div className="ps-page__left">
-          <div className="ps-product--detail ps-product--fullwidth">
-            <div className="ps-product__header">
-              <div id="thumbnail">
-                <img src={product.thumbnail} alt="" />
-              </div>
-              <InformationDefault {...this.props} product={product} />
-            </div>
-          </div>
+          <ProductInformations
+            {...this.props}
+            productId={productId}
+          />
         </div>
         <div className="ps-page__right">
-          <ProductComments {...this.props} product={product} />
-          <ProductWidgets {...this.props} product={product} />
+          <ProductComments
+            {...this.props}
+            productId={productId}
+          />
+          <ProductWidgets
+            {...this.props}
+            productId={productId}
+          />
         </div>
-        {/* <RelatedProductFullwidth /> */}
       </div>
     );
   }
 }
 
-export default connect()(ViewProduct);
+export default ViewProduct;

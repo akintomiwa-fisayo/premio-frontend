@@ -5,8 +5,16 @@ class RateProduct extends React.Component {
   constructor(props) {
     super(props);
 
+    // Register user old rating
+    let rating = 0;
+    for (rating of props.product.ratings) {
+      if (rating.userId === props.sessionUser.id) {
+        rating = rating.rating;
+      }
+    }
+
     this.state = {
-      rating: 0,
+      rating,
     };
 
     this.rateProduct = this.rateProduct.bind(this);
@@ -22,10 +30,14 @@ class RateProduct extends React.Component {
       body: JSON.stringify({
         rating,
       }),
-    }).then(() => {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => {
       if (this._isMounted) {
         alert('Rating succesfullhy created', '', [{ text: 'ok' }]);
       }
+      props.updateProduct({ ratings: res.ratings });
     });
   }
 

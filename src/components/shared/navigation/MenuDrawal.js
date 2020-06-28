@@ -1,17 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import PropTypes from 'prop-types';
 import { NavLink, Link } from 'react-router-dom';
-import user3 from '../../../public/static/img/users/3.jpg';
 
 class PanelMenu extends Component {
   constructor(props) {
     super(props);
+
+    this.signOut = this.signOut.bind(this);
+  }
+
+  signOut() {
+    localStorage.removeItem('sessionUserToken');
+    localStorage.removeItem('sessionUserId');
+    this.props.setSessionUser(false);
+    this.props.history.push('sign-in');
   }
 
   render() {
     const {
-      hide, nav, onClose, user,
+      hide, nav, onClose, sessionUser,
     } = this.props;
 
     return (
@@ -25,14 +33,24 @@ class PanelMenu extends Component {
         <div className="content">
           <div className="user">
             <Link
-              to="/account/owner"
-              className={`avi${user.accountType === 'vendor' ? ' vendor' : ''}`}
+              to="/profile"
+              className={`avi${sessionUser.isVendor ? ' vendor' : ''}`}
               onClick={onClose}
             >
-              <img src={user3} alt="" />
+              <img src={sessionUser.displayImage} alt="" />
             </Link>
-            <Link to="/account/owner" className="name" onClick={onClose}>akintomiwa fisayo</Link>
-            <Link to="/account/owner" className="handle" onClick={onClose}>@akintomiwaF</Link>
+            <Link
+              to="/profile"
+              className="name"
+              onClick={onClose}
+            >{
+              sessionUser.isVendor
+                ? sessionUser.companyName
+                : `${sessionUser.firstName} ${sessionUser.lastName}`
+            }
+            </Link>
+            {/* <Link to={`/profile`}
+             className="handle" onClick={onClose}>{}</Link> */}
           </div>
 
           <NavLink className="nav-link" to="/home" exact onClick={onClose}>
@@ -40,12 +58,12 @@ class PanelMenu extends Component {
             <h5>Home </h5>
           </NavLink>
 
-          <NavLink className="nav-link" to="/account/owner" exact onClick={onClose}>
+          <NavLink className="nav-link" to="/profile" exact onClick={onClose}>
             <span className="icon icon-user" />
             <h5>Profile </h5>
           </NavLink>
 
-          {user.accountType === 'vendor' ? (
+          {sessionUser.isVendor ? (
             <>
               <NavLink className="nav-link" to="/search" exact onClick={onClose}>
                 <span className="icon icon-magnifier" />
@@ -76,15 +94,25 @@ class PanelMenu extends Component {
             <span className="icon icon-user-plus" />
             <h5>Invite friend</h5>
           </NavLink>
-          <NavLink className="nav-link" to="/logout" onClick={onClose}>
+          <div className="nav-link" onClick={this.signOut}>
             <span className="icon icon-exit-left" />
             <h5>Log out </h5>
-          </NavLink>
+          </div>
         </div>
       </div>
     );
   }
 }
+
+PanelMenu.propTypes = {
+  sessionUser: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  nav: PropTypes.object.isRequired,
+  hide: PropTypes.object.isRequired,
+  setSessionUser: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+
+};
 
 const mapStateToProps = (state) => ({
   ...state.setting,

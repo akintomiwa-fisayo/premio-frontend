@@ -77,6 +77,7 @@ class InputField extends React.Component {
       input = (
         <input
           value={Value}
+          disabled={props.disabled}
           type={props.type}
           onFocus={() => {
             this.focusInput();
@@ -108,6 +109,7 @@ InputField.propTypes = {
   value: PropTypes.any,
   options: PropTypes.array,
   mandatory: PropTypes.bool,
+  disabled: PropTypes.bool,
   style: PropTypes.object,
   onFocus: PropTypes.func,
   onBlur: PropTypes.func,
@@ -119,6 +121,7 @@ InputField.defaultProps = {
   value: undefined,
   options: [],
   mandatory: false,
+  disabled: false,
   style: {},
   onFocus: () => {},
   onBlur: () => {},

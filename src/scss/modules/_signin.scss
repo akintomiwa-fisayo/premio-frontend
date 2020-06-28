@@ -35,10 +35,6 @@
       }
     }
 
-    #signIn{
-      width: 100%;
-    }
-
     #register{
       margin-top: 1em;
 
@@ -47,6 +43,15 @@
         font-weight: bold;
       }
     }
+
+    button{
+      width: 100%;
+
+      .icon{
+        margin-left: .8em;
+      }
+    }
+
   }
 
   @include media('<md') {

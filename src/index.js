@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Helmet from './Helmet';
 import store from './store/store';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
 import HeaderMobile from './components/shared/HeaderMobile';
 import Booter from './Booter';
@@ -14,7 +13,6 @@ ReactDOM.render(
   <Provider store={store()}>
     <Router>
       <Helmet />
-      <HeaderMobile />
       <Switch>
         <Route
           path="/"

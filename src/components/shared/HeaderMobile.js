@@ -30,19 +30,32 @@ class HeaderMobile extends Component {
       type, noUser, onGoBack, label, show, icon,
     } = props.header;
 
-    if (!show) return '';
+    const { cartProducts } = props;
 
-    let leftComp = <span className="icon-home3 home-icon" />;
-    let centerComp = <SearchBar />;
+    if (!show) return '';
+    console.log('HEADER', props);
+
+    let leftComp = <span className="icon-home3 icon" />;
+    let centerComp = (
+      <SearchBar
+        {...props}
+        onEnter={(searchQuery) => {
+          props.history.push(`/search/${searchQuery}`);
+        }}
+      />
+    );
     const rightComp = noUser ? '' : icon || (
-      <Link to="/cart">
+      <Link to="/cart" id="cartIcon">
         <span className="icon icon-cart" />
+        <div className="counter">
+          <span>{cartProducts.length || 0}</span>
+        </div>
       </Link>
     );
 
     if (type === 'goBack') {
       leftComp = (
-        <span className="icon-chevron-left go-back-icon" onClick={onGoBack} />
+        <span className="icon-chevron-left icon" onClick={onGoBack} />
       );
 
       centerComp = <span className="nav-label">{label}</span>;
@@ -79,7 +92,10 @@ HeaderMobile.defaultProps = {
 };
 
 const mapStateToProps = (state) => (
-  state.setting
+  {
+    ...state.cart,
+    ...state.setting,
+  }
 );
 
 export default connect(mapStateToProps)(HeaderMobile);

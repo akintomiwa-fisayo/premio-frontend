@@ -1,41 +1,38 @@
 import { actionTypes } from './action';
 
 export const initCart = {
-  cartItems: [],
-  amount: 0,
-  cartTotal: 0,
+  cartProducts: [],
+  loading: false,
 };
 
 function reducer(state = initCart, action) {
   switch (action.type) {
-    case actionTypes.GET_CART_SUCCESS:
+    case actionTypes.CART_SET_PRODUCTS:
       return {
         ...state,
+        cartProducts: action.cartProducts,
       };
-    case actionTypes.UPDATE_CART_SUCCESS:
+    case actionTypes.CART_ADD_PRODUCT:
       return {
         ...state,
-        ...{ cartItems: action.payload.cartItems },
-        ...{ amount: action.payload.amount },
-        ...{ cartTotal: action.payload.cartTotal },
+        cartProducts: [
+          action.product,
+          ...state.cartProducts,
+        ],
       };
-    case actionTypes.CLEAR_CART_SUCCESS:
+    case actionTypes.CART_REMOVE_PRODUCT: {
+      const cartProducts = [];
+      state.cartProducts.forEach((cartProduct) => {
+        if (cartProduct.id !== action.productId) {
+          cartProducts.push(cartProduct);
+        }
+      });
+
       return {
         ...state,
-        ...{ cartItems: action.payload.cartItems },
-        ...{ amount: action.payload.amount },
-        ...{ cartTotal: action.payload.cartTotal },
+        cartProducts,
       };
-    case actionTypes.GET_CART_ERROR:
-      return {
-        ...state,
-        ...{ error: action.error },
-      };
-    case actionTypes.UPDATE_CART_ERROR:
-      return {
-        ...state,
-        ...{ error: action.error },
-      };
+    }
     default:
       return state;
   }

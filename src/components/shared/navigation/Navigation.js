@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
+import { message } from 'antd';
 import { changeNav } from '../../../store/setting/action';
 import MenuDrawal from './MenuDrawal';
-import { setSessionUser } from '../../../store/auth/action';
 
 class Navigation extends Component {
   constructor(props) {
@@ -26,11 +27,8 @@ class Navigation extends Component {
 
   componentDidUpdate() {
     const { props } = this;
-    if (!this.onLoadCall && this.navigation && props.documentLoaded) {
+    if (!this.onLoadCall && this.navigation && props.setting.documentLoaded) {
       const navHeight = this.navigation.offsetHeight;
-      this.setState(() => ({
-        navHeight,
-      }));
       props.dispatch(changeNav({ height: navHeight }));
       this.onLoadCall = true;
     }
@@ -47,30 +45,30 @@ class Navigation extends Component {
   }
 
   handleShowMenuDrawer() {
-    this.setState({
-      menuDrawer: !this.state.menuDrawer,
+    this.setState((prev) => ({
+      menuDrawer: !prev.menuDrawer,
       cartDrawer: false,
       searchDrawer: false,
       categoriesDrawer: false,
-    });
+    }));
   }
 
   handleShowCartDrawer() {
-    this.setState({
+    this.setState((prev) => ({
       menuDrawer: false,
-      cartDrawer: !this.state.cartDrawer,
+      cartDrawer: prev.cartDrawer,
       searchDrawer: false,
       categoriesDrawer: false,
-    });
+    }));
   }
 
   handleShowSearchDrawer() {
-    this.setState({
+    this.setState((prev) => ({
       menuDrawer: false,
       cartDrawer: false,
-      searchDrawer: !this.state.searchDrawer,
+      searchDrawer: !prev.searchDrawer,
       categoriesDrawer: false,
-    });
+    }));
   }
 
   resetDrawals() {
@@ -90,8 +88,9 @@ class Navigation extends Component {
       categoriesDrawer,
     } = this.state;
 
-    const { user, nav } = this.props;
-
+    const { sessionUser, setting, messages } = this.props;
+    const { nav } = setting;
+    console.log('CONSULE NAVIGATION : ', setting);
     if (!nav.show) return '';
 
     return (
@@ -106,7 +105,7 @@ class Navigation extends Component {
           </span>
 
           {
-            user.accountType === 'vendor' ? (
+            sessionUser && sessionUser.isVendor ? (
               <>
                 <NavLink
                   to="/my-products"
@@ -157,19 +156,18 @@ class Navigation extends Component {
             className={`navigation__item ${cartDrawer === true ? 'active' : ''}`}
             onClick={this.handleShowCartDrawer}
           >
+            { messages.newMessages > 0
+              ? (
+                <div className="counter">
+                  <span>{messages.newMessages}</span>
+                </div>
+              ) : ''}
             <i className="icon-envelope" />
             <span>Messages</span>
           </NavLink>
-          <NavLink
-            to="/sign-up"
-            className={`navigation__item ${cartDrawer === true ? 'active' : ''}`}
-            onClick={this.handleShowCartDrawer}
-          >
-            <i className="icon-envelope" />
-            <span>sign-up</span>
-          </NavLink>
         </div>
         <MenuDrawal
+          {...this.props}
           onClose={this.resetDrawals}
           hide={!menuDrawer}
         />
@@ -178,8 +176,14 @@ class Navigation extends Component {
   }
 }
 
+Navigation.propTypes = {
+  documentLoaded: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  sessionUser: PropTypes.object.isRequired,
+  nav: PropTypes.object.isRequired,
+};
+
 const mapStateToProps = (state) => ({
-  ...state.setting,
-  ...state.auth,
+  messages: state.messages,
 });
 export default connect(mapStateToProps)(Navigation);

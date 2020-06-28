@@ -7,31 +7,8 @@ import { Link } from 'react-router-dom';
 import { List } from 'antd/lib/form/Form';
 import { connect } from 'react-redux';
 import { changeHeader, resetHeader } from '../../store/setting/action';
-import ChangePassword from '../account/myAccount/ChangePassword';
-import BecomeVendor from '../account/myAccount/BecomeVendor';
-import user3 from '../../public/static/img/users/3.jpg';
-import user1 from '../../public/static/img/users/1.jpg';
 
 class HistoryLog extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {
-    this.props.dispatch(changeHeader({
-      type: 'goBack',
-      label: 'my commisions',
-      onGoBack: () => {
-        this.props.history.goBack();
-      },
-    }));
-  }
-
-  componentWillUnmount() {
-    this.props.dispatch(resetHeader());
-  }
-
-
   render() {
     const { header, nav } = this.props;
 

@@ -1,36 +1,60 @@
 import React from 'react';
 import './App.css';
+import './scss/style.scss';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 import Navigation from './components/shared/navigation/Navigation';
-import Home from './pages/home/home';
-import './scss/style.scss';
+import Home from './pages/home/Home';
 import Products from './pages/products/products';
-import SearchResult from './pages/search/SearchResult';
-import Purchases from './pages/account/Purchases';
+import Profile from './pages/profile/Profile';
+import SearchRoutes from './pages/search/Routes';
 import Messages from './pages/messaging/messaging';
-import Clients from './pages/clients/clients';
+import MyClients from './pages/myClients/MyClients';
 import MyProducts from './pages/myProducts/myProducts';
-import ConfirmSignUp from './pages/auth/ConfirmSignUp';
-import SignUp from './pages/auth/SignUp';
-import ForgotPassword from './pages/auth/ForgotPassword';
-import ChangePassword from './pages/auth/ChangePassword';
 import SignIn from './pages/auth/SignIn';
 import InviteFriend from './pages/InviteFriend';
 import MyCommisions from './pages/myCommissions/MyCommisions';
 import SalesReport from './pages/salesReport/SalesReport';
 import TeamMates from './pages/TeamMates';
-import Vendor from './pages/Vendor';
 import Account from './pages/account/Account';
 import Cart from './pages/cart/Cart';
+import Payment from './pages/payment/Payment';
+import SignUp from './pages/auth/SignUp';
+import backgroundTasks from './tasks/tasks';
+import PurchasesRoutes from './pages/purchases/Routes';
+
 
 class App extends React.Component {
-  render() {
-    console.log({
-      process: process.env,
-    });
+  constructor(props) {
+    super(props);
 
-    console.log('BIG BOSS PROPS IS ', this.props);
+
+    this.backgroundTasksInterval = null;
+    this.executeBackgroundTasks = this.executeBackgroundTasks.bind(this);
+  }
+
+  componentDidMount() {
+    this.executeBackgroundTasks();
+    this.backgroundTasksInterval = setInterval(this.executeBackgroundTasks, 10000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.backgroundTasksInterval);
+  }
+
+  executeBackgroundTasks() {
+    const { props } = this;
+    // console.log('ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ', { ...this.props });
+    backgroundTasks({
+      store: props.store,
+      dispatchEvent: props.dispatchEvent,
+      fetchRequest: props.fetchRequest,
+      FetchRequest: props.FetchRequest,
+    });
+  }
+
+  render() {
     const { header, nav } = this.props.setting;
     return (
       <>
@@ -41,6 +65,24 @@ class App extends React.Component {
           }}
         >
           <Switch>
+            <Route
+              path="/payment"
+              render={(props) => (
+                <Payment
+                  {...this.props}
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/profile"
+              render={(props) => (
+                <Profile
+                  {...this.props}
+                  {...props}
+                />
+              )}
+            />
             <Route
               path="/cart"
               render={(props) => (
@@ -71,7 +113,7 @@ class App extends React.Component {
             <Route
               path="/my-clients"
               render={(props) => (
-                <Clients
+                <MyClients
                   {...this.props}
                   {...props}
                 />
@@ -80,7 +122,7 @@ class App extends React.Component {
             <Route
               path="/purchases"
               render={(props) => (
-                <Purchases
+                <PurchasesRoutes
                   {...this.props}
                   {...props}
                 />
@@ -134,7 +176,7 @@ class App extends React.Component {
             <Route
               path="/search"
               render={(props) => (
-                <SearchResult
+                <SearchRoutes
                   {...this.props}
                   {...props}
                 />
@@ -150,15 +192,6 @@ class App extends React.Component {
               )}
             />
             <Route
-              path="/vendors/:id"
-              render={(props) => (
-                <Vendor
-                  {...this.props}
-                  {...props}
-                />
-              )}
-            />
-            <Route
               path="/home"
               render={(props) => (
                 <Home
@@ -168,16 +201,6 @@ class App extends React.Component {
               )}
             />
 
-            {/* FOR AUTH PAGE */}
-            <Route
-              path="/confirm-sign-up"
-              render={(props) => (
-                <ConfirmSignUp
-                  {...this.props}
-                  {...props}
-                />
-              )}
-            />
             <Route
               path="/sign-up"
               render={(props) => (
@@ -187,27 +210,9 @@ class App extends React.Component {
                 />
               )}
             />
-            <Route
-              path="/forgot-password"
-              render={(props) => (
-                <ForgotPassword
-                  {...this.props}
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              path="/change-password"
-              render={(props) => (
-                <ChangePassword
-                  {...this.props}
-                  {...props}
-                />
-              )}
-            />
+
             <Route
               path="/"
-              exact
               render={(props) => (
                 <SignIn
                   {...this.props}
@@ -215,6 +220,7 @@ class App extends React.Component {
                 />
               )}
             />
+
           </Switch>
         </main>
         <Navigation {...this.props} />
@@ -223,6 +229,10 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({ ...state });
+App.propTypes = {
+  setting: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({ setting: state.setting });
 
 export default connect(mapStateToProps)(App);

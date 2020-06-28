@@ -56,8 +56,7 @@ class Auth extends React.Component {
           )}
         />
         <Route
-          path="/sign-in"
-          exact
+          path="/"
           render={(props) => (
             <SignIn
               {...this.props}

@@ -35,6 +35,10 @@ class App extends React.Component {
           href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,600,700&amp;amp;subset=latin-ext"
           rel="stylesheet"
         />
+
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js" />
+        <script src="https://js.paystack.co/v1/paystack.js" />
+
         <link
           rel="stylesheet"
           // href="/static/fonts/Linearicons/Font/demo-files/demo.css"
@@ -52,6 +56,7 @@ class App extends React.Component {
           type="text/css"
           href={`${urlPrefix}/static/css/bootstrap.min.css`}
         />
+
         <link
           rel="stylesheet"
           type="text/css"

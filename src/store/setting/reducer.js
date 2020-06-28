@@ -2,19 +2,14 @@ import { actionTypes } from './action';
 
 export const initialState = {
   documentLoaded: false,
-  appMode: 'customer',
-  currency: {
-    symbol: '$',
-    text: 'USD',
-  },
   header: {
-    type: 'home',
-    onGoBack: () => {},
-    label: '',
-    noUser: false,
-    show: true,
+    show: true, // <== show or hide the header
     height: 0,
-    icon: false,
+    type: 'home',
+    label: '',
+    onGoBack: () => {},
+    noUser: false, // <== show or hide the icon at top right corner
+    icon: false, // <== what to display at the top right corner
   },
   nav: {
     height: 0,

@@ -1,37 +1,47 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import PropTypes from 'prop-types';
 import { Input } from 'antd';
 import { getCart, removeItem, updateCartSuccess } from '../../store/cart/action';
 import { changeHeader, resetHeader } from '../../store/setting/action';
 import InputField from '../../components/elements/InputField';
-import { alert, isEmpty } from '../../lib/js';
+import { alert, isEmpty, formatBytes } from '../../lib/js';
+import {
+  setViewProduct, updateProduct, addProduct, removeProduct,
+} from '../../store/myProducts/action';
 
 const defaultState = {
-  file: '',
+  file: false,
   fileSrc: '',
   fileError: false,
   title: '',
-  titleError: 'cant be empty',
+  titleError: false,
   description: '',
   descriptionError: false,
   price: '',
   priceError: false,
-  commission: '',
-  commissionError: false,
+  commissionRate: '',
+  commissionRateError: false,
   invalidForm: true,
   submitting: false,
+  deleting: false,
+  updating: false,
+  showProductMetas: false,
 };
 
 class ViewProduct extends Component {
   constructor(props) {
     super(props);
-    this.state = props.createProduct ? {
+    const { viewProduct } = props.myProducts;
+    this.state = viewProduct ? {
       ...defaultState,
+      ...viewProduct,
+      file: {
+        type: viewProduct.mime,
+      },
+      fileSrc: viewProduct.url,
     } : {
       ...defaultState,
-      ...props.product,
     };
 
     this._isMounted = false;
@@ -39,42 +49,49 @@ class ViewProduct extends Component {
     this.pickFile = this.pickFile.bind(this);
     this.submit = this.submit.bind(this);
     this.validateProduct = this.validateProduct.bind(this);
+    this.deleteProduct = this.deleteProduct.bind(this);
+    this.updateProduct = this.updateProduct.bind(this);
     this.onFilePick = this.onFilePick.bind(this);
   }
 
   componentDidMount() {
     this._isMounted = true;
     const { props } = this;
+    const { viewProduct } = props.myProducts;
     this.props.dispatch(changeHeader({
       type: 'goBack',
-      label: props.createProduct ? 'new product' : props.product.title,
+      label: viewProduct ? viewProduct.title : 'new product',
       onGoBack: () => {
         this.props.history.goBack();
       },
+      icon: viewProduct ? (
+        <span
+          className="icon-exclamation icon"
+          onClick={() => {
+            this.setState({
+              showProductMetas: true,
+            });
+          }}
+          style={{ fontWeight: '500', transform: 'rotateZ(180deg)' }}
+        />
+      ) : false,
     }));
   }
 
   componentWillUnmount() {
     this._isMounted = false;
-    this.props.dispatch(resetHeader());
+    const { props } = this;
+
+    props.setViewProduct(false);
+    props.dispatch(resetHeader());
   }
 
   onFilePick(event) {
     const [value] = event.target.files;
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(value);
-    fileReader.onerror = () => {
-      alert('', 'Oops!, we couldn\'t attach the file picked please try again or try another one', [{ text: 'ok' }]);
-    };
-
-    fileReader.onload = (frEvent) => {
-      const fileSrc = frEvent.target.result;
-      if (this._isMounted) {
-        this.changeProductState('file', value, {
-          fileSrc,
-        });
-      }
-    };
+    console.log('big file', value);
+    this.changeProductState('file', value, {
+      fileSrc: URL.createObjectURL(value),
+    });
   }
 
   changeProductState(field = undefined, value = undefined, props) {
@@ -99,7 +116,18 @@ class ViewProduct extends Component {
     for (const field in state) {
       const value = state[field];
       let error = false;
-      if (field === 'price') {
+      if (field === 'file') {
+        if (value) {
+
+        } else {
+          error = 'no file selected';
+          invalidForm = true;
+        }
+
+        if (!field_ || field_ === 'file') {
+          newState.fileError = error;
+        }
+      } else if (field === 'price') {
         if (isNaN(value)) {
           error = 'must be a number';
           invalidForm = true;
@@ -114,7 +142,7 @@ class ViewProduct extends Component {
         if (!field_ || field_ === 'price') {
           newState.priceError = error;
         }
-      } else if (field === 'commission') {
+      } else if (field === 'commissionRate') {
         if (isNaN(value)) {
           error = 'must be a number';
           invalidForm = true;
@@ -126,8 +154,8 @@ class ViewProduct extends Component {
           invalidForm = true;
         }
 
-        if (!field_ || field_ === 'commission') {
-          newState.commissionError = error;
+        if (!field_ || field_ === 'commissionRate') {
+          newState.commissionRateError = error;
         }
       } else if (field === 'title') {
         if (isEmpty(value)) {
@@ -162,10 +190,132 @@ class ViewProduct extends Component {
     }
   }
 
+  deleteProduct() {
+    const { props } = this;
+    const { deleting, updating, id } = this.state;
+
+    if (!deleting && !updating) {
+      alert('', 'Are you sure you want to delete this product', [
+        {
+          text: 'No',
+        },
+        {
+          text: 'Yes',
+          onPress: () => {
+            if (this._isMounted) {
+              this.setState({ deleting: true });
+
+              props.fetchRequest({
+                url: `${process.env.REACT_APP_API}/products/${id}`,
+                method: 'delete',
+              }).then(() => {
+                props.removeProduct(id);
+                if (this._isMounted) {
+                  props.history.push('/my-products');
+                }
+              });
+            }
+          },
+        },
+      ]);
+    }
+  }
+
+  updateProduct() {
+    const { props } = this;
+    const { state } = this;
+    const { updating, deleting, id } = this.state;
+
+    if (!updating && !deleting) {
+      const testState = this.validateProduct(state);
+
+      if (testState.invalidForm) {
+        this.setState(() => (testState));
+      } else {
+        this.setState(() => ({ updating: true }));
+        const {
+          file, fileSrc, title, description, price, commissionRate,
+        } = this.state;
+
+        const formDetails = {
+          title,
+          description,
+          price,
+          commissionRate,
+        };
+
+        let body = new FormData();
+        const headers = {};
+        if (file.arrayBuffer) {
+          formDetails.thumbnail = fileSrc;
+          body.append('product', file);
+          body.append('title', title);
+          body.append('description', description);
+          body.append('price', price);
+          body.append('commissionRate', commissionRate);
+        } else {
+          body = JSON.stringify(formDetails);
+          headers['Content-Type'] = 'application/json';
+        }
+        console.log({ formDetails, id });
+
+        props.fetchRequest({
+          url: `${process.env.REACT_APP_API}/products/${id}`,
+          method: 'post',
+          body,
+          headers,
+        }).then(() => {
+          if (this._isMounted) {
+            alert(
+              'Update Successful',
+              'Your product was updated successfully',
+              [{
+                text: 'ok',
+              }],
+            );
+
+            this.setState(() => ({ updating: false }));
+            props.updateProduct(id, formDetails);
+          }
+        }).catch(() => {
+          if (this._isMounted) {
+            alert(
+              'Update Failed',
+              'Please try again',
+              [{
+                text: 'ok',
+              }],
+            );
+            this.setState(() => ({ updating: false }));
+          }
+        });
+      }
+    }
+  }
+
   submit() {
     const { props } = this;
     const { state } = this;
     const { submitting } = this.state;
+
+    /* props.addProduct({
+      commissionRate: 10,
+      createdOn: '2020-06-08T08:57:22.193Z',
+      description: 'the product',
+      id: '5eddfd81c6af62554c70a51e',
+      metas: {
+        width: 1321, height: 743, format: 'jpg', type: 'image', size: 250569,
+      },
+      mime: 'image/jpeg',
+      price: 100,
+      status: 'available',
+      thumbnail: 'https://res.cloudinary.com/premio-dev/image/upload/w_400,f_auto,c_limit/v1592001816/b3utkwrbk2gtmkknff3t.jpg',
+      title: 'kola',
+      url: 'https://res.cloudinary.com/premio-dev/image/upload/v1592001816/b3utkwrbk2gtmkknff3t.jpg',
+      vendorId: '5ed53380d2152f195c8c6c70',
+    }); */
+
+    // return '';
 
     if (!submitting) {
       const testState = this.validateProduct(state);
@@ -173,20 +323,24 @@ class ViewProduct extends Component {
       if (testState.invalidForm) {
         this.setState(() => (testState));
       } else {
+        this.setState(() => ({ submitting: true }));
         const {
-          file, title, description, price, commission,
+          file, title, description, price, commissionRate,
         } = this.state;
+
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('product', file);
         formData.append('title', title);
         formData.append('description', description);
         formData.append('price', price);
-        formData.append('commission', commission);
+        formData.append('commissionRate', commissionRate);
+
+        console.log('kkkkkkkkkkkkkkkkkkkkkkk', { formData });
         props.fetchRequest({
           url: `${process.env.REACT_APP_API}/products`,
           method: 'POST',
           body: formData,
-        }).then(() => {
+        }).then((res) => {
           if (this._isMounted) {
             alert(
               'Upload Successful',
@@ -195,16 +349,24 @@ class ViewProduct extends Component {
                 text: 'ok',
               }],
             );
+
+
+            props.addProduct(res.product);
+            this.setState(defaultState);
           }
-        }).catch(() => {
+        }).catch((err) => {
+          console.log('the error', err);
           if (this._isMounted) {
+            const { error } = err.data;
             alert(
               'Upload Failed',
-              'Please try again',
+              error,
               [{
                 text: 'ok',
               }],
             );
+
+            this.setState({ submitting: false });
           }
         });
       }
@@ -212,7 +374,9 @@ class ViewProduct extends Component {
   }
 
   render() {
-    const { createProduct } = this.props;
+    const { props } = this;
+    const { header, nav } = props.setting;
+    const { viewProduct } = props.myProducts;
 
     console.log({ props: this.props });
     const { state } = this;
@@ -223,32 +387,42 @@ class ViewProduct extends Component {
             <span className="icon-file-empty icon" />
             {(() => {
               switch (state.file.type) {
-                case ('image/jpeg' || 'image/jpg' || 'image/png'):
-                  return <img src={state.fileSrc} alt="" />;
+                case ('image/gif'):
+                case ('image/jpg'):
+                case ('image/jpeg'):
+                case ('image/png'):
+                  return <img src={state.fileSrc} alt="" ref={() => { }} />;
 
                 case ('video/mp4'):
                   return <video src={state.fileSrc} controls />;
 
                 case ('audio/mp3'):
+                case ('audio/mpeg'):
                   return <audio src={state.fileSrc} controls />;
 
                 case ('application/pdf'):
-                  return <embed src={state.fileSrc} />;
+                  return <iframe typeof="application/pdf" title="." src={state.fileSrc} />;
 
                 default:
-                  return <>{state.file.type} not supported</>;
+                  if (state.file.type) {
+                    return <>{state.file.type} not supported</>;
+                  }
+                  if (state.fileError) {
+                    return <span className="error"> {state.fileError} </span>;
+                  }
+
+                  return <></>;
               }
             })()}
-
           </div>
 
-          <button type="button" id="filePicker" className="btn btn-glass" onClick={createProduct ? this.pickFile : () => {}}>
+          <button type="button" id="filePicker" className="btn btn-glass" onClick={this.pickFile}>
             <input
               type="file"
               ref={(e) => {
                 this.filePicker = e;
               }}
-              accept="image/jpeg,video/mp4,audio/mp3,application/pdf"
+              accept=".gif,.jpg,.jpeg,.png,.mp4,.mp3,.mpeg,application/pdf"
               onChange={this.onFilePick}
             />
             <span className="icon-file-empty icon" />
@@ -299,52 +473,108 @@ class ViewProduct extends Component {
         <div className="form-item">
           <p className="label">
             Commission rate <span>(in percentage)</span>
-            {state.commissionError ? <> : <span className="error">{state.commissionError}</span></> : ''}
+            {state.commissionRateError ? <> : <span className="error">{state.commissionRateError}</span></> : ''}
           </p>
           <input
             type="number"
-            className={`${state.commissionError ? ' error' : ''}`}
+            className={`${state.commissionRateError ? ' error' : ''}`}
             max="100"
-            value={state.commission}
+            value={state.commissionRate}
             onChange={(e) => {
-              this.changeProductState('commission', e.target.value);
+              this.changeProductState('commissionRate', e.target.value);
             }}
           />
         </div>
 
         <div className="ps-container actions">
-          {!createProduct ? (
+          {viewProduct ? (
             <button
               type="button"
               className="btn btn-glass"
+              onClick={this.deleteProduct}
             >Delete Product
             </button>
           ) : ''}
           <button
             type="button"
-            className={`btn btn-default${state.invalidForm || state.submitting ? ' disabled' : ''}`}
-            onClick={this.submit}
+            className={`btn btn-default${
+              state.updating
+              || state.submitting
+                ? ' disabled'
+                : ''
+            }`}
+            onClick={viewProduct ? this.updateProduct : this.submit}
           >
-            {createProduct ? 'Submit' : 'Update'} Product
+            {viewProduct ? 'Update' : 'Submit' } Product
           </button>
+
         </div>
+        {state.showProductMetas ? (
+          <div
+            id="productMetas"
+            style={{
+              height: `calc(100vh - ${header.height + nav.height}px)`,
+              top: `${header.height}px`,
+            }}
+            onClick={() => {
+              this.setState({ showProductMetas: false });
+            }}
+          >
+            <div className="content" onClick={(e) => { e.stopPropagation(); }}>
+              <div className="header">Details</div>
+              <div className="info">
+                <p className="label"> Sold </p>
+                <p className="detail">{state.sold}</p>
+              </div>
+
+              <div className="info">
+                <p className="label"> Width </p>
+                <p className="detail">{state.metas.width}px</p>
+              </div>
+
+              <div className="info">
+                <p className="label"> Height </p>
+                <p className="detail">{state.metas.height}px</p>
+              </div>
+
+              <div className="info">
+                <p className="label"> size </p>
+                <p className="detail"> {formatBytes(state.metas.height)} </p>
+              </div>
+
+              <button
+                type="button"
+                className="btn btn-glass"
+                onClick={() => {
+                  this.setState({ showProductMetas: false });
+                }}
+              > close
+              </button>
+            </div>
+          </div>
+        ) : ''}
+
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  ...state.cart,
-  ...state.setting,
-});
 
 ViewProduct.propTypes = {
-  product: PropTypes.object,
-  createProduct: PropTypes.bool,
 };
 
 ViewProduct.defaultProps = {
-  product: {},
-  createProduct: true,
 };
-export default connect(mapStateToProps)(ViewProduct);
+
+const mapStateToProps = (state) => ({
+  myProducts: state.myProducts,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setViewProduct: (props) => dispatch(setViewProduct(props)),
+  updateProduct: (id, props) => dispatch(updateProduct(id, props)),
+  addProduct: (product) => dispatch(addProduct(product)),
+  removeProduct: (product) => dispatch(removeProduct(product)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewProduct);

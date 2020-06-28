@@ -53,8 +53,15 @@
     .input-field{
       margin: 1em 0;
 
+      .label{
+        .error{
+          padding-left: .4em;
+          color: $color-danger;
+        }
+      }
+
       input{
-        font-size: 1.5em;
+        font-size: 2em;
         text-align: center;
       }
     }
@@ -78,6 +85,12 @@
       &.disabled{
         color: #c0c0c0;
 
+      }
+    }
+
+    #submit{
+      .icon{
+        margin-left: .8em;
       }
     }
     

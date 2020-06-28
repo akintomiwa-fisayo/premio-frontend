@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { message } from 'antd';
+import { compose } from 'redux';
 import { changeHeader, resetHeader } from '../../store/setting/action';
-import ChangePassword from '../account/myAccount/ChangePassword';
-import BecomeVendor from '../account/myAccount/BecomeVendor';
-import SearchBar from '../../components/shared/SearchBar';
 import { getRelativeTime } from '../../lib/js';
 import Composer from './Composer';
 import user1 from '../../public/static/img/users/1.jpg';
+import ChatText from './ChatText';
+import { updateTextsOfTexts } from '../../store/messages/action';
 
 
 class Chat extends Component {
@@ -17,100 +18,100 @@ class Chat extends Component {
       composer: {
         height: 0,
       },
+      palId: props.match.params.reciever,
     };
 
     this.composer = null;
     this.onLoadCall = false;
     this.regComposerHeight = this.regComposerHeight.bind(this);
+    this.markAsSeen = this.markAsSeen.bind(this);
   }
 
   componentDidMount() {
-    this.props.dispatch(changeHeader({
+    const { props, state } = this;
+    const { chatReciever } = props.messages;
+    props.onComponentMount();
+    props.dispatch(changeHeader({
       type: 'goBack',
-      label: 'Client Name',
+      label: chatReciever.isVendor
+        ? chatReciever.companyName
+        : `${chatReciever.firstName} ${chatReciever.lastName}`,
       icon: (
-        <Link to="/account/client?user=other&type=vendor">
-          <img src={user1} alt="" />
+        <Link to={`/account/${chatReciever.id}`}>
+          <img src={chatReciever.displayImage} alt="" />
         </Link>),
       onGoBack: () => {
-        this.props.history.goBack();
+        props.history.goBack();
       },
     }));
   }
-
 
   componentWillUnmount() {
     this.props.dispatch(resetHeader());
   }
 
-  regComposerHeight() {
+  regComposerHeight(composer) {
     const { props } = this;
-    if (this.composer && !this.onLoadCall && props.documentLoaded) {
-      this.onLoadCall = true;
-      const height = this.composer.offsetHeight;
+    if (composer && props.setting.documentLoaded) {
+      const height = composer.offsetHeight;
+      console.log('INSIDE COMPOSE HEIGHT REG ', height);
       this.setState((prevState) => ({
         composer: {
-          ...prevState,
+          ...prevState.composer,
           height,
         },
       }));
     }
   }
 
-  render() {
-    const { state } = this;
-    const { header, nav, user } = this.props;
+  markAsSeen(messageIds) {
+    if (messageIds.length > 0) {
+      const { props } = this;
+      const { fetchRequest, sessionUser, updateTextsOfTexts } = props;
+      fetchRequest({
+        url: `${process.env.REACT_APP_API}/users/${sessionUser.id}/messages/mark_as_seen`,
+        method: 'PATCH',
+        body: JSON.stringify({
+          messageIds,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-    const conversation = [
-      {
-        sender: '12',
-        content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
-        sentOn: '08/11/2019',
-        status: 'seen',
-      },
-      {
-        sender: '11',
-        content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
-        sentOn: '08/11/2019',
-        status: 'seen',
-      },
-      {
-        sender: '12',
-        content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
-        sentOn: '08/11/2019',
-        status: 'seen',
-      },
-      {
-        sender: '11',
-        content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
-        sentOn: '08/11/2019',
-        status: 'seen',
-      },
-      {
-        sender: '12',
-        content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
-        sentOn: '08/11/2019',
-        status: 'seen',
-      },
-      {
-        sender: '11',
-        content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
-        sentOn: '08/11/2019',
-        status: 'seen',
-      },
-      {
-        sender: '12',
-        content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
-        sentOn: 'today',
-        status: 'sent',
-      },
-      {
-        sender: '11',
-        content: 'the content of the message last sent to you comes down here but it will be truncated if it spans more than two lines',
-        sentOn: 'today',
-        status: 'sent',
-      },
-    ];
+      // Update the seen texts in store
+      updateTextsOfTexts(messageIds, messageIds.map(() => ({ seen: true })));
+    }
+  }
+
+  render() {
+    const { state, props } = this;
+    const { setting, messages, sessionUser } = props;
+    let chat = [];
+
+    const { header, nav } = setting;
+
+    const { conversations, chatReciever } = messages;
+    console.log({ conversations, chatReciever });
+    if (!chatReciever) return '';
+
+    //  check if user has chat with rciever before
+    if (conversations[chatReciever.id]) {
+      chat = conversations[chatReciever.id].chat;
+      const justSeenMessageIds = [];
+      chat.forEach((text) => {
+        if (text.reciever.id === sessionUser.id && !text.seen) {
+          justSeenMessageIds.push(text.id);
+        }
+      });
+
+      if (justSeenMessageIds.length > 0) {
+        this.markAsSeen(justSeenMessageIds);
+      }
+    } else {
+      chat = [];
+    }
+
 
     return (
       <section id="messageChat">
@@ -119,26 +120,31 @@ class Chat extends Component {
           style={{
             height: `calc(100vh - ${header.height + nav.height + state.composer.height}px)`,
           }}
+          ref={(el) => {
+            if (el) {
+              el.scrollTop = el.scrollHeight;
+            }
+          }}
         >
-          {
-            conversation.map((message) => (
-              <div className={`message ${user.id === message.sender ? 'sender' : 'reciever'}`}>
-                <div className="content"> {message.content} </div>
-                <div className="details">
-                  <span>{getRelativeTime(message.sentOn)}</span>
-                  <span className={`icon-check status _${message.status}`} />
-                </div>
-              </div>
+          {chat.length > 0
+            ? chat.map((text) => (
+              <ChatText
+                {...props}
+                text={text}
+              />
             ))
-          }
+            : (
+              <p className="page-empty-msg">Start a conversation with <strong>{chatReciever.isVendor ? chatReciever.companyName : `${chatReciever.firstName} ${chatReciever.lastName}`}</strong></p>
+            )}
         </div>
         <Composer
-          onComponentDidUpdate={this.regComposerHeight}
-          reciver={"reciever's id"}
-          reference={(e) => {
-            console.log('the e is ', e);
-            this.composer = e;
+          {...props}
+          style={{
+            top: 'auto',
+            bottom: `${nav.height}px`,
           }}
+          onUpdate={this.regComposerHeight}
+          reciever={chatReciever}
         />
       </section>
     );
@@ -146,8 +152,11 @@ class Chat extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  ...state.setting,
-  ...state.auth,
+  messages: state.messages,
 });
 
-export default connect(mapStateToProps)(Chat);
+const mapDispatchToProp = (dispatch) => ({
+  updateTextsOfTexts: (ids, props) => dispatch(updateTextsOfTexts(ids, props)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProp)(Chat);

@@ -7,6 +7,7 @@ import logo from '../../public/static/img/logo.png';
 import {
   changeHeader, resetHeader, resetNav, changeNav,
 } from '../../store/setting/action';
+import { isEmail, isEmpty } from '../../lib/js';
 
 class ForgotPassword extends React.Component {
   constructor(props) {
@@ -17,19 +18,26 @@ class ForgotPassword extends React.Component {
         minutes: 0,
         seconds: 59,
       },
+      email: '',
+      emailError: false,
+      submittingEmail: false,
+      token: '',
+      tokenError: false,
+      submittingToken: false,
     };
 
+    this._isMounted = null;
     this.timerHandler = null;
     this.startTimerCount = this.startTimerCount.bind(this);
     this.timerCount = this.timerCount.bind(this);
     this.changeStep = this.changeStep.bind(this);
-    this.sendCode = this.sendCode.bind(this);
-    this.resendCode = this.resendCode.bind(this);
-    this.verifyCode = this.verifyCode.bind(this);
-    this.resendCode = this.resendCode.bind(this);
+    // this.sendToken = this.sendToken.bind(this);
+    this.sendVerificationToken = this.sendVerificationToken.bind(this);
+    this.verifyToken = this.verifyToken.bind(this);
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.props.dispatch(changeHeader({
       type: 'goBack',
       noUser: true,
@@ -44,6 +52,7 @@ class ForgotPassword extends React.Component {
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
     this.props.dispatch(resetHeader());
     this.props.dispatch(resetNav());
   }
@@ -77,7 +86,7 @@ class ForgotPassword extends React.Component {
   }
 
   changeStep(step) {
-    if (step === 'code') {
+    if (step === 'token') {
       this.startTimerCount();
     } else {
       clearInterval(this.timerHandler);
@@ -87,29 +96,90 @@ class ForgotPassword extends React.Component {
     }));
   }
 
-  sendCode() {
+  sendVerificationToken() {
+    const { email, submittingEmail } = this.state;
+    if (!isEmail(email)) {
+      this.setState({ emailError: 'invalid email' });
+    } else if (!submittingEmail) {
+      this.setState({ submittingEmail: true });
 
+      this.props.FetchRequest({
+        url: `${process.env.REACT_APP_API}/auth/reset_password`,
+        method: 'POST',
+        body: JSON.stringify({
+          email,
+        }),
+        headers: {
+          'Content-type': 'application/json',
+        },
+      }).then(() => {
+        if (this._isMounted) {
+          this.changeStep('token');
+          this.setState({ submittingEmail: false });
+        }
+      }).catch((err) => {
+        if (this._isMounted) {
+          const { error } = err.response.data;
+          const stateError = {
+            submittingEmail: false,
+          };
+
+          if (error.email) {
+            stateError.emailError = error.email;
+          }
+
+          this.setState(stateError);
+        }
+      });
+    }
   }
 
-  verifyCode() {
-    this.props.history.push('/change-password');
+  verifyToken() {
+    const { token, email, submittingToken } = this.state;
+    if (!isEmpty(token) && !submittingToken) {
+      this.setState({ submittingToken: true });
+
+      this.props.FetchRequest({
+        url: `${process.env.REACT_APP_API}/auth/reset_password/verify_token`,
+        method: 'PATCH',
+        body: JSON.stringify({
+          token,
+          email,
+        }),
+        headers: {
+          'Content-type': 'application/json',
+        },
+      }).then(() => {
+        this.setState({ submittingToken: false });
+        this.props.history.push(`/change-password?email=${email}&token=${token}`);
+      }).catch((err) => {
+        if (this._isMounted) {
+          const { error } = err.response.data;
+          const stateError = {
+            submittingToken: false,
+          };
+
+          if (error.token) {
+            stateError.tokenError = error.token;
+          }
+
+          this.setState(stateError);
+        }
+      });
+    }
   }
 
-  resendCode() {
-    this.sendCode();
-    this.startTimerCount();
-  }
 
   render() {
     const { state } = this;
 
-    if (state.step === 'code') {
+    if (state.step === 'token') {
       const { seconds } = state.timer;
       const { minutes } = state.timer;
-      let allowResendCode = false;
+      let allowResendToken = false;
       let timer = '';
       if (minutes === -1) {
-        allowResendCode = true;
+        allowResendToken = true;
       } else {
         const secondsArr = `${seconds}`.split('');
         if (!secondsArr[1]) {
@@ -122,30 +192,46 @@ class ForgotPassword extends React.Component {
       return (
         <div id="forgotPasswordComp">
           <div id="content">
-            <p>A verification code was sent to <b>theEmail@add.com</b></p>
+            <p>A verification token was sent to <b>{state.email}</b></p>
             <InputField
-              label="Code"
+              label={(
+                <>Token
+                  {state.tokenError !== false
+                    ? (
+                      <span className="error">
+                        : {state.tokenError}
+                      </span>
+                    ) : ''}
+                </>
+              )}
               type="text"
+              value={state.token}
+              onChange={(token) => {
+                this.setState((prev) => ({
+                  token,
+                  tokenError: !isEmpty(token) ? false : prev.tokenError,
+                }));
+              }}
             />
             <p id="changeEmail">
               If you  this is email is not yours please <span onClick={() => this.changeStep('email')}>change email </span>
             </p>
 
             <button
-              id="resendCode"
+              id="resendToken"
               type="button"
-              className={`btn ${allowResendCode ? '' : ' disabled'}`}
+              className={`btn ${allowResendToken ? '' : ' disabled'}`}
               onClick={() => {
-                if (allowResendCode) this.resendCode();
+                if (allowResendToken) this.sendVerificationToken();
               }}
             >
-              Resend code {timer}
+              Resend token {timer}
             </button>
             <button
               type="button"
-              className="btn btn-default"
-              onClick={this.verifyCode}
-            >Verify code
+              className={`btn btn-default${state.submittingToken ? ' disabled' : ''}`}
+              onClick={this.verifyToken}
+            >Verify token
             </button>
           </div>
         </div>
@@ -156,18 +242,34 @@ class ForgotPassword extends React.Component {
       <div id="forgotPasswordComp">
         <div id="content">
           {/* <img id="logo" src={logo} alt="logo" /> */}
-          <p>A verification code will be sent to your email</p>
+          <p>A verification token will be sent to your email</p>
           <InputField
-            label="Email"
+            label={(
+              <>Email
+                {state.emailError !== false
+                  ? (
+                    <span className="error">
+                        : {state.emailError}
+                    </span>
+                  ) : ''}
+              </>
+            )}
             type="text"
             id="email"
+            value={state.email}
+            onChange={(email) => {
+              this.setState((prev) => ({
+                email,
+                emailError: isEmail(email) ? false : prev.emailError,
+              }));
+            }}
           />
 
           <button
             type="button"
-            className="btn btn-default"
-            onClick={() => this.changeStep('code')}
-          >Send code
+            className={`btn btn-default ${state.submittingEmail ? ' disabled' : ''}`}
+            onClick={this.sendVerificationToken}
+          >Send token
           </button>
 
         </div>

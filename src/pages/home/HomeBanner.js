@@ -10,29 +10,30 @@ class HomeBanner extends Component {
   render() {
     return (
       <div className="ps-home-banner ps-home-banner--1">
-        <SlideShow items={[
-          {
-            label: '1 the label of tthe item',
-            content: <img
-              src={slide1}
-              alt="martfury"
-            />,
-          },
-          {
-            label: '2 the label of tthe item',
-            content: <img
-              src={slide2}
-              alt="martfury"
-            />,
-          },
-          {
-            label: '3 the label of tthe item',
-            content: <img
-              src={slide3}
-              alt="martfury"
-            />,
-          },
-        ]}
+        <SlideShow
+          items={[
+            {
+              label: '1 the label of tthe item',
+              content: <img
+                src={slide1}
+                alt="martfury"
+              />,
+            },
+            {
+              label: '2 the label of tthe item',
+              content: <img
+                src={slide2}
+                alt="martfury"
+              />,
+            },
+            {
+              label: '3 the label of tthe item',
+              content: <img
+                src={slide3}
+                alt="martfury"
+              />,
+            },
+          ]}
         />
       </div>
     );

@@ -1,14 +1,17 @@
 /* eslint-disable no-console */
 import React from 'react';
 import axios from 'axios';
-import PropTypes from 'prop-types';
+import PropTypes, { bool, object } from 'prop-types';
 import './App.css';
 import { connect } from 'react-redux';
-import Auth from './pages/auth/auth';
 import App from './App';
 import { isEmpty } from './lib/js';
 import { setCountryStates, setCountryStateCities } from './store/countries/action';
 import { setSessionUser } from './store/auth/action';
+import Auth from './pages/auth/auth';
+import { setCartProducts } from './store/cart/action';
+import { changeHeader, resetHeader } from './store/setting/action';
+import HeaderMobile from './components/shared/HeaderMobile';
 
 const FetchRequest = (params = {
   url: '',
@@ -109,10 +112,13 @@ class Booter extends React.Component {
 
     this.state = {
       loading: true,
+      notLoggedInRedirect: false,
     };
 
     this._isMounted = false;
+    this.onComponentMount = this.onComponentMount.bind(this);
     this.fetchRequest = this.fetchRequest.bind(this);
+    this.getAllCountry = this.getAllCountry.bind(this);
     this.getCountries = this.getCountries.bind(this);
     this.getCountryStates = this.getCountryStates.bind(this);
     this.getCountryStateCities = this.getCountryStateCities.bind(this);
@@ -120,29 +126,95 @@ class Booter extends React.Component {
 
   componentDidMount() {
     this._isMounted = true;
-    const { props } = this;
+    const { props, state } = this;
+    const paths = props.location.pathname.split('/');
+    const authPages = [
+      'sign-up',
+      'confirm-sign-up',
+    ];
+    if (authPages.indexOf(paths[1]) === -1) {
+      console.log('still enter sha');
+      this.setState({ notLoggedInRedirect: true });
+    }
 
+    console.log('BOOTER PROPS', paths);
+    const notLoggedIn = () => {
+      this.setState(() => ({ loading: false }));
+
+      if (state.notLoggedInRedirect) {
+        props.history.push('/sign-in');
+      }
+    };
+
+    // this.getAllCountry().then(() => {
     // Get the session user
     const userId = localStorage.getItem('sessionUserId');
-    this.fetchRequest({
-      url: `${process.env.REACT_APP_API}/users/${userId}`,
-      method: 'get',
-    }).then((res) => {
-      if (this._isMounted) {
-        // console.log('We a valid user with token', res);
-        props.setSessionUser(res);
-        this.setState(() => ({ loading: false }));
-      }
-    }).catch((error) => {
-      if (this._isMounted) {
-        props.history.push('/');
-      }
-      console.log('GOT ULTIMATE ERROR', error);
-    });
+    if (!userId) {
+      notLoggedIn();
+    } else {
+      // Has an account and is attempting to login
+      this.fetchRequest({
+        url: `${process.env.REACT_APP_API}/users/${userId}?columns=id,firstName,lastName,email,displayImage,isVendor,companyName,cartProducts`,
+        method: 'get',
+      }).then((res) => {
+        console.log('says We a valid user with token', res);
+        if (this._isMounted) {
+          const { cartProducts, ...user } = res;
+          props.setSessionUser(user);
+          props.setCartProducts(cartProducts);
+          this.setState(() => ({ loading: false }));
+        }
+      }).catch((error) => {
+        if (this._isMounted) {
+          notLoggedIn();
+        }
+        console.log('GOT ULTIMATE ERROR', error);
+      });
+    }
+    // });
   }
 
   componentWillUnmount() {
     this._isMounted = false;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  onComponentMount() {
+    document.querySelector('html').scrollTop = 0;
+  }
+
+  getAllCountry() {
+    const { countries } = this.props;
+    const countryKeys = Object.keys(countries);
+
+    const processFetchStatesCities = (countryId, stateKeys, counter = 0) => new Promise((resolve) => {
+      const stateId = stateKeys[counter];
+      if (stateId) {
+        this.getCountryStateCities(countryId, stateId).then(() => {
+          processFetchStatesCities(countryId, stateKeys, counter + 1).then(resolve);
+          // processFetchCities(countryId, stateId, Object.keys(cities));
+        });
+      } else {
+        resolve();
+      }
+    });
+
+    const processFetch = (counter = 0) => new Promise((resolve) => {
+      const countryId = countryKeys[counter];
+      if (countryId) {
+        this.getCountryStates(countryId).then((states) => {
+          processFetchStatesCities(countryId, Object.keys(states)).then(() => {
+            processFetch(counter + 1).then(resolve);
+          });
+        });
+      } else {
+        resolve();
+      }
+    });
+
+    return new Promise((resolve) => {
+      processFetch().then(resolve);
+    });
   }
 
   getCountries() {
@@ -243,6 +315,7 @@ class Booter extends React.Component {
         const { data } = res;
         resolve(data);
       }).catch((err) => {
+        console.log('okay in 2 error', { ...err });
         const error = err.response;
         const { props } = this;
         if (error.status === 401) {
@@ -265,8 +338,10 @@ class Booter extends React.Component {
             });
           } else {
             props.setSessionUser(false);
-            this.props.history.push('/sign-in');
-            resolve();
+            if (this.state.notLoggedInRedirect) {
+              this.props.history.push('/sign-in');
+            }
+            reject(error);
           }
         } else reject(error);
       });
@@ -276,27 +351,42 @@ class Booter extends React.Component {
   render() {
     const { state, props } = this;
     if (state.loading) {
-      return <div>we loading man</div>;
+      return <div id="appLoading" />;
     }
-    return props.sessionUser ? (
-      <App
-        FetchRequest={FetchRequest}
-        // eslint-disable-next-line react/jsx-no-duplicate-props
-        fetchRequest={this.fetchRequest}
-        getCountries={this.getCountries}
-        getCountryStates={this.getCountryStates}
-        getCountryStateCities={this.getCountryStateCities}
-        sessionUser={props.sessionUser}
-      />
-    ) : (
-      <Auth
-        FetchRequest={FetchRequest}
-      // eslint-disable-next-line react/jsx-no-duplicate-props
-        fetchRequest={this.fetchRequest}
-        getCountries={this.getCountries}
-        getCountryStates={this.getCountryStates}
-        getCountryStateCities={this.getCountryStateCities}
-      />
+
+    return (
+      <>
+        <HeaderMobile {...props} />
+        {props.sessionUser
+          ? (
+            <App
+              {...this.props}
+              FetchRequest={FetchRequest}
+            // eslint-disable-next-line react/jsx-no-duplicate-props
+              fetchRequest={this.fetchRequest}
+              getCountries={this.getCountries}
+              getCountryStates={this.getCountryStates}
+              getCountryStateCities={this.getCountryStateCities}
+              sessionUser={props.sessionUser}
+              setSessionUser={props.setSessionUser}
+              onComponentMount={this.onComponentMount}
+            />
+          )
+          : (
+            <Auth
+              {...this.props}
+              FetchRequest={FetchRequest}
+            // eslint-disable-next-line react/jsx-no-duplicate-props
+              fetchRequest={this.fetchRequest}
+              getCountries={this.getCountries}
+              getCountryStates={this.getCountryStates}
+              getCountryStateCities={this.getCountryStateCities}
+              sessionUser={props.sessionUser}
+              setSessionUser={props.setSessionUser}
+              onComponentMount={this.onComponentMount}
+            />
+          )}
+      </>
     );
   }
 }
@@ -305,22 +395,27 @@ class Booter extends React.Component {
 Booter.propTypes = {
   history: PropTypes.object.isRequired,
   countries: PropTypes.object.isRequired,
-  sessionUser: PropTypes.object.isRequired,
+  sessionUser: PropTypes.arrayOf(bool, object).isRequired,
   setSessionUser: PropTypes.func.isRequired,
   setCountryStates: PropTypes.func.isRequired,
   setCountryStateCities: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
+  store: state,
   countries: state.countries,
   sessionUser: state.auth.user,
 });
 
-const mapDispatchToProps = (dispath) => ({
-  setCountryStates: (countryId, states) => dispath(setCountryStates(countryId, states)),
-  setCountryStateCities: (countryId, stateId, cities) => dispath(
+const mapDispatchToProps = (dispatch) => ({
+  dispatchEvent: dispatch,
+  setCountryStates: (countryId, states) => dispatch(setCountryStates(countryId, states)),
+  setCountryStateCities: (countryId, stateId, cities) => dispatch(
     setCountryStateCities(countryId, stateId, cities),
   ),
-  setSessionUser: (user) => dispath(setSessionUser(user)),
+  setSessionUser: (user) => dispatch(setSessionUser(user)),
+  setCartProducts: (cartProducts) => dispatch(setCartProducts(cartProducts)),
+  changeHeader: (props) => dispatch(changeHeader(props)),
+  resetHeader: (props) => dispatch(resetHeader(props)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Booter);

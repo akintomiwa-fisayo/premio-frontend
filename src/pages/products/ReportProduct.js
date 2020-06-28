@@ -81,9 +81,9 @@ class ReportProduct extends React.Component {
         reporting: true,
       }));
 
-      const { product } = this.props;
+      const { productId } = this.props;
       this.props.fetchRequest({
-        url: `${process.env.REACT_APP_API}/products/${product.id}/reports`,
+        url: `${process.env.REACT_APP_API}/products/${productId}/reports`,
         method: 'post',
         body: `{
           "flag": "${state.flag}",
@@ -93,7 +93,7 @@ class ReportProduct extends React.Component {
           'content-Type': 'application/json',
         },
       }).then(() => {
-        alert('report submitted successfully', '', [{ text: 'ok' }]);
+        alert('Report submitted successfully', '', [{ text: 'ok' }]);
         if (this._isMounted) {
           this.hideReportDialog();
         }

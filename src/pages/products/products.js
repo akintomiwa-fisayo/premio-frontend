@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import ViewProduct from './viewProduct';
+import ViewProduct from './ViewProduct';
 
 class Products extends React.Component {
   render() {
